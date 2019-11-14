@@ -1,6 +1,7 @@
 package nifdc
 
 import (
+	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"strings"
 )
@@ -246,4 +247,118 @@ func StoMap_yijieshou_full(s string)map[string]string{
 
 
 	return mkr
+}
+//填充报告
+func Fill_item(new map[string]string,fooddetail map[string]string){
+	fooddetail["report_no"]=new["报告书编号"]
+	fooddetail["jd_bz"]=new["监督抽检报告备注"]
+	fooddetail["fx_bz"]=new["风险监测报告备注"]
+	fooddetail["conclusion"]=new["结论"]
+	fooddetail["report_type"]=new["报告类别"]
+	fooddetail["test_conclusion"]=new["检验结论"]
+}
+func GetTestInfo(k string,testinfos []*Test_platform_api_food_getTestInfo_o)*Test_platform_api_food_getTestInfo_o{
+	for _,it:=range testinfos{
+		if it.Spdata_0==k{
+			return it
+		}
+	}
+	return nil
+}
+//填充检测项目
+func Fill_subitem(news []map[string]string,testinfos []*Test_platform_api_food_getTestInfo_o){
+	for _,new:=range news{
+		info:=GetTestInfo(new["检验项目"],testinfos)
+		if info==nil{
+			continue
+		}
+		info.Spdata_1=new["检验结果"]
+		info.Spdata_18=new["结果单位"]
+		info.Spdata_2=new["结果判定"]
+		info.Spdata_19=new["检验依据"]
+		info.Spdata_4=new["判定依据"]
+		info.Spdata_11=new["最小允许限"]
+		info.Spdata_15=new["最大允许限"]
+		info.Spdata_16=new["允许限单位"]
+		info.Spdata_7=new["方法检出限"]
+		info.Spdata_8=new["检出限单位"]
+		info.Spdata_17=new["说明"]
+		fmt.Println(new)
+	}
+}
+//获取所有不合格
+func Getunqualified(testinfos []map[string]string)[]map[string]string{
+	r:=make([]map[string]string,0)
+	for _,it:=range testinfos{
+		if it["结果判定"]=="不合格项"{
+			r=append(r,it)
+		}
+	}
+	return r
+}
+//获取所有判定依据
+func GetAllPandingyiju(testinfos []map[string]string)[]string{
+	r:=make([]string,0)
+	for _,it:=range testinfos {
+		pd:=false
+		for _,rit:=range r{
+			if it["判定依据"]==rit{
+				pd=true
+				break
+			}
+		}
+		if pd==false{
+			r=append(r,it["判定依据"])
+		}
+	}
+	return r
+}
+//生成指定判断依据
+func Buildpanduanyiju(yj string,testinfos []map[string]string)string{
+	r:=""
+	for _,it:=range testinfos{
+		if it["结果判定"]=="不合格项"&&it["判定依据"]==yj{
+			r=fmt.Sprintf("%s%s",r,it["检验项目"])
+			r=fmt.Sprintf("%s,",r)
+		}
+	}
+	if r==""{
+		return ""
+	}
+	if string(r[len(r)-1])==","{
+		r=r[:len(r)-1]
+	}
+	r=strings.ReplaceAll(r,",","，")
+	r=fmt.Sprintf("%s项目不符合%s要求",r,yj)
+	return r
+}
+//生成报告
+func Buildbaogao(testinfos []map[string]string)string{
+	unqualifieds:=Getunqualified(testinfos)
+	allpdyiju:=GetAllPandingyiju(testinfos)
+	if len(unqualifieds)==0{
+		rs:="经抽样检验，所检项目符合 "
+		for i,yj:=range allpdyiju{
+			rs=fmt.Sprintf("%s%s",rs,yj)
+			if len(allpdyiju)-1!=i{
+				rs=fmt.Sprintf("%s，",rs)
+			}
+		}
+		rs=fmt.Sprintf("%s要求。",rs)
+		return rs
+	}
+	rs:="经抽样检验，"
+	for _,unq:=range allpdyiju{
+		sps:=Buildpanduanyiju(unq,unqualifieds)
+		if sps!=""{
+			rs=fmt.Sprintf("%s%s",rs,sps)
+			rs=fmt.Sprintf("%s,",rs)
+		}
+	}
+	if string(rs[len(rs)-1])==","{
+		rs=rs[:len(rs)-1]
+	}
+	rs=strings.ReplaceAll(rs,",","，")
+	rs=fmt.Sprintf("%s，检验结论为不合格。",rs)
+	return rs
 }

@@ -2,237 +2,558 @@ package nifdc
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	. "github.com/a97077088/grequests"
 	"github.com/a97077088/nettool"
+	"net/url"
 	"regexp"
 	"strings"
+	"time"
 )
 
+var useragent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
 
-
-
-
-func Code(ck string,session *Session)([]byte,error){
-	cli:=Cli(session)
-	surl:=fmt.Sprintf("http://gc.nifdc.org.cn/code")
-	r,err:=cli.Get(surl,&RequestOptions{
+//验证码获取
+func Code(ck string, session *Session) ([]byte, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://gc.nifdc.org.cn/code")
+	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
-			"cookie":ck,
+			"cookie": ck,
 		},
 	})
-	if err!=nil{
-		return nil,err
+	if err != nil {
+		return nil, err
 	}
-	img:=r.Bytes()
-	return img,nil
+	img := r.Bytes()
+	return img, nil
 }
-func Findtextval(s string,name string)string{
-	re:=regexp.MustCompile(fmt.Sprintf("<input type=\"hidden\" name=\"%s\" value=\"(.*)?\"/>",name))
-	fds:=re.FindStringSubmatch(s)
-	if len(fds)<2{
+func Findtextval(s string, name string) string {
+	re := regexp.MustCompile(fmt.Sprintf("<input type=\"hidden\" name=\"%s\" value=\"(.*)?\"/>", name))
+	fds := re.FindStringSubmatch(s)
+	if len(fds) < 2 {
 		return ""
 	}
 	return fds[1]
 }
-func Findval(s string,sre string)string{
-	re:=regexp.MustCompile(sre)
-	fds:=re.FindStringSubmatch(s)
-	if len(fds)<2{
+func Findval(s string, sre string) string {
+	re := regexp.MustCompile(sre)
+	fds := re.FindStringSubmatch(s)
+	if len(fds) < 2 {
 		return ""
 	}
 	return fds[1]
 }
-func Findvaln(s string,sre string,idx int)string{
-	re:=regexp.MustCompile(sre)
-	fds:=re.FindStringSubmatch(s)
+func Findvaln(s string, sre string, idx int) string {
+	re := regexp.MustCompile(sre)
+	fds := re.FindStringSubmatch(s)
 	return fds[idx]
 }
-func Initck(session *Session)(string,string,string,error){
-	cli:=Cli(session)
-	surl:=fmt.Sprintf("http://gc.nifdc.org.cn/login")
-	r,err:=cli.Get(surl,&RequestOptions{
-		RedirectLimit:-1,
-	})
-	if err!=nil{
-		return "","","",err
-	}
-	rck:=r.Header.Get("Set-Cookie")
-	sbd:=r.String()
-	rt,_:=goquery.NewDocumentFromReader(strings.NewReader(sbd))
-	lt:=rt.Find("input[name=lt]").AttrOr("value","")
-	execution:=rt.Find("input[name=execution]").AttrOr("value","")
-	return rck,lt,execution,nil
-}
-//登录
-func Login(username string,password string,ck string,lt string,execution string,session *Session)(string,error){
-	cli:=Cli(session)
-	surl:=fmt.Sprintf("http://gc.nifdc.org.cn/login")
-	username=base64.StdEncoding.EncodeToString([]byte(username))
-	password=base64.StdEncoding.EncodeToString([]byte(password))
-	spd:=fmt.Sprintf("username=%s&password=%s&validate=&certKey=&lt=%s&execution=%s&_eventId=submit&UserPwd=&UserSignedData=&UserCert=&ContainerName=&strRandom=",username,password,lt,execution)
-	r,err:=cli.Post(surl,&RequestOptions{
-		RequestBody:strings.NewReader(spd),
-		Headers: map[string]string{
-			"Cookie":ck,
-			"Content-Type":"application/x-www-form-urlencoded",
-			"Referer":"http://gc.nifdc.org.cn/login",
-		},
-		RedirectLimit:10,
-	})
-	if err!=nil{
-		return "",err
-	}
-	sbd:=r.String()
-	if strings.Index(sbd,"<i class=\"icon-user\"></i>")==-1{
-		return "",errors.New(Findval(sbd,"<div id=\"msg_\" class=\"errors\">(.*?)</div>"))
-	}
-	cks:=r.RawResponse.Cookies()
-	scks:=""
-	for _,ck:=range cks{
-		scks=fmt.Sprintf("%s;%s",scks,ck.String())
-	}
 
-	return scks,nil
-}
-//任务大平台
-func TaskIndex(ck string,session *Session)(string,[]*Channel,error){
-	cli:=Cli(session)
-	surl:="http://gc.nifdc.org.cn/login?service=http%3A%2F%2Fsample.nifdc.org.cn%2Findex.php%3Fm%3DAdmin%26c%3DSSO%26a%3Dindex"
-	r,err:=cli.Get(surl,&RequestOptions{
-		Headers: map[string]string{
-			"Cookie":ck,
-		},
+//登录准备
+func InitLoginck(session *Session) (string, string, string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://gc.nifdc.org.cn/login")
+	r, err := cli.Get(surl, &RequestOptions{
+		UserAgent:     useragent,
+		RedirectLimit: -1,
 	})
-	if err!=nil{
-		return "",nil,err
+	if err != nil {
+		return "", "", "", err
 	}
-	sbd:=r.String()
-	rt,_:=goquery.NewDocumentFromReader(strings.NewReader(sbd))
-	uid:=rt.Find("#user_id").AttrOr("value","")
-	chs:=make([]*Channel,0)
+	rck := r.Header.Get("Set-Cookie")
+	sbd := r.String()
+	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
+	lt := rt.Find("input[name=lt]").AttrOr("value", "")
+	execution := rt.Find("input[name=execution]").AttrOr("value", "")
+	return lt, execution, rck, nil
+}
+
+//登录
+func Login(username string, password string, lt string, execution string, ck string, session *Session) (string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://gc.nifdc.org.cn/login", )
+	username = base64.StdEncoding.EncodeToString([]byte(username))
+	password = base64.StdEncoding.EncodeToString([]byte(password))
+	spd := fmt.Sprintf("username=%s&password=%s&validate=&certKey=&lt=%s&execution=%s&_eventId=submit&UserPwd=&UserSignedData=&UserCert=&ContainerName=&strRandom=", username, password, lt, execution)
+	r, err := cli.Post(surl, &RequestOptions{
+		RequestBody: strings.NewReader(spd),
+		Headers: map[string]string{
+			"Cookie":       ck,
+			"Content-Type": "application/x-www-form-urlencoded",
+			"Referer":      "http://gc.nifdc.org.cn/login",
+		},
+		RedirectLimit: 10,
+		UserAgent:     useragent,
+	})
+	if err != nil {
+		return "", nettool.New_neterror_with_e(err)
+	}
+	sbd := r.String()
+	if strings.Index(sbd, "<i class=\"icon-user\"></i>") == -1 {
+		serr := Findval(sbd, "<div id=\"msg_\" class=\"errors\">(.*?)</div>")
+		if serr == "The credentials you provided cannot be determined to be authentic." {
+			serr = "无法确定您提供的凭据是真实的。"
+		}
+		return "", errors.New(serr)
+	}
+	cks := r.RawResponse.Cookies()
+	scks := fmt.Sprintf("%s", ck)
+	for _, ck := range cks {
+		scks = fmt.Sprintf("%s;%s", scks, ck.String())
+	}
+	if scks == "" {
+		return "", errors.New("获取cookie失败")
+	}
+	return scks, nil
+}
+
+//首页
+func Index(ck string, session *Session) error {
+	cli := Cli(session)
+	surl := "http://gc.nifdc.org.cn/ui/index"
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie":           ck,
+			"x-requested-with": "XMLHttpRequest",
+			"Content-Type":     "application/json;charset=UTF-8",
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nettool.New_neterror_with_e(err)
+	}
+	if strings.Index(r.String(), "<a href=\"/ui/userInfor?userName=\">") != -1 {
+		return errors.New("登录已过期")
+	}
+	return nil
+}
+
+//登录到任务大平台
+func Sample_login(ck string, session *Session) (string, []*Channel, error) {
+	cli := Cli(session)
+	surl := "http://gc.nifdc.org.cn/login?service=http%3A%2F%2Fsample.nifdc.org.cn%2Findex.php%3Fm%3DAdmin%26c%3DSSO%26a%3Dindex"
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return "", nil, err
+	}
+	sbd := r.String()
+	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
+	uid := rt.Find("#user_id").AttrOr("value", "")
+	chs := make([]*Channel, 0)
 	rt.Find("#user_select option").Each(func(i int, selection *goquery.Selection) {
-		chs=append(chs,&Channel{
+		chs = append(chs, &Channel{
 			Name: selection.Text(),
-			Type: selection.AttrOr("value",""),
+			Type: selection.AttrOr("value", ""),
 		})
 	})
-	if uid==""{
-		return "",nil,errors.New("获取uid失败")
+	if uid == "" {
+		return "", nil, errors.New("获取uid失败")
 	}
-	if len(chs)==0{
-		return "",nil,errors.New("获取通道失败")
+	if len(chs) == 0 {
+		return "", nil, errors.New("获取通道失败")
 	}
-	return uid,chs,nil
+	return uid, chs, nil
 }
 
-func Switchchannel(uuid string,_type string,ck string,session *Session)(string,error){
-	cli:=Cli(session)
-	surl:=fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=SSO&a=logined&ca_uuid=%s&user_type=%s",uuid,_type)
-	fmt.Println(surl)
-	r,err:=cli.Get(surl,&RequestOptions{
+//检验检测平台
+func Test_platform_login(ck string, session *Session) (string, error) {
+	cli := Cli(session)
+	surl := "http://gc.nifdc.org.cn/login?service=http%3A%2F%2Ftest.nifdc.org.cn%2Ftest_platform%2F%3Ftoken%3D"
+	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
-			"Cookie":ck,
+			"Cookie": ck,
 		},
-		RedirectLimit:-1,
+		UserAgent: useragent,
 	})
-	if err!=nil{
-		return "",err
+	if err != nil {
+		return "", err
 	}
-	cks:=r.RawResponse.Cookies()
-	scks:=""
-	for _,ck:=range cks{
-		scks=fmt.Sprintf("%s;%s",scks,ck.String())
+	sbd := r.String()
+	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
+	if strings.Index(rt.Find("#btn-logout").Text(), "退出") == -1 {
+		return "", errors.New("打开检验平台失败")
 	}
-	return scks,nil
+	ul, err := url.Parse("http://test.nifdc.org.cn/test_platform/?token=")
+	if err != nil {
+		return "", err
+	}
+	cks := cli.HTTPClient.Jar.Cookies(ul)
+	scks := ""
+	for _, ck := range cks {
+		scks = fmt.Sprintf("%s;%s", scks, ck.String())
+	}
+	return scks, nil
 }
 
-
+//任务大平台通道
+func Sample_switchchannel(uuid string, _type string, ck string, session *Session) (string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=SSO&a=logined&ca_uuid=%s&user_type=%s", uuid, _type)
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		RedirectLimit: -1,
+		UserAgent:     useragent,
+	})
+	if err != nil {
+		return "", nettool.New_neterror_with_e(err)
+	}
+	cks := r.RawResponse.Cookies()
+	scks := ""
+	for _, ck := range cks {
+		scks = fmt.Sprintf("%s;%s", scks, ck.String())
+	}
+	return scks, nil
+}
 
 //已接受全字段导出
-func Viewcheckedsample_full(sample_code string,ck string,session *Session)(map[string]string,error){
-	cli:=Cli(session)
-	surl:=fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewcheckedsample&sample_code=%s",sample_code)
-	r,err:=cli.Get(surl,&RequestOptions{
+func Viewcheckedsample_full(sample_code string, ck string, session *Session) (map[string]string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewcheckedsample&sample_code=%s", sample_code)
+	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
-			"Cookie":ck,
+			"Cookie": ck,
 		},
+		UserAgent: useragent,
 	})
-	if err!=nil{
-		return nil,nettool.New_neterror_with_e(err)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
 	}
-	if r.StatusCode!=200{
-		return nil,nettool.New_neterror_with_s("http状态错误")
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
 	}
-	sbd:=r.String()
+	sbd := r.String()
 
-	return StoMap_yijieshou_full(sbd),nil
+	return StoMap_yijieshou_full(sbd), nil
 }
 
 //抽样完成全字段导出
-func Viewnormalsample_full(sample_code string,ck string,session *Session)(map[string]string,error){
-	cli:=Cli(session)
-	surl:=fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewnormalsample&sample_code=%s",sample_code)
-	r,err:=cli.Get(surl,&RequestOptions{
+func Viewnormalsample_full(sample_code string, ck string, session *Session) (map[string]string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewnormalsample&sample_code=%s", sample_code)
+	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
-			"Cookie":ck,
+			"Cookie": ck,
 		},
+		UserAgent: useragent,
 	})
-	if err!=nil{
-		return nil,nettool.New_neterror_with_e(err)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
 	}
-	if r.StatusCode!=200{
-		return nil,nettool.New_neterror_with_s("http状态错误")
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
 	}
-	sbd:=r.String()
+	sbd := r.String()
 
-	return StoMap_full(sbd),nil
+	return StoMap_full(sbd), nil
 }
-//抽样完成半字段导出
-func Viewnormalsample(sample_code string,ck string,session *Session)(map[string]string,error){
-	cli:=Cli(session)
-	surl:=fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewnormalsample&sample_code=%s",sample_code)
-	r,err:=cli.Get(surl,&RequestOptions{
-		Headers: map[string]string{
-			"Cookie":ck,
-		},
-	})
-	if err!=nil{
-		return nil,nettool.New_neterror_with_e(err)
-	}
-	if r.StatusCode!=200{
-		return nil,nettool.New_neterror_with_s("http状态错误")
-	}
-	sbd:=r.String()
 
-	return StoMap(sbd),nil
+//抽样完成半字段导出
+func Viewnormalsample(sample_code string, ck string, session *Session) (map[string]string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewnormalsample&sample_code=%s", sample_code)
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
+	}
+	sbd := r.String()
+
+	return StoMap(sbd), nil
 }
 
 //数据查看
-func DownData(sample_state int,ck string,session *Session)(*Download_Data_r,error){
-	cli:=Cli(session)
-	surl:="http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
-	r,err:=cli.Post(surl,&RequestOptions{
+func DownData(sample_state int, cyTimeStart, cyTimeEnd string, ck string, session *Session) (*Download_Data_r, error) {
+	cli := Cli(session)
+	surl := "http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
+	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
-			"Cookie":ck,
+			"Cookie": ck,
 		},
 		Data: map[string]string{
-			"sEcho":"2",
-			"iDisplayStart":"0",
-			"iDisplayLength":"10000",
-			"sample_state":fmt.Sprintf("%d",sample_state),
+			"sEcho":          "3",
+			"iColumns":       "14",
+			"sColumns":       ",,,,,,,,,,,,,",
+			"iDisplayStart":  "0",
+			"iDisplayLength": "1000",
+			"mDataProp_0":    "",
+			"mDataProp_1":    "update_time",
+			"mDataProp_2":    "sp_s_3",
+			"mDataProp_3":    "sample_code",
+			"mDataProp_4":    "new_sample_name",
+			"mDataProp_5":    "sampling_unit_name",
+			"mDataProp_6":    "check_unit_name",
+			"mDataProp_7":    "create_time",
+			"mDataProp_8":    "creator_id",
+			"mDataProp_9":    "check_result",
+			"mDataProp_10":   "scaname",
+			"mDataProp_11":   "fcc_grade_one_name",
+			"mDataProp_12":   "syncResult",
+			"mDataProp_13":   "sample_code",
+			"sample_state":   fmt.Sprintf("%d", sample_state),
+			"cyTimeStart":    cyTimeStart,
+			"cyTimeEnd":      cyTimeEnd,
 		},
+		UserAgent: useragent,
 	})
-	if err!=nil{
-		return nil,err
+	if err != nil {
+		return nil, err
 	}
 	var rs Download_Data_r
-	err=r.JSON(&rs)
-	if err!=nil{
-		return nil,err
+	err = r.JSON(&rs)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
 	}
 
-	return &rs,nil
+	return &rs, nil
+}
+
+//搜索 普通食品
+func Test_platform_api_food_getFood(startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
+	cli := Cli(session)
+	datatype := 1
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getFood?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate, time.Now().UnixNano())
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, err
+	}
+	s := r.String()
+	if strings.Index(s, "安装证书助手") != -1 {
+		return nil, errors.New("登录状态错误")
+	}
+
+	var rs Api_food_getFood_r
+	err = json.Unmarshal([]byte(s), &rs)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	return &rs, nil
+}
+
+//搜索 农产品
+func Test_platform_api_agriculture_getAgriculture(startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
+	cli := Cli(session)
+	datatype := 1
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getAgriculture?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate, time.Now().UnixNano())
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, err
+	}
+	s := r.String()
+	if strings.Index(s, "安装证书助手") != -1 {
+		return nil, errors.New("登录状态错误")
+	}
+
+	var rs Api_food_getFood_r
+	err = json.Unmarshal([]byte(s), &rs)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	return &rs, nil
+}
+
+//查看详情
+func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map[string]string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/foodTest/foodDetail/%d", id)
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+			"Accept-Encoding":"deflate",
+			"Accept-Language":"zh-CN,zh;q=0.9",
+			"Referer":"http://test.nifdc.org.cn/test_platform/",
+			"Upgrade-Insecure-Requests":"1",
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
+	}
+	sbd := r.String()
+	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
+	sd := rt.Find("#sd").AttrOr("value", "")
+	if sd == "" {
+		return nil, errors.New("获取sd失败")
+	}
+	rmp := make(map[string]string, 0)
+	rmp["sample_code"] = rt.Find("#hid_sp_s_16").AttrOr("value", "")
+	rmp["sd"] = sd
+	rmp["type1"] = rt.Find("#hid_type1").AttrOr("value", "")
+	rmp["type2"] = rt.Find("#hid_type2").AttrOr("value", "")
+	rmp["type3"] = rt.Find("#hid_type3").AttrOr("value", "")
+	rmp["type4"] = rt.Find("#hid_type4").AttrOr("value", "")
+	rmp["bsfla"] = rt.Find("#hid_bsfla").AttrOr("value", "")
+	rmp["bsflb"] = rt.Find("#hid_bsflb").AttrOr("value", "")
+	rmp["test_unit"] = rt.Find("#test_unit").AttrOr("value", "")
+	rmp["report_no"] = rt.Find("#report_no").AttrOr("value", "")
+	rmp["test_date"] = rt.Find("#test_date").AttrOr("value", "")
+	rmp["contact"] = rt.Find("#contact").AttrOr("value", "")
+	rmp["contact_tel"] = rt.Find("#contact_tel").AttrOr("value", "")
+	rmp["contact_email"] = rt.Find("#contact_email").AttrOr("value", "")
+	rmp["fy_person"] = rt.Find("#fy_person").AttrOr("value", "")
+	rmp["fy_tel"] = rt.Find("#fy_tel").AttrOr("value", "")
+	rmp["fy_email"] = rt.Find("#fy_email").AttrOr("value", "")
+	rmp["conclusion"] = rt.Find("#hid_conclusion").AttrOr("value", "")
+	rmp["jd_bz"] = rt.Find("#jd_bz").Text()
+	rmp["fx_bz"] = rt.Find("#fx_bz").Text()
+	rmp["tb_date"] = rt.Find("#tb_date").AttrOr("value", "")
+	rmp["report_type"] = rt.Find("select[name=report_type]").Find("option[selected=selected]").AttrOr("value", "")
+	rmp["test_aims"] = rt.Find("select[name=test_aims]").Find("option[selected=selected]").AttrOr("value", "")
+	rmp["test_conclusion"] = rt.Find("#test_conclusion").Text()
+	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
+	rmp["sd"] = sd
+	return rmp, nil
+}
+
+//获取testinfo
+func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) (*Test_platform_api_food_getTestInfo_r, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getTestInfo", )
+	r, err := cli.Post(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		Data: map[string]string{
+			"sd": sd,
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
+	}
+	var rs Test_platform_api_food_getTestInfo_r
+	err = r.JSON(&rs)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if len(rs.Rows)==0{
+		return nil,errors.New("至少需要一个检验项目")
+	}
+	return &rs, nil
+}
+
+//保存testinfo
+func Test_platform_api_food_save(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestInfo_o, ck string, session *Session) error {
+
+	items := make([]map[string]string, 0)
+	for _, tinfo := range testinfos {
+		itmap := make(map[string]string)
+		itmap["id"] = fmt.Sprintf("%d", tinfo.Id)
+		itmap["item_old"] = tinfo.Spdata_0_old
+		itmap["item"] = tinfo.Spdata_0
+		itmap["sp_data_1"] = tinfo.Spdata_1 //结果
+		itmap["sp_data_2"] = tinfo.Spdata_2
+		itmap["sp_data_3"] = tinfo.Spdata_3
+		itmap["sp_data_4"] = tinfo.Spdata_4
+		itmap["sp_data_5"] = tinfo.Spdata_5
+		itmap["sp_data_6"] = tinfo.Spdata_6
+		itmap["sp_data_7"] = tinfo.Spdata_7
+		itmap["sp_data_8"] = tinfo.Spdata_8
+		itmap["sp_data_9"] = tinfo.Spdata_9
+		itmap["sp_data_10"] = tinfo.Spdata_10
+		itmap["sp_data_11"] = tinfo.Spdata_11
+		itmap["sp_data_12"] = tinfo.Spdata_12
+		itmap["sp_data_13"] = tinfo.Spdata_13
+		itmap["sp_data_15"] = tinfo.Spdata_15
+		itmap["sp_data_16"] = tinfo.Spdata_16
+		itmap["sp_data_17"] = tinfo.Spdata_17
+		itmap["sp_data_18"] = tinfo.Spdata_18
+		itmap["bz"] = tinfo.Spdata_20
+		itmap["sm"] = tinfo.Spdata_19
+		itmap["sp_data_21"] = tinfo.Spdata_21
+		itmap["jylx"] = tinfo.Jylx
+		items=append(items,itmap)
+	}
+
+	sitems,err:=json.Marshal(items)
+	if err!=nil{
+		return err
+	}
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/save", )
+	r, err := cli.Post(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+			"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
+		},
+		Data: map[string]string{
+			"type1":           fooddetail["type1"],
+			"type2":           fooddetail["type2"],
+			"type3":           fooddetail["type3"],
+			"type4":           fooddetail["type4"],
+			"bsfla":           fooddetail["bsfla"],
+			"bsflb":           fooddetail["bsflb"],
+			"test_unit":       fooddetail["test_unit"],
+			"report_no":       fooddetail["report_no"],
+			"test_date":       fooddetail["test_date"],
+			"contact":         fooddetail["contact"],
+			"contact_tel":     fooddetail["contact_tel"],
+			"contact_email":   fooddetail["contact_email"],
+			"fy_person":       fooddetail["fy_person"],
+			"fy_tel":          fooddetail["fy_tel"],
+			"fy_email":        fooddetail["fy_email"],
+			"conclusion":      fooddetail["conclusion"],
+			"jd_bz":           fooddetail["jd_bz"],
+			"fx_bz":           fooddetail["fx_bz"],
+			"tb_date":         fooddetail["tb_date"],
+			"report_type":     fooddetail["report_type"],
+			"test_aims":       fooddetail["test_aims"],
+			"test_conclusion": fooddetail["test_conclusion"],
+			"sign_date":       fooddetail["sign_date"],
+			"sd":              fooddetail["sd"],
+			"fdtoken12":       "201812FoodDetail",
+			"fdtoken1201":     "20181201FoodDetail",
+			"isSubmit":        "false",
+			"items":           string(sitems),
+		},
+		UserAgent:useragent,
+	})
+	if err != nil {
+		return nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nettool.New_neterror_with_s("http状态错误")
+	}
+	var rs Test_platform_api_food_save_r
+	err = r.JSON(&rs)
+	if err != nil {
+		return nettool.New_neterror_with_e(err)
+	}
+	if rs.Success!=true{
+		return errors.New(rs.Msg)
+	}
+	return nil
 }

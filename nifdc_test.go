@@ -5,7 +5,55 @@ import (
 	"testing"
 )
 
+
+
 func TestLogin(t *testing.T) {
+	a,b,c,err:=InitLoginck(nil)
+	if err!=nil{
+		t.Fatal(err)
+	}
+	ck,err:=Login("15738889730","12345678",a,b,c,nil)
+	if err!=nil{
+		t.Fatal(err)
+	}
+	test_platform_ck,err:=Test_platform_login(ck,nil)
+	if err!=nil{
+		t.Fatal(err)
+	}
+	fddetail,err:=Test_platform_foodTest_foodDetail(10268179,test_platform_ck,nil)
+	if err!=nil{
+		t.Fatal(err)
+	}
+	testinfo,err:=Test_platform_api_food_getTestInfo(fddetail["sd"],test_platform_ck,nil)
+	if err!=nil{
+		t.Fatal(err)
+	}
+	Fill_item(map[string]string{
+		"报告书编号":"w3c",
+		"监督抽检报告备注":"监督抽检报告备注",
+		"风险监测报告备注":"风险监测报告备注",
+	},fddetail)
+	Fill_subitem([]map[string]string{
+		{
+			"检验项目":"蛋白质",
+			"结果单位":"jkm",
+			"检验结果":"0.87",
+			"结果判定":"不合格项",
+			"判定依据":"GB 19645-2010《食品安全国家标准 巴氏杀菌乳》",
+			"检验依据":"GB 5009.5-2016(第一法)",
+			"最小允许限":"0.1",
+			"最大允许限":"1.0",
+			"允许限单位":"km",
+			"方法检出限":"wkm",
+			"检出限单位":"jdm",
+			"说明":"测试",
+		},
+	},testinfo.Rows)
+	err=Test_platform_api_food_save(fddetail,testinfo.Rows,test_platform_ck,nil)
+	if err!=nil{
+		t.Fatal(err)
+	}
+	fmt.Println(testinfo.Rows[0])
 }
 
 func TestRe(t *testing.T){
