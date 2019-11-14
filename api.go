@@ -39,6 +39,11 @@ func Findtextval(s string, name string) string {
 	}
 	return fds[1]
 }
+//搜索信息
+func FindFdval(s string,k string)string{
+	v:=Findval(s,fmt.Sprintf(`%s：([^<]+)`,k),)
+	return strings.TrimSpace(v)
+}
 func Findval(s string, sre string) string {
 	re := regexp.MustCompile(sre)
 	fds := re.FindStringSubmatch(s)
@@ -255,11 +260,11 @@ func Viewnormalsample_full(sample_code string, ck string, session *Session) (map
 	}
 	sbd := r.String()
 
-	return StoMap_full(sbd), nil
+	return StoMap_chouyangwancheng_full(sbd), nil
 }
 
 //抽样完成半字段导出
-func Viewnormalsample(sample_code string, ck string, session *Session) (map[string]string, error) {
+func Viewnormalsample_mode1(sample_code string, ck string, session *Session) (map[string]string, error) {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewnormalsample&sample_code=%s", sample_code)
 	r, err := cli.Get(surl, &RequestOptions{
@@ -276,7 +281,7 @@ func Viewnormalsample(sample_code string, ck string, session *Session) (map[stri
 	}
 	sbd := r.String()
 
-	return StoMap(sbd), nil
+	return StoMap_chouyangwancheng_mode1(sbd), nil
 }
 
 //数据查看
@@ -292,7 +297,7 @@ func DownData(sample_state int, cyTimeStart, cyTimeEnd string, ck string, sessio
 			"iColumns":       "14",
 			"sColumns":       ",,,,,,,,,,,,,",
 			"iDisplayStart":  "0",
-			"iDisplayLength": "1000",
+			"iDisplayLength": "10000",
 			"mDataProp_0":    "",
 			"mDataProp_1":    "update_time",
 			"mDataProp_2":    "sp_s_3",
