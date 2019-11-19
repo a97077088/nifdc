@@ -138,7 +138,7 @@ func Index(ck string, session *Session) error {
 }
 
 //登录到任务大平台
-func Sample_login(ck string, session *Session) (string, []*Channel, error) {
+func Sample_login(ck string, session *Session) (string, []*Channel,string, error) {
 	cli := Cli(session)
 	surl := "http://gc.nifdc.org.cn/login?service=http%3A%2F%2Fsample.nifdc.org.cn%2Findex.php%3Fm%3DAdmin%26c%3DSSO%26a%3Dindex"
 	r, err := cli.Get(surl, &RequestOptions{
@@ -148,7 +148,7 @@ func Sample_login(ck string, session *Session) (string, []*Channel, error) {
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return "", nil, err
+		return "", nil,"", err
 	}
 	sbd := r.String()
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
@@ -160,13 +160,19 @@ func Sample_login(ck string, session *Session) (string, []*Channel, error) {
 			Type: selection.AttrOr("value", ""),
 		})
 	})
-	if uid == "" {
-		return "", nil, errors.New("获取uid失败")
+	//if uid == "" {
+	//	return "", nil, errors.New("获取uid失败")
+	//}
+	ul, err := url.Parse("http://sample.nifdc.org.cn/index.php")
+	if err != nil {
+		return "",nil,"", err
 	}
-	if len(chs) == 0 {
-		return "", nil, errors.New("获取通道失败")
+	cks := cli.HTTPClient.Jar.Cookies(ul)
+	scks := ""
+	for _, ck := range cks {
+		scks = fmt.Sprintf("%s;%s", scks, ck.String())
 	}
-	return uid, chs, nil
+	return uid, chs,scks, nil
 }
 
 //检验检测平台
