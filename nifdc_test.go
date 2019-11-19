@@ -5,59 +5,57 @@ import (
 	"testing"
 )
 
-
-
 func TestLogin(t *testing.T) {
-	a,b,c,err:=InitLoginck(nil)
-	if err!=nil{
+	a, b, c, err := InitLoginck(nil)
+	if err != nil {
 		t.Fatal(err)
 	}
-	ck,err:=Login("15738889730","12345678",a,b,c,nil)
-	if err!=nil{
+	ck, err := Login("15738889730", "12345678", a, b, c, nil)
+	if err != nil {
 		t.Fatal(err)
 	}
-	test_platform_ck,err:=Test_platform_login(ck,nil)
-	if err!=nil{
+	test_platform_ck, err := Test_platform_login(ck, nil)
+	if err != nil {
 		t.Fatal(err)
 	}
-	fddetail,err:=Test_platform_foodTest_foodDetail(10268179,test_platform_ck,nil)
-	if err!=nil{
+	fddetail, err := Test_platform_foodTest_foodDetail(10268179, test_platform_ck, nil)
+	if err != nil {
 		t.Fatal(err)
 	}
-	testinfo,err:=Test_platform_api_food_getTestInfo(fddetail["sd"],test_platform_ck,nil)
-	if err!=nil{
+	testinfo, err := Test_platform_api_food_getTestInfo(fddetail["sd"], test_platform_ck, nil)
+	if err != nil {
 		t.Fatal(err)
 	}
 	Fill_item(map[string]string{
-		"报告书编号":"w3c",
-		"监督抽检报告备注":"监督抽检报告备注",
-		"风险监测报告备注":"风险监测报告备注",
-	},fddetail)
+		"报告书编号":    "w3c",
+		"监督抽检报告备注": "监督抽检报告备注",
+		"风险监测报告备注": "风险监测报告备注",
+	}, fddetail)
 	Fill_subitem([]map[string]string{
 		{
-			"检验项目":"蛋白质",
-			"结果单位":"jkm",
-			"检验结果":"0.87",
-			"结果判定":"不合格项",
-			"判定依据":"GB 19645-2010《食品安全国家标准 巴氏杀菌乳》",
-			"检验依据":"GB 5009.5-2016(第一法)",
-			"最小允许限":"0.1",
-			"最大允许限":"1.0",
-			"允许限单位":"km",
-			"方法检出限":"wkm",
-			"检出限单位":"jdm",
-			"说明":"测试",
+			"检验项目":  "蛋白质",
+			"结果单位":  "jkm",
+			"检验结果":  "0.87",
+			"结果判定":  "不合格项",
+			"判定依据":  "GB 19645-2010《食品安全国家标准 巴氏杀菌乳》",
+			"检验依据":  "GB 5009.5-2016(第一法)",
+			"最小允许限": "0.1",
+			"最大允许限": "1.0",
+			"允许限单位": "km",
+			"方法检出限": "wkm",
+			"检出限单位": "jdm",
+			"说明":    "测试",
 		},
-	},testinfo.Rows)
-	err=Test_platform_api_food_save(fddetail,testinfo.Rows,test_platform_ck,nil)
-	if err!=nil{
+	}, testinfo.Rows)
+	err = Test_platform_api_food_save(fddetail, testinfo.Rows, test_platform_ck, nil)
+	if err != nil {
 		t.Fatal(err)
 	}
 	fmt.Println(testinfo.Rows[0])
 }
 
-func TestRe(t *testing.T){
-	olds:=`
+func TestRe(t *testing.T) {
+	olds := `
 
 <!DOCTYPE html>
 <html>
@@ -90,11 +88,11 @@ func TestRe(t *testing.T){
                         <div class="areaContent">
                             <div class="form-group clearfix">
                                 <div class="col-xs-12 pl0">
-                                    任务来源：运城市盐湖区市场监督管理局                                </div>
+                                    任务来源：晋中市市场监督管理局                                </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-xs-12 pl0">
-                                    报送分类：抽检监测（县级本级）2019年山西运城盐湖抽检计划                                </div>
+                                    报送分类：抽检监测（市级本级）2019年山西晋中抽检计划                                </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-xs-12 pl0">
@@ -102,7 +100,7 @@ func TestRe(t *testing.T){
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-xs-6 pl0">
-                                    部署机构：运城市盐湖区市场监督管理局                                </div>
+                                    部署机构：晋中市市场监督管理局                                </div>
                                 <div class="col-xs-6 pl0">
                                     抽样类型：常规抽样                                </div>
                             </div>
@@ -114,11 +112,11 @@ func TestRe(t *testing.T){
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-xs-6 pl0">
-                                    食品分类：薯类和膨化食品                                    薯类和膨化食品                                    薯类食品                                    干制薯类(除马铃薯片外)                                </div>
+                                    食品分类：食用油、油脂及其制品                                    食用植物油(含煎炸用油)                                    食用植物油(半精炼、全精炼)                                    其他食用植物油(半精炼、全精炼)                                </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-xs-6 pl0">
-                                    抽样单编号： XC19142734463230837                                </div>
+                                    抽样单编号： DC19142400463230158                                </div>
                                 <div class="col-xs-6 pl0">
                                     检验目的/任务类别： 监督抽检                                </div>
                             </div>
@@ -143,7 +141,7 @@ func TestRe(t *testing.T){
                             </div>
                             <div class="form-group clearfix">
                                 <div class="widTone pull-left">
-                                    抽样人员：凌振峰、刘金航                                </div>
+                                    抽样人员：曹永昌、谢天赐                                </div>
                                 <div class="widTone pull-left">
                                     联系人：王力                                                                        </div>
                                 <div class="widTone pull-left">
@@ -166,7 +164,7 @@ func TestRe(t *testing.T){
                         <div class="areaContent">
                             <div class="form-group clearfix">
                                 <div class="widthtwo pull-left">
-                                    <span class="pull-left insLabelForm">所在地：山西                                        运城                                        盐湖</span>
+                                    <span class="pull-left insLabelForm">所在地：山西                                        晋中                                        榆次</span>
                                 </div>
                                 <div class="widTone pull-left">
                                     <span class="pull-left insLabelForm ar">区域类型：城市</span>
@@ -174,31 +172,31 @@ func TestRe(t *testing.T){
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-xs-12 pl0">
-                                    <span class="pull-left insLabelForm">单位名称：山西优乐多商贸有限公司</span>
+                                    <span class="pull-left insLabelForm">单位名称：晋中市榆次区熊杰商行</span>
                                 </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="col-xs-12 pl0">
-                                    <span class="pull-left insLabelForm ar">单位地址：运城市盐湖区圣惠北路264号</span>
+                                    <span class="pull-left insLabelForm ar">单位地址：晋中市榆次区蕴华街218号兴达商务楼</span>
                                 </div>
                             </div>
                             <div class="form-group clearfix">
                                                                     <div class="widTone pull-left">
-                                        <span class="pull-left insLabelForm">营业执照/社会信用代码：91140802MA0GURDCX3</span>
+                                        <span class="pull-left insLabelForm">营业执照/社会信用代码：92140702MA0K2AX62M</span>
                                     </div>
                                     <div class="widTone pull-left xuz pl10">
                                         <span class="pull-left insLabelForm" id="sp_s_sfjk">许可证类型：经营许可证</span>
                                     </div>                                <div class="widTone pull-left pl10">
-                                    <span class="pull-left insLabelForm ar">经营许可证号：JY11408020014851</span>
+                                    <span class="pull-left insLabelForm ar">经营许可证号：JY11407020031943</span>
                                 </div>
                             </div>
                             <div class="form-group clearfix">
                                 <div class="widTone pull-left">
-                                    法人代表：张文豪                                </div>
+                                    法人代表：武志强                                </div>
                                 <div class="widTone pull-left  pl10">
-                                    联系人：荆红亮                                </div>
+                                    联系人：武志强                                </div>
                                 <div class="widTone pull-left">
-                                    联系电话：13834700363                                </div>
+                                    联系电话：13038032121                                </div>
 
                             </div>
                                                                                 </div>
@@ -211,26 +209,48 @@ func TestRe(t *testing.T){
                             <div class="areaContent">
                                 <div class="form-group clearfix">
                                     <div class="col-xs-12 pl0">
-                                        所在地：河南                                        焦作                                        解放区                                    </div>
+                                        所在地：天津                                        宝坻                                        宝坻                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-12 pl0">
-                                        生产者地址：焦作市太行西路                                    </div>
+                                        生产者地址：天津自贸试验区（天津港保税区）津滨大道95号                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-6 pl0">
-                                        生产者名称：河南谷力佳食品有限公司　                                    </div>
+                                        生产者名称：嘉里粮油（天津）有限公司（代码TJN）                                    </div>
                                     <div class="col-xs-6">
-                                        生产许可证编号：SC11241080200027                                    </div>
+                                        生产许可证编号：SC10212011600523                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="widTone pull-left">
-                                        联系电话：0391-2311185                                    </div>
+                                        联系电话：400-616-5757                                    </div>
 
                                     <div class="widTone pull-left pl10">
-                                        是否存在第三方企业信息：否                                    </div>
+                                        是否存在第三方企业信息：是                                    </div>
                                 </div>
-                                                            </div>                    </div>
+                                <div class="wtsc clearfix">
+                                        <h6 class="title" style="color: #6079d4;font-size: 14px">第三方企业相关信息</h6>
+                                        <div class="form-group clearfix">
+                                            <div class="col-xs-12 pl0">
+                                                所在地：上海                                                浦东                                                浦东                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <div class="col-xs-12 pl0">
+                                                第三方企业地址：上海市浦东新区光明路718号715室                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <div class="col-xs-6 pl0">
+                                                第三方企业名称：益海嘉里食品营销有限公司                .                                            </div>
+                                            <div class="col-xs-6">
+                                                第三方企业许可证编号：/                                            </div>
+                                        </div>
+                                        <div class="form-group clearfix">
+                                            <div class="widTone pull-left">
+                                                第三方企业电话：400-616-5757                                            </div>
+                                            <div class="widTone pull-left">
+                                                第三方企业性质：委托                                            </div>
+                                        </div>
+                                    </div>                            </div>                    </div>
                     <!--抽样生产企业信息end-->
                     <!--抽样样品信息start-->
                                             <div class="formArea1 formAreaCom">
@@ -238,9 +258,9 @@ func TestRe(t *testing.T){
                             <div class="areaContent">
                                 <div class="form-group clearfix">
                                     <div class="col-xs-6 pl0">
-                                        样品条码：6951249000907                                    </div>
+                                        样品条码：6948195800323                                    </div>
                                     <div class="col-xs-3">
-                                        样品商标：怀恋＋图案                                    </div>
+                                        样品商标：金龙鱼                                    </div>
                                     <div class="col-xs-3">
                                         样品类型：工业加工食品                                    </div>
                                 </div>
@@ -252,29 +272,29 @@ func TestRe(t *testing.T){
                                     <div class="col-xs-3">
                                         包装分类：预包装                                    </div>
                                     <div class="col-xs-3">
-                                        样品名称：怀山药薄片                                    </div>
+                                        样品名称：金龙鱼精炼一级大豆油                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-6 pl0">
-                                        生产日期：2019-07-03                                    </div>
+                                        生产日期：2019-08-04                                    </div>
                                     <div class="col-xs-3">
-                                        保质期：九个月                                    </div>
+                                        保质期：18个月                                    </div>
                                     <div class="col-xs-3">
-                                        样品批号：20190703                                    </div>
+                                        样品批号：20190804                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-3 pl0">
-                                        规格型号：160克/袋                                    </div>
+                                        规格型号：1.8升/瓶                                    </div>
                                     <div class="col-xs-3 pl0">
-                                        质量等级：/                                    </div>
+                                        质量等级：一级                                    </div>
                                     <div class="col-xs-3 pl0">
-                                        单价：10.8元/袋/袋                                    </div>
+                                        单价：20.00/瓶/瓶                                    </div>
                                     <div class="col-xs-3 pl0">
                                         是否进口：否                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-3 pl0">
-                                        抽样日期：2019-11-11                                    </div>
+                                        抽样日期：2019-11-19                                    </div>
                                     <div class="col-xs-3 pl0">
                                         抽样方式：非无菌采样                                    </div>
                                     <div class="col-xs-3 pl0">
@@ -284,17 +304,17 @@ func TestRe(t *testing.T){
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-3 pl0">
-                                        抽样基数：10袋                                    </div>
+                                        抽样基数：12瓶瓶                                    </div>
                                     <div class="col-xs-3 pl0">
-                                        抽样数量：6                                    </div>
+                                        抽样数量：2                                    </div>
                                     <div class="col-xs-3 pl0">
-                                        备样数量：2袋                                    </div>
+                                        备样数量：1瓶瓶                                    </div>
                                     <div class="col-xs-3 pl0">
-                                        抽样数量单位：袋                                    </div>
+                                        抽样数量单位：瓶                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-12 pl0">
-                                        执行标准/技术文件：GB17401-2014                                    </div>
+                                        执行标准/技术文件：Q/BBAH0019S                                    </div>
                                 </div>
                                 <div class="form-group clearfix">
                                     <div class="col-xs-12 pl0">
@@ -308,36 +328,36 @@ func TestRe(t *testing.T){
                         <div class="areaContent pb30">
                             <ul class="addList clearfix">
                                 <li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658319397911.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658319397911.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413663735814364.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413663735814364.png">
                                             </a>
                                         </li><li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658343594726.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658343594726.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413665925017832.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413665925017832.png">
                                             </a>
                                         </li><li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641045902404.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641045902404.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666989840531.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666989840531.png">
                                             </a>
                                         </li><li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658332259264.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658332259264.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666969971749.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666969971749.png">
                                             </a>
                                         </li><li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658449554495.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344658449554495.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666972029773.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666972029773.png">
                                             </a>
                                         </li><li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641174361478.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641174361478.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666938232343.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666938232343.png">
                                             </a>
                                         </li><li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641267495105.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641267495105.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666936059190.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413666936059190.png">
                                             </a>
                                         </li><li>
-                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641376036361.png" data-magnify="gallery" data-group="g1" data-caption="">
-                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/11/157344641376036361.png">
+                                            <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413667013119615.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                <img src="http://upload1.nifdc.org.cn/image/2019/11/19/157413667013119615.png">
                                             </a>
                                         </li>                            </ul>
                         </div>
@@ -349,14 +369,14 @@ func TestRe(t *testing.T){
                         <div class="areaContent pb30 ">
                             <span class="downResult btn-sm cydUpload" id="">
                                 <i>抽样单:
-                                                                        <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344639041381493.png" data-magnify="gallery" data-group="g2">
-                                        157344639041381493.png</a>
+                                                                        <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413669159015367.png" data-magnify="gallery" data-group="g2">
+                                        157413669159015367.png</a>
                                                                     </i>
                                     </span>
                             <span class="downResult btn-sm gzsUpload">
                                 <i>告知书:
-                                                                        <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/11/157344639523639297.png" data-magnify="gallery" data-group="g2">
-                                            157344639523639297.png</a>
+                                                                        <a href="javascript:void(0)" data-src="http://upload1.nifdc.org.cn/image/2019/11/19/157413667436911127.png" data-magnify="gallery" data-group="g2">
+                                            157413667436911127.png</a>
                                                                     </i>
                             </span>
                         </div>
@@ -483,7 +503,7 @@ func TestRe(t *testing.T){
             "第四联 抽样单位存",
             "第五联 被抽样单位存" 
         ];
-         if("12" != 33){
+         if("2" != 33){
              printTitle = [
                  "第一联 组织抽样检验的市场监管部门存",
                  "第二联 承检机构存",
@@ -497,7 +517,7 @@ func TestRe(t *testing.T){
             $("#printModal").modal("show");
         }
         function submit(type) {
-            var code = "XC19142734463230837";
+            var code = "DC19142400463230158";
             var msg = {
                 "sample_code": code, 
                 "source": "view"
@@ -537,11 +557,9 @@ func TestRe(t *testing.T){
 </body>
 </html>`
 
-
-
-	StoMap_chouyangwancheng_full(olds)
-	mkr:= StoMap_yijieshou_full(olds)
-	for k,v:=range mkr{
-		fmt.Printf("%s:%s\n",k,v)
+	//StoMap_chouyangwancheng_full(olds)
+	mkr := StoMap_chouyangwancheng_full(olds)
+	for k, v := range mkr {
+		fmt.Printf("%s:%s\n", k, v)
 	}
 }
