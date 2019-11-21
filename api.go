@@ -313,7 +313,7 @@ func Viewnormalsample_mode1(sample_code string, ck string, session *Session) (ma
 }
 
 //数据查看
-func DownData(sample_state int, cyTimeStart, cyTimeEnd string, ck string, session *Session) (*Download_Data_r, error) {
+func DownData(resource_org_id string,sample_state int, cyTimeStart, cyTimeEnd string, ck string, session *Session) (*Download_Data_r, error) {
 	cli := Cli(session)
 	surl := "http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
 	r, err := cli.Post(surl, &RequestOptions{
@@ -343,6 +343,7 @@ func DownData(sample_state int, cyTimeStart, cyTimeEnd string, ck string, sessio
 			"sample_state":   fmt.Sprintf("%d", sample_state),
 			"cyTimeStart":    cyTimeStart,
 			"cyTimeEnd":      cyTimeEnd,
+			"resource_org_id": resource_org_id,
 		},
 		UserAgent: useragent,
 	})
@@ -359,10 +360,10 @@ func DownData(sample_state int, cyTimeStart, cyTimeEnd string, ck string, sessio
 }
 
 //搜索 普通食品
-func Test_platform_api_food_getFood(startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
+func Test_platform_api_food_getFood(taskfrom string,startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
 	cli := Cli(session)
 	datatype := 1
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getFood?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate, time.Now().UnixNano())
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getFood?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate,taskfrom, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -386,10 +387,10 @@ func Test_platform_api_food_getFood(startdate string, enddate string, ck string,
 }
 
 //搜索 农产品
-func Test_platform_api_agriculture_getAgriculture(startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
+func Test_platform_api_agriculture_getAgriculture(taskfrom string,startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
 	cli := Cli(session)
 	datatype := 1
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getAgriculture?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate, time.Now().UnixNano())
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getAgriculture?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate,taskfrom, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
