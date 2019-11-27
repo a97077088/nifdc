@@ -6,6 +6,43 @@ import (
 	"strings"
 )
 
+func StoMap_foodDetail(s string) map[string]string {
+	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(s))
+	//抽样基础信息
+	sel0 := rt.Find(".ibox.float-e-margins").Eq(0)
+
+	////抽样单位信息
+	//sel1 := rt.Find(".ibox.float-e-margins").Eq(1)
+	//sel1html, _ := sel1.Html()
+	////抽检场所信息
+	//sel2 := rt.Find(".ibox.float-e-margins").Eq(2)
+	//sel2html, _ := sel2.Html()
+	////生产企业信息
+	//sel3 := rt.Find(".ibox.float-e-margins").Eq(3)
+	//sel3html, _ := sel3.Html()
+	////抽检样品信息
+	//sel4 := rt.Find(".ibox.float-e-margins").Eq(4)
+	//sel4html, _ := sel4.Html()
+	////照片信息
+	//sel5 := rt.Find(".ibox.float-e-margins").Eq(5)
+	//sel5html, _ := sel5.Html()
+	////检验信息
+	//sel6 := rt.Find(".ibox.float-e-margins").Eq(6)
+	//sel6html, _ := sel6.Html()
+	mkr := make(map[string]string, 0)
+
+	mkr["抽样基础信息_任务来源"] = FindNextNodeVal(sel0, "任务来源")
+	mkr["抽样基础信息_报送分类A"] = FindNextNodeVal(sel0, "报送分类A")
+	mkr["抽样基础信息_报送分类B"] = FindNextNodeVal(sel0, "报送分类B")
+	mkr["抽样基础信息_食品大类"] = FindNextNodeVal(sel0, "食品大类")
+	mkr["抽样基础信息_食品亚类"] = FindNextNodeVal(sel0, "食品亚类")
+	mkr["抽样基础信息_食品次亚类"] = FindNextNodeVal(sel0, "食品次亚类")
+	mkr["抽样基础信息_食品细类"] = FindNextNodeVal(sel0, "食品细类")
+	mkr["抽样基础信息_抽样单编号"] = FindNextNodeVal(sel0, "抽样单编号")
+	mkr["抽样基础信息_抽样类型"] = FindNextNodeVal(sel0, "抽样类型")
+
+	return mkr
+}
 func StoMap_chouyangwancheng_mode1(s string) map[string]string {
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(s))
 	//抽样基础信息
@@ -40,7 +77,7 @@ func StoMap_chouyangwancheng_mode1(s string) map[string]string {
 	mkr["生产单位电话"] = FindFdval(sel3html, "联系电话")
 	mkr["商标"] = FindFdval(sel4html, "样品商标")
 	mkr["样品名称br"] = FindFdval(sel4html, "样品名称")
-	mkr["生产日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期") + FindFdval(sel4html, "加工日期")+ FindFdval(sel4html, "抽样日期")
+	mkr["生产日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期") + FindFdval(sel4html, "加工日期") + FindFdval(sel4html, "抽样日期")
 	mkr["保质期"] = FindFdval(sel4html, "保质期")
 	mkr["生产批号"] = FindFdval(sel4html, "样品批号")
 	mkr["规格型号"] = FindFdval(sel4html, "规格型号")
@@ -140,7 +177,7 @@ func StoMap_chouyangwancheng_full(s string) map[string]string {
 	mkr["抽检样品信息_样品属性"] = FindFdval(sel4html, "样品属性")
 	mkr["抽检样品信息_包装分类"] = FindFdval(sel4html, "包装分类")
 	mkr["抽检样品信息_样品名称"] = FindFdval(sel4html, "样品名称")
-	mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期")+ FindFdval(sel4html, "抽样日期")
+	mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期") + FindFdval(sel4html, "抽样日期")
 	mkr["抽检样品信息_保质期"] = FindFdval(sel4html, "保质期")
 	mkr["抽检样品信息_样品批号"] = FindFdval(sel4html, "样品批号")
 	mkr["抽检样品信息_规格型号"] = FindFdval(sel4html, "规格型号")
@@ -247,7 +284,7 @@ func StoMap_yijieshou_full(s string) map[string]string {
 	mkr["抽检样品信息_样品属性"] = FindFdval(sel4html, "样品属性")
 	mkr["抽检样品信息_包装分类"] = FindFdval(sel4html, "包装分类")
 	mkr["抽检样品信息_样品名称"] = FindFdval(sel4html, "样品名称")
-	mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期")+ FindFdval(sel4html, "抽样日期")
+	mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期") + FindFdval(sel4html, "抽样日期")
 	mkr["抽检样品信息_保质期"] = FindFdval(sel4html, "保质期")
 	mkr["抽检样品信息_样品批号"] = FindFdval(sel4html, "样品批号")
 	mkr["抽检样品信息_规格型号"] = FindFdval(sel4html, "规格型号")

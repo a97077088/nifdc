@@ -39,9 +39,14 @@ func Findtextval(s string, name string) string {
 	}
 	return fds[1]
 }
+
 //搜索信息
-func FindFdval(s string,k string)string{
-	v:=Findval(s,fmt.Sprintf(`%s：([^<]+)`,k),)
+func FindFdval(s string, k string) string {
+	v := Findval(s, fmt.Sprintf(`%s：([^<]+)`, k))
+	return strings.TrimSpace(v)
+}
+func FindNextNodeVal(nd *goquery.Selection, k string) string {
+	v := nd.Find(fmt.Sprintf("label:contains(%s：)+div", k)).Text()
 	return strings.TrimSpace(v)
 }
 func Findval(s string, sre string) string {
@@ -80,7 +85,7 @@ func InitLoginck(session *Session) (string, string, string, error) {
 //登录
 func Login(username string, password string, lt string, execution string, ck string, session *Session) (string, error) {
 	cli := Cli(session)
-	surl := fmt.Sprintf("http://gc.nifdc.org.cn/login", )
+	surl := fmt.Sprintf("http://gc.nifdc.org.cn/login")
 	username = base64.StdEncoding.EncodeToString([]byte(username))
 	password = base64.StdEncoding.EncodeToString([]byte(password))
 	spd := fmt.Sprintf("username=%s&password=%s&validate=&certKey=&lt=%s&execution=%s&_eventId=submit&UserPwd=&UserSignedData=&UserCert=&ContainerName=&strRandom=", username, password, lt, execution)
@@ -138,7 +143,7 @@ func Index(ck string, session *Session) error {
 }
 
 //登录到任务大平台
-func Sample_login(ck string, session *Session) (string, []*Channel,string, error) {
+func Sample_login(ck string, session *Session) (string, []*Channel, string, error) {
 	cli := Cli(session)
 	surl := "http://gc.nifdc.org.cn/login?service=http%3A%2F%2Fsample.nifdc.org.cn%2Findex.php%3Fm%3DAdmin%26c%3DSSO%26a%3Dindex"
 	r, err := cli.Get(surl, &RequestOptions{
@@ -148,7 +153,7 @@ func Sample_login(ck string, session *Session) (string, []*Channel,string, error
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return "", nil,"", err
+		return "", nil, "", err
 	}
 	sbd := r.String()
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
@@ -165,14 +170,14 @@ func Sample_login(ck string, session *Session) (string, []*Channel,string, error
 	//}
 	ul, err := url.Parse("http://sample.nifdc.org.cn/index.php")
 	if err != nil {
-		return "",nil,"", err
+		return "", nil, "", err
 	}
 	cks := cli.HTTPClient.Jar.Cookies(ul)
 	scks := ""
 	for _, ck := range cks {
 		scks = fmt.Sprintf("%s;%s", scks, ck.String())
 	}
-	return uid, chs,scks, nil
+	return uid, chs, scks, nil
 }
 
 //检验检测平台
@@ -248,7 +253,6 @@ func Viewrefusedsample_full(sample_code string, ck string, session *Session) (ma
 	return StoMap_chouyangwancheng_full(sbd), nil
 }
 
-
 //已接受全字段导出
 func Viewcheckedsample_full(sample_code string, ck string, session *Session) (map[string]string, error) {
 	cli := Cli(session)
@@ -313,7 +317,7 @@ func Viewnormalsample_mode1(sample_code string, ck string, session *Session) (ma
 }
 
 //数据查看
-func DownData(resource_org_id string,sample_state int, cyTimeStart, cyTimeEnd string, ck string, session *Session) (*Download_Data_r, error) {
+func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string, ck string, session *Session) (*Download_Data_r, error) {
 	cli := Cli(session)
 	surl := "http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
 	r, err := cli.Post(surl, &RequestOptions{
@@ -321,28 +325,28 @@ func DownData(resource_org_id string,sample_state int, cyTimeStart, cyTimeEnd st
 			"Cookie": ck,
 		},
 		Data: map[string]string{
-			"sEcho":          "3",
-			"iColumns":       "14",
-			"sColumns":       ",,,,,,,,,,,,,",
-			"iDisplayStart":  "0",
-			"iDisplayLength": "10000",
-			"mDataProp_0":    "",
-			"mDataProp_1":    "update_time",
-			"mDataProp_2":    "sp_s_3",
-			"mDataProp_3":    "sample_code",
-			"mDataProp_4":    "new_sample_name",
-			"mDataProp_5":    "sampling_unit_name",
-			"mDataProp_6":    "check_unit_name",
-			"mDataProp_7":    "create_time",
-			"mDataProp_8":    "creator_id",
-			"mDataProp_9":    "check_result",
-			"mDataProp_10":   "scaname",
-			"mDataProp_11":   "fcc_grade_one_name",
-			"mDataProp_12":   "syncResult",
-			"mDataProp_13":   "sample_code",
-			"sample_state":   fmt.Sprintf("%d", sample_state),
-			"cyTimeStart":    cyTimeStart,
-			"cyTimeEnd":      cyTimeEnd,
+			"sEcho":           "3",
+			"iColumns":        "14",
+			"sColumns":        ",,,,,,,,,,,,,",
+			"iDisplayStart":   "0",
+			"iDisplayLength":  "10000",
+			"mDataProp_0":     "",
+			"mDataProp_1":     "update_time",
+			"mDataProp_2":     "sp_s_3",
+			"mDataProp_3":     "sample_code",
+			"mDataProp_4":     "new_sample_name",
+			"mDataProp_5":     "sampling_unit_name",
+			"mDataProp_6":     "check_unit_name",
+			"mDataProp_7":     "create_time",
+			"mDataProp_8":     "creator_id",
+			"mDataProp_9":     "check_result",
+			"mDataProp_10":    "scaname",
+			"mDataProp_11":    "fcc_grade_one_name",
+			"mDataProp_12":    "syncResult",
+			"mDataProp_13":    "sample_code",
+			"sample_state":    fmt.Sprintf("%d", sample_state),
+			"cyTimeStart":     cyTimeStart,
+			"cyTimeEnd":       cyTimeEnd,
 			"resource_org_id": resource_org_id,
 		},
 		UserAgent: useragent,
@@ -360,10 +364,17 @@ func DownData(resource_org_id string,sample_state int, cyTimeStart, cyTimeEnd st
 }
 
 //搜索 普通食品
-func Test_platform_api_food_getFood(taskfrom string,startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
+func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Api_food_getFood_r, error) {
 	cli := Cli(session)
-	datatype := 1
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getFood?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate,taskfrom, time.Now().UnixNano())
+	datatype = datatype
+	sdatatype := ""
+	if datatype != 0 {
+		sdatatype = fmt.Sprintf("dataType=%d", datatype)
+	}
+	if sort != "" {
+		sort = fmt.Sprintf("sort=%s", sort)
+	}
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getFood?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -387,10 +398,10 @@ func Test_platform_api_food_getFood(taskfrom string,startdate string, enddate st
 }
 
 //搜索 农产品
-func Test_platform_api_agriculture_getAgriculture(taskfrom string,startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
+func Test_platform_api_agriculture_getAgriculture(taskfrom string, startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
 	cli := Cli(session)
 	datatype := 1
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getAgriculture?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate,taskfrom, time.Now().UnixNano())
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getAgriculture?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate, taskfrom, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -419,11 +430,11 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/foodTest/foodDetail/%d", id)
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
-			"Cookie": ck,
-			"Accept-Encoding":"deflate",
-			"Accept-Language":"zh-CN,zh;q=0.9",
-			"Referer":"http://test.nifdc.org.cn/test_platform/",
-			"Upgrade-Insecure-Requests":"1",
+			"Cookie":                    ck,
+			"Accept-Encoding":           "deflate",
+			"Accept-Language":           "zh-CN,zh;q=0.9",
+			"Referer":                   "http://test.nifdc.org.cn/test_platform/",
+			"Upgrade-Insecure-Requests": "1",
 		},
 		UserAgent: useragent,
 	})
@@ -466,13 +477,15 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 	rmp["test_conclusion"] = rt.Find("#test_conclusion").Text()
 	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
 	rmp["sd"] = sd
+
+	StoMap_foodDetail(sbd)
 	return rmp, nil
 }
 
 //获取testinfo
 func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) (*Test_platform_api_food_getTestInfo_r, error) {
 	cli := Cli(session)
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getTestInfo", )
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getTestInfo")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -493,8 +506,8 @@ func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) 
 	if err != nil {
 		return nil, nettool.New_neterror_with_e(err)
 	}
-	if len(rs.Rows)==0{
-		return nil,errors.New("至少需要一个检验项目")
+	if len(rs.Rows) == 0 {
+		return nil, errors.New("至少需要一个检验项目")
 	}
 	return &rs, nil
 }
@@ -529,19 +542,19 @@ func Test_platform_api_food_save(fooddetail map[string]string, testinfos []*Test
 		itmap["sm"] = tinfo.Spdata_19
 		itmap["sp_data_21"] = tinfo.Spdata_21
 		itmap["jylx"] = tinfo.Jylx
-		items=append(items,itmap)
+		items = append(items, itmap)
 	}
 
-	sitems,err:=json.Marshal(items)
-	if err!=nil{
+	sitems, err := json.Marshal(items)
+	if err != nil {
 		return err
 	}
 	cli := Cli(session)
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/save", )
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/save")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
-			"Cookie": ck,
-			"Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
+			"Cookie":       ck,
+			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
 		},
 		Data: map[string]string{
 			"type1":           fooddetail["type1"],
@@ -573,7 +586,7 @@ func Test_platform_api_food_save(fooddetail map[string]string, testinfos []*Test
 			"isSubmit":        "false",
 			"items":           string(sitems),
 		},
-		UserAgent:useragent,
+		UserAgent: useragent,
 	})
 	if err != nil {
 		return nettool.New_neterror_with_e(err)
@@ -586,7 +599,7 @@ func Test_platform_api_food_save(fooddetail map[string]string, testinfos []*Test
 	if err != nil {
 		return nettool.New_neterror_with_e(err)
 	}
-	if rs.Success!=true{
+	if rs.Success != true {
 		return errors.New(rs.Msg)
 	}
 	return nil
