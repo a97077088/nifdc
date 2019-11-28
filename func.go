@@ -10,24 +10,19 @@ func StoMap_foodDetail(s string) map[string]string {
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(s))
 	//抽样基础信息
 	sel0 := rt.Find(".ibox.float-e-margins").Eq(0)
-
-	////抽样单位信息
-	//sel1 := rt.Find(".ibox.float-e-margins").Eq(1)
-	//sel1html, _ := sel1.Html()
-	////抽检场所信息
-	//sel2 := rt.Find(".ibox.float-e-margins").Eq(2)
-	//sel2html, _ := sel2.Html()
-	////生产企业信息
-	//sel3 := rt.Find(".ibox.float-e-margins").Eq(3)
-	//sel3html, _ := sel3.Html()
-	////抽检样品信息
-	//sel4 := rt.Find(".ibox.float-e-margins").Eq(4)
-	//sel4html, _ := sel4.Html()
+	//抽样单位信息
+	sel1 := rt.Find(".ibox.float-e-margins").Eq(1)
+	//抽检场所信息
+	sel2 := rt.Find(".ibox.float-e-margins").Eq(2)
+	//生产企业信息
+	sel3 := rt.Find(".ibox.float-e-margins").Eq(3)
+	//抽检样品信息
+	sel4 := rt.Find(".ibox.float-e-margins").Eq(4)
 	////照片信息
 	//sel5 := rt.Find(".ibox.float-e-margins").Eq(5)
 	//sel5html, _ := sel5.Html()
-	////检验信息
-	//sel6 := rt.Find(".ibox.float-e-margins").Eq(6)
+	//检验信息
+	sel6 := rt.Find(".ibox.float-e-margins").Eq(6)
 	//sel6html, _ := sel6.Html()
 	mkr := make(map[string]string, 0)
 
@@ -40,6 +35,85 @@ func StoMap_foodDetail(s string) map[string]string {
 	mkr["抽样基础信息_食品细类"] = FindNextNodeVal(sel0, "食品细类")
 	mkr["抽样基础信息_抽样单编号"] = FindNextNodeVal(sel0, "抽样单编号")
 	mkr["抽样基础信息_抽样类型"] = FindNextNodeVal(sel0, "抽样类型")
+
+	mkr["抽样单位信息_抽样单位名称"] = FindNextNodeVal(sel1, "抽样单位名称")
+	mkr["抽样单位信息_单位地址"] = FindNextNodeVal(sel1, "单位地址")
+	mkr["抽样单位信息_所在省份"] = FindNextNodeVal(sel1, "所在省份")
+	mkr["抽样单位信息_抽样人员"] = FindNextNodeVal(sel1, "抽样人员")
+	mkr["抽样单位信息_抽样人员电话"] = FindNextNodeVal(sel1, "抽样人员电话")
+	mkr["抽样单位信息_单位联系人"] = FindNextNodeVal(sel1, "单位联系人")
+	mkr["抽样单位信息_传真"] = FindNextNodeVal(sel1, "传真")
+	mkr["抽样单位信息_邮编"] = FindNextNodeVal(sel1, "邮编")
+	mkr["抽样单位信息_联系人电话"] = FindNextNodeVal(sel1, "联系人电话")
+
+	mkr["抽检场所信息_单位名称"] = FindNextNodeVal(sel2, "单位名称")
+	mkr["抽检场所信息_单位地址"] = FindNextNodeVal(sel2, "单位地址")
+	mkr["抽检场所信息_所在地"] = FindNextNodeVal(sel2, "所在地")
+	mkr["抽检场所信息_区域类型"] = FindNextNodeVal(sel2, "区域类型")
+	mkr["抽检场所信息_抽样环节"] = FindNextNodeVal(sel2, "抽样环节")
+	mkr["抽检场所信息_抽样地点"] = FindNextNodeVal(sel2, "抽样地点")
+	mkr["抽检场所信息_营业执照/社会信用代码"] = FindNextNodeVal(sel2, "营业执照\\/社会信用代码")
+	mkr["抽检场所信息_许可证类型"] = FindNextNodeVal(sel2, "许可证类型")
+	mkr["抽检场所信息_许可证号"] = FindNextNodeVal(sel2, "许可证号")
+	mkr["抽检场所信息_单位法人"] = FindNextNodeVal(sel2, "单位法人")
+	mkr["抽检场所信息_联系人"] = FindNextNodeVal(sel2, "联系人")
+	mkr["抽检场所信息_联系人电话"] = FindNextNodeVal(sel2, "联系人电话")
+	mkr["抽检场所信息_传真"] = FindNextNodeVal(sel2, "传真")
+	mkr["抽检场所信息_邮编"] = FindNextNodeVal(sel2, "邮编")
+	mkr["抽检场所信息_年销售额"] = FindNextNodeVal(sel2, "年销售额")
+
+	mkr["生产企业信息_企业名称"] = FindNextNodeVal(sel3, "企业名称")
+	mkr["生产企业信息_所在地"] = FindNextNodeVal(sel3, "所在地")
+	mkr["生产企业信息_企业地址"] = FindNextNodeVal(sel3, "企业地址")
+	mkr["生产企业信息_生产许可证编号"] = FindNextNodeVal(sel3, "生产许可证编号")
+	mkr["生产企业信息_联系人"] = FindNextNodeVal(sel3, "联系人")
+	mkr["生产企业信息_电话"] = FindNextNodeVal(sel3, "电话")
+	mkr["生产企业信息_是否存在第三方企业信息"] = FindNextNodeVal(sel3, "是否存在第三方企业信息")
+
+	mkr["抽检样品信息_样品条码"] = FindNextNodeVal(sel4, "样品条码")
+	mkr["抽检样品信息_样品商标"] = FindNextNodeVal(sel4, "样品商标")
+	mkr["抽检样品信息_样品类型"] = FindNextNodeVal(sel4, "样品类型")
+	mkr["抽检样品信息_样品来源"] = FindNextNodeVal(sel4, "样品来源")
+	mkr["抽检样品信息_样品属性"] = FindNextNodeVal(sel4, "样品属性")
+	mkr["抽检样品信息_包装分类"] = FindNextNodeVal(sel4, "包装分类")
+	mkr["抽检样品信息_样品名称"] = FindNextNodeVal(sel4, "样品名称")
+	mkr["抽检样品信息_生产日期"] = FindNextNodeVal(sel4, "生产日期")+FindNextNodeVal(sel4, "抽样日期")
+	mkr["抽检样品信息_保质期"] = FindNextNodeVal(sel4, "保质期")
+	mkr["抽检样品信息_样品批号"] = FindNextNodeVal(sel4, "样品批号")
+	mkr["抽检样品信息_规格型号"] = FindNextNodeVal(sel4, "规格型号")
+	mkr["抽检样品信息_质量等级"] = FindNextNodeVal(sel4, "质量等级")
+	mkr["抽检样品信息_单价"] = FindNextNodeVal(sel4, "单价")
+	mkr["抽检样品信息_是否进口"] = FindNextNodeVal(sel4, "是否进口")
+	mkr["抽检样品信息_原产地"] = FindNextNodeVal(sel4, "原产地")
+	mkr["抽检样品信息_抽样日期"] = FindNextNodeVal(sel4, "抽样日期")
+	mkr["抽检样品信息_抽样方式"] = FindNextNodeVal(sel4, "抽样方式")
+	mkr["抽检样品信息_抽样时样品储存条件"] = FindNextNodeVal(sel4, "抽样时样品储存条件")
+	mkr["抽检样品信息_抽样基数"] = FindNextNodeVal(sel4, "抽样基数")
+	mkr["抽检样品信息_抽样数量"] = FindNextNodeVal(sel4, "抽样数量")
+	mkr["抽检样品信息_备样数量"] = FindNextNodeVal(sel4, "备样数量")
+	mkr["抽检样品信息_抽样数量单位"] = FindNextNodeVal(sel4, "抽样数量单位")
+	mkr["抽检样品信息_执行标准/技术文件"] = FindNextNodeVal(sel4, "执行标准\\/技术文件")
+	mkr["抽检样品信息_备注"] = FindNextNodeVal(sel4, "备注")
+
+	mkr["检验信息_检验机构名称"] = FindNextNodeVal(sel6, "检验机构名称")
+	mkr["检验信息_报告书编号"] = FindNextNodeVal(sel6, "报告书编号")
+	mkr["检验信息_样品到达日期"] = FindNextNodeVal(sel6, "样品到达日期")
+	mkr["检验信息_联系人"] = FindNextNodeVal(sel6, "联系人")
+	mkr["检验信息_联系人电话"] = FindNextNodeVal(sel6, "联系人电话")
+	mkr["检验信息_联系人邮箱"] = FindNextNodeVal(sel6, "联系人邮箱")
+	mkr["检验信息_检查封样人员"] = FindNextNodeVal(sel6, "检查封样人员")
+	mkr["检验信息_检查封样人电话"] = FindNextNodeVal(sel6, "检查封样人电话")
+	mkr["检验信息_检查封样人邮箱"] = FindNextNodeVal(sel6, "检查封样人邮箱")
+	mkr["检验信息_结论"] = FindNextNodeVal(sel6, "结论")
+	mkr["检验信息_监督抽检报告备注"] = FindNextNodeVal(sel6, "监督抽检报告备注")
+	mkr["检验信息_风险监测报告备注"] = FindNextNodeVal(sel6, "风险监测报告备注")
+	mkr["检验信息_报告类别"] = FindNextNodeVal(sel6, "报告类别")
+	mkr["检验信息_检验目的/任务类别"] = FindNextNodeVal(sel6, "检验目的\\/任务类别")
+	mkr["检验信息_复检状态"] = FindNextNodeVal(sel6, "复检状态")
+
+
+	mkr["检验结论"] = strings.TrimSpace(rt.Find("#testform").Find("h3:contains(检验结论)").Parent().Find("p").Text())
+	mkr["状态"]=strings.ReplaceAll(strings.TrimSpace(rt.Find(".text-navy").Text()),"状态: ","")
 
 	return mkr
 }

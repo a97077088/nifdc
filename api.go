@@ -49,6 +49,10 @@ func FindNextNodeVal(nd *goquery.Selection, k string) string {
 	v := nd.Find(fmt.Sprintf("label:contains(%s：)+div", k)).Text()
 	return strings.TrimSpace(v)
 }
+func FindNextNodeVal_with_tag_nexttag_k(nd *goquery.Selection,tag,nexttag string, k string) string {
+	v := nd.Find(fmt.Sprintf("%s:contains(%s)+%s", tag,k,nexttag)).Text()
+	return strings.TrimSpace(v)
+}
 func Findval(s string, sre string) string {
 	re := regexp.MustCompile(sre)
 	fds := re.FindStringSubmatch(s)
@@ -398,10 +402,17 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 }
 
 //搜索 农产品
-func Test_platform_api_agriculture_getAgriculture(taskfrom string, startdate string, enddate string, ck string, session *Session) (*Api_food_getFood_r, error) {
+func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Api_food_getFood_r, error) {
 	cli := Cli(session)
-	datatype := 1
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getAgriculture?order=desc&offset=0&limit=10000&dataType=%d&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", datatype, startdate, enddate, taskfrom, time.Now().UnixNano())
+    datatype = datatype
+	sdatatype := ""
+	if datatype != 0 {
+		sdatatype = fmt.Sprintf("dataType=%d", datatype)
+	}
+	if sort != "" {
+		sort = fmt.Sprintf("sort=%s", sort)
+	}
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getAgriculture?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -424,10 +435,10 @@ func Test_platform_api_agriculture_getAgriculture(taskfrom string, startdate str
 	return &rs, nil
 }
 
-//查看详情
-func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map[string]string, error) {
+//农产品查看详情
+func Test_platform_agricultureTest_agricultureDetail(id int, ck string, session *Session) (map[string]string, error) {
 	cli := Cli(session)
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/foodTest/foodDetail/%d", id)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/agricultureTest/agricultureDetail/%d", id)
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie":                    ck,
@@ -448,7 +459,7 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
 	sd := rt.Find("#sd").AttrOr("value", "")
 	if sd == "" {
-		return nil, errors.New("获取sd失败")
+		return nil, nettool.New_neterror_with_e(errors.New("获取sd失败"))
 	}
 	rmp := make(map[string]string, 0)
 	rmp["sample_code"] = rt.Find("#hid_sp_s_16").AttrOr("value", "")
@@ -478,7 +489,71 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
 	rmp["sd"] = sd
 
-	StoMap_foodDetail(sbd)
+	detailmp:=StoMap_foodDetail(sbd)
+	for k,v:=range detailmp{
+		rmp[k]=v
+	}
+	return rmp, nil
+}
+
+//普通食品查看详情
+func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map[string]string, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/foodTest/foodDetail/%d", id)
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie":                    ck,
+			"Accept-Encoding":           "deflate",
+			"Accept-Language":           "zh-CN,zh;q=0.9",
+			"Referer":                   "http://test.nifdc.org.cn/test_platform/",
+			"Upgrade-Insecure-Requests": "1",
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
+	}
+	sbd := r.String()
+	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
+	sd := rt.Find("#sd").AttrOr("value", "")
+	if sd == "" {
+		return nil, nettool.New_neterror_with_e(errors.New("获取sd失败"))
+	}
+	rmp := make(map[string]string, 0)
+	rmp["sample_code"] = rt.Find("#hid_sp_s_16").AttrOr("value", "")
+	rmp["sd"] = sd
+	rmp["type1"] = rt.Find("#hid_type1").AttrOr("value", "")
+	rmp["type2"] = rt.Find("#hid_type2").AttrOr("value", "")
+	rmp["type3"] = rt.Find("#hid_type3").AttrOr("value", "")
+	rmp["type4"] = rt.Find("#hid_type4").AttrOr("value", "")
+	rmp["bsfla"] = rt.Find("#hid_bsfla").AttrOr("value", "")
+	rmp["bsflb"] = rt.Find("#hid_bsflb").AttrOr("value", "")
+	rmp["test_unit"] = rt.Find("#test_unit").AttrOr("value", "")
+	rmp["report_no"] = rt.Find("#report_no").AttrOr("value", "")
+	rmp["test_date"] = rt.Find("#test_date").AttrOr("value", "")
+	rmp["contact"] = rt.Find("#contact").AttrOr("value", "")
+	rmp["contact_tel"] = rt.Find("#contact_tel").AttrOr("value", "")
+	rmp["contact_email"] = rt.Find("#contact_email").AttrOr("value", "")
+	rmp["fy_person"] = rt.Find("#fy_person").AttrOr("value", "")
+	rmp["fy_tel"] = rt.Find("#fy_tel").AttrOr("value", "")
+	rmp["fy_email"] = rt.Find("#fy_email").AttrOr("value", "")
+	rmp["conclusion"] = rt.Find("#hid_conclusion").AttrOr("value", "")
+	rmp["jd_bz"] = rt.Find("#jd_bz").Text()
+	rmp["fx_bz"] = rt.Find("#fx_bz").Text()
+	rmp["tb_date"] = rt.Find("#tb_date").AttrOr("value", "")
+	rmp["report_type"] = rt.Find("select[name=report_type]").Find("option[selected=selected]").AttrOr("value", "")
+	rmp["test_aims"] = rt.Find("select[name=test_aims]").Find("option[selected=selected]").AttrOr("value", "")
+	rmp["test_conclusion"] = rt.Find("#test_conclusion").Text()
+	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
+	rmp["sd"] = sd
+
+	detailmp:=StoMap_foodDetail(sbd)
+	for k,v:=range detailmp{
+		rmp[k]=v
+	}
 	return rmp, nil
 }
 
