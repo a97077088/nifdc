@@ -49,8 +49,8 @@ func FindNextNodeVal(nd *goquery.Selection, k string) string {
 	v := nd.Find(fmt.Sprintf("label:contains(%s：)+div", k)).Text()
 	return strings.TrimSpace(v)
 }
-func FindNextNodeVal_with_tag_nexttag_k(nd *goquery.Selection,tag,nexttag string, k string) string {
-	v := nd.Find(fmt.Sprintf("%s:contains(%s)+%s", tag,k,nexttag)).Text()
+func FindNextNodeVal_with_tag_nexttag_k(nd *goquery.Selection, tag, nexttag string, k string) string {
+	v := nd.Find(fmt.Sprintf("%s:contains(%s)+%s", tag, k, nexttag)).Text()
 	return strings.TrimSpace(v)
 }
 func Findval(s string, sre string) string {
@@ -404,7 +404,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 //搜索 农产品
 func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Api_food_getFood_r, error) {
 	cli := Cli(session)
-    datatype = datatype
+	datatype = datatype
 	sdatatype := ""
 	if datatype != 0 {
 		sdatatype = fmt.Sprintf("dataType=%d", datatype)
@@ -489,9 +489,9 @@ func Test_platform_agricultureTest_agricultureDetail(id int, ck string, session 
 	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
 	rmp["sd"] = sd
 
-	detailmp:=StoMap_foodDetail(sbd)
-	for k,v:=range detailmp{
-		rmp[k]=v
+	detailmp := StoMap_foodDetail(sbd)
+	for k, v := range detailmp {
+		rmp[k] = v
 	}
 	return rmp, nil
 }
@@ -550,9 +550,9 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
 	rmp["sd"] = sd
 
-	detailmp:=StoMap_foodDetail(sbd)
-	for k,v:=range detailmp{
-		rmp[k]=v
+	detailmp := StoMap_foodDetail(sbd)
+	for k, v := range detailmp {
+		rmp[k] = v
 	}
 	return rmp, nil
 }
@@ -581,9 +581,9 @@ func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) 
 	if err != nil {
 		return nil, nettool.New_neterror_with_e(err)
 	}
-	if len(rs.Rows) == 0 {
-		return nil, errors.New("至少需要一个检验项目")
-	}
+	//if len(rs.Rows) == 0 {
+	//	return nil, errors.New("至少需要一个检验项目")
+	//}
 	return &rs, nil
 }
 

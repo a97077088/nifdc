@@ -6,6 +6,28 @@ import (
 	"strings"
 )
 
+func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o) []map[string]string {
+	r := make([]map[string]string, 0)
+	for _, to := range tos {
+		subr := make(map[string]string)
+		subr["检验项目*"] = to.Spdata_0
+		subr["检验结果*"] = to.Spdata_1
+		subr["结果单位*"] = to.Spdata_18
+		subr["结果判定*"] = to.Spdata_2
+		subr["检验依据*"] = to.Spdata_3
+		subr["判定依据*"] = to.Spdata_4
+		subr["最小允许限*"] = to.Spdata_11
+		subr["最大允许限*"] = to.Spdata_15
+		subr["允许限单位*"] = to.Spdata_16
+		subr["方法检出限*"] = to.Spdata_7
+		subr["检出限单位*"] = to.Spdata_8
+		subr["备注"] = to.Spdata_20
+		subr["说明"] = to.Spdata_17
+		r = append(r, subr)
+	}
+	return r
+}
+
 func StoMap_foodDetail(s string) map[string]string {
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(s))
 	//抽样基础信息
@@ -77,7 +99,7 @@ func StoMap_foodDetail(s string) map[string]string {
 	mkr["抽检样品信息_样品属性"] = FindNextNodeVal(sel4, "样品属性")
 	mkr["抽检样品信息_包装分类"] = FindNextNodeVal(sel4, "包装分类")
 	mkr["抽检样品信息_样品名称"] = FindNextNodeVal(sel4, "样品名称")
-	mkr["抽检样品信息_生产日期"] = FindNextNodeVal(sel4, "生产日期")+FindNextNodeVal(sel4, "抽样日期")
+	mkr["抽检样品信息_生产日期"] = FindNextNodeVal(sel4, "生产日期") + FindNextNodeVal(sel4, "抽样日期")
 	mkr["抽检样品信息_保质期"] = FindNextNodeVal(sel4, "保质期")
 	mkr["抽检样品信息_样品批号"] = FindNextNodeVal(sel4, "样品批号")
 	mkr["抽检样品信息_规格型号"] = FindNextNodeVal(sel4, "规格型号")
@@ -107,13 +129,18 @@ func StoMap_foodDetail(s string) map[string]string {
 	mkr["检验信息_结论"] = FindNextNodeVal(sel6, "结论")
 	mkr["检验信息_监督抽检报告备注"] = FindNextNodeVal(sel6, "监督抽检报告备注")
 	mkr["检验信息_风险监测报告备注"] = FindNextNodeVal(sel6, "风险监测报告备注")
-	mkr["检验信息_报告类别"] = FindNextNodeVal(sel6, "报告类别")
-	mkr["检验信息_检验目的/任务类别"] = FindNextNodeVal(sel6, "检验目的\\/任务类别")
 	mkr["检验信息_复检状态"] = FindNextNodeVal(sel6, "复检状态")
 
-
 	mkr["检验结论"] = strings.TrimSpace(rt.Find("#testform").Find("h3:contains(检验结论)").Parent().Find("p").Text())
-	mkr["状态"]=strings.ReplaceAll(strings.TrimSpace(rt.Find(".text-navy").Text()),"状态: ","")
+	mkr["状态"] = strings.ReplaceAll(strings.TrimSpace(rt.Find(".text-navy").Text()), "状态: ", "")
+
+	if mkr["状态"] != "" {
+		mkr["检验信息_检验目的/任务类别"] = FindNextNodeVal(sel6, "检验目的\\/任务类别")
+		mkr["检验信息_报告类别"] = FindNextNodeVal(sel6, "报告类别")
+	} else {
+		mkr["检验信息_检验目的/任务类别"] = sel6.Find("label:contains(检验目的\\/任务类别：)").Next().Find("option[selected=selected]").Text()
+		mkr["检验信息_报告类别"] = sel6.Find("label:contains(报告类别：)").Next().Find("option").First().Text()
+	}
 
 	return mkr
 }
