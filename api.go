@@ -589,7 +589,6 @@ func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) 
 
 //保存testinfo
 func Test_platform_api_food_save(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestInfo_o, ck string, session *Session) error {
-
 	items := make([]map[string]string, 0)
 	for _, tinfo := range testinfos {
 		itmap := make(map[string]string)
