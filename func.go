@@ -132,7 +132,7 @@ func StoMap_foodDetail(s string) map[string]string {
 	mkr["检验信息_复检状态"] = FindNextNodeVal(sel6, "复检状态")
 
 	mkr["检验结论"] = strings.TrimSpace(rt.Find("#testform").Find("h3:contains(检验结论)").Parent().Find("p").Text())
-	mkr["状态"] = strings.ReplaceAll(strings.TrimSpace(rt.Find(".text-navy").Text()), "状态: ", "")
+	mkr["状态"] = strings.TrimSpace(strings.ReplaceAll(rt.Find("h2:contains(状态\\:)").Text(), "状态:", ""))
 
 	if mkr["状态"] != "" {
 		mkr["检验信息_检验目的/任务类别"] = FindNextNodeVal(sel6, "检验目的\\/任务类别")
@@ -141,7 +141,6 @@ func StoMap_foodDetail(s string) map[string]string {
 		mkr["检验信息_检验目的/任务类别"] = sel6.Find("label:contains(检验目的\\/任务类别：)").Next().Find("option[selected=selected]").Text()
 		mkr["检验信息_报告类别"] = sel6.Find("label:contains(报告类别：)").Next().Find("option").First().Text()
 	}
-
 	return mkr
 }
 func StoMap_chouyangwancheng_mode1(s string) map[string]string {
