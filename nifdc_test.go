@@ -2,6 +2,9 @@ package nifdc
 
 import (
 	"fmt"
+	"html/template"
+	"os"
+	"strings"
 	"testing"
 )
 
@@ -1022,4 +1025,10 @@ func TestRe(t *testing.T) {
 	for k, v := range mkr {
 		fmt.Printf("%s:%s\n", k, v)
 	}
+	tmj := template.New("tmj")
+	tmj.Funcs(map[string]interface{}{
+		"replace": strings.ReplaceAll,
+	})
+	tmj.Parse("aaa{{ .抽样单位信息_传真 }} {{ .抽样基础信息_食品次亚类 }}")
+	fmt.Println(tmj.Execute(os.Stdout, mkr))
 }
