@@ -384,7 +384,7 @@ func StoMap_yijieshou_full(s string) map[string]string {
 	mkr["抽检样品信息_样品属性"] = FindFdval(sel4html, "样品属性")
 	mkr["抽检样品信息_包装分类"] = FindFdval(sel4html, "包装分类")
 	mkr["抽检样品信息_样品名称"] = FindFdval(sel4html, "样品名称")
-	mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期") + FindFdval(sel4html, "抽样日期")
+	mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期") + FindFdval(sel4html, "生产日期")
 	mkr["抽检样品信息_保质期"] = FindFdval(sel4html, "保质期")
 	mkr["抽检样品信息_样品批号"] = FindFdval(sel4html, "样品批号")
 	mkr["抽检样品信息_规格型号"] = FindFdval(sel4html, "规格型号")
