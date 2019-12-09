@@ -359,7 +359,8 @@ func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd s
 		return nil, err
 	}
 	var rs Download_Data_r
-	err = r.JSON(&rs)
+	s:=r.String()
+	err = json.Unmarshal([]byte(s), &rs)
 	if err != nil {
 		return nil, nettool.New_neterror_with_e(err)
 	}

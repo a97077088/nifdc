@@ -347,19 +347,19 @@ func StoMap_yijieshou_full(s string) map[string]string {
 	mkr["抽检场所信息_许可证类型"] = FindFdval(sel2html, "许可证类型")
 	mkr["抽检场所信息_经营许可证号"] = FindFdval(sel2html, "经营许可证号") + FindFdval(sel2html, "许可证号")
 	mkr["抽检场所信息_年销售额"] = FindFdval(sel2html, "年销售额")
-	mkr["抽检场所信息_单位法人"] = FindFdval(sel2html, "单位法人") + FindFdval(sel2html, "法人代表")
+	mkr["抽检场所信息_法人代表"] = FindFdval(sel2html, "单位法人") + FindFdval(sel2html, "法人代表")
 	mkr["抽检场所信息_联系人"] = FindFdval(sel2html, "联系人")
-	mkr["抽检场所信息_电话"] = FindFdval(sel2html, "联系电话")
+	mkr["抽检场所信息_联系电话"] = FindFdval(sel2html, "联系电话")
 	mkr["抽检场所信息_传真"] = FindFdval(sel2html, "传真")
 	mkr["抽检场所信息_邮编"] = FindFdval(sel2html, "邮编")
 	mkr["抽检场所信息_摊位号或姓名"] = FindFdval(sel2html, "摊位号或姓名")
 	mkr["抽检场所信息_身份证号"] = FindFdval(sel2html, "身份证号")
 	mkr["抽样生产企业信息_所在地"] = strings.ReplaceAll(FindFdval(sel3html, "所在地"), "                                        ", " ")
-	mkr["抽样生产企业信息_企业地址"] = FindFdval(sel3html, "生产者地址")
-	mkr["抽样生产企业信息_企业名称"] = FindFdval(sel3html, "生产者名称")
+	mkr["抽样生产企业信息_生产者地址"] = FindFdval(sel3html, "生产者地址")
+	mkr["抽样生产企业信息_生产者名称"] = FindFdval(sel3html, "生产者名称")
 	mkr["抽样生产企业信息_生产许可证编号"] = FindFdval(sel3html, "生产许可证编号")
 	mkr["抽样生产企业信息_生产单位联系人"] = FindFdval(sel3html, "生产单位联系人")
-	mkr["抽样生产企业信息_生产单位电话"] = FindFdval(sel3html, "联系电话")
+	mkr["抽样生产企业信息_联系电话"] = FindFdval(sel3html, "联系电话")
 	mkr["抽样生产企业信息_是否存在第三方企业信息"] = FindFdval(sel3html, "是否存在第三方企业信息")
 	if mkr["抽样生产企业信息_是否存在第三方企业信息"] == "是" {
 		rhm, _ := sel3.Find(".wtsc.clearfix").Html()
@@ -403,7 +403,7 @@ func StoMap_yijieshou_full(s string) map[string]string {
 	mkr["抽检样品信息_备样数量"] = FindFdval(sel4html, "备样数量")
 	mkr["抽检样品信息_抽样数量单位"] = FindFdval(sel4html, "抽样数量单位")
 	mkr["抽检样品信息_执行标准/技术文件"] = FindFdval(sel4html, "执行标准/技术文件")
-	mkr["抽检样品信息_备注"] = FindFdval(sel4html, "整个样品备注")
+	mkr["抽检样品信息_整个样品备注"] = FindFdval(sel4html, "整个样品备注")
 
 	return mkr
 }

@@ -18,6 +18,7 @@ type Data_o struct {
 	Sp_d_38           string
 	Sp_s_3            string
 	Sp_s_20           string
+	User         appuser.AppUser `json:"userx"`
 }
 type Download_Data_r struct {
 	RecordsTotal int
