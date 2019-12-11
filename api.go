@@ -236,26 +236,6 @@ func Sample_switchchannel(uuid string, _type string, ck string, session *Session
 	return scks, nil
 }
 
-//检测完成全字段导出
-func Viewrefusedsample_full(sample_code string, ck string, session *Session) (map[string]string, error) {
-	cli := Cli(session)
-	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewrefusedsample&check_result=1&sample_code=%s", sample_code)
-	r, err := cli.Get(surl, &RequestOptions{
-		Headers: map[string]string{
-			"Cookie": ck,
-		},
-		UserAgent: useragent,
-	})
-	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
-	}
-	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
-	}
-	sbd := r.String()
-
-	return StoMap_chouyangwancheng_full(sbd), nil
-}
 
 //已接受全字段导出
 func Viewcheckedsample_full(sample_code string, ck string, session *Session) (map[string]string, error) {
@@ -278,47 +258,6 @@ func Viewcheckedsample_full(sample_code string, ck string, session *Session) (ma
 	return StoMap_yijieshou_full(sbd), nil
 }
 
-//抽样完成全字段导出
-func Viewnormalsample_full(sample_code string, ck string, session *Session) (map[string]string, error) {
-	cli := Cli(session)
-	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewnormalsample&sample_code=%s", sample_code)
-	r, err := cli.Get(surl, &RequestOptions{
-		Headers: map[string]string{
-			"Cookie": ck,
-		},
-		UserAgent: useragent,
-	})
-	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
-	}
-	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
-	}
-	sbd := r.String()
-
-	return StoMap_chouyangwancheng_full(sbd), nil
-}
-
-//抽样完成半字段导出
-func Viewnormalsample_mode1(sample_code string, ck string, session *Session) (map[string]string, error) {
-	cli := Cli(session)
-	surl := fmt.Sprintf("http://sample.nifdc.org.cn/index.php?m=Admin&c=TaskList&a=viewnormalsample&sample_code=%s", sample_code)
-	r, err := cli.Get(surl, &RequestOptions{
-		Headers: map[string]string{
-			"Cookie": ck,
-		},
-		UserAgent: useragent,
-	})
-	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
-	}
-	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
-	}
-	sbd := r.String()
-
-	return StoMap_chouyangwancheng_mode1(sbd), nil
-}
 
 //数据查看
 func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string, ck string, session *Session) (*Download_Data_r, error) {
