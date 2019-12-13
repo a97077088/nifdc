@@ -499,17 +499,21 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 
 
 
-
-//获取food_getTestItems
-func Test_platform_api_food_getTestItems(sd string, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
+//获取agriculture_getTestItems
+func Test_platform_api_agriculture_getTestItems(fddetail map[string]string, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
 	cli := Cli(session)
-	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getTestItems")
-	r, err := cli.Get(surl, &RequestOptions{
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getTestItems")
+	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
 		},
 		Data: map[string]string{
-			"sd": sd,
+			"type1": fddetail["抽样基础信息_食品大类"],
+			"type2": fddetail["抽样基础信息_食品亚类"],
+			"type3": fddetail["抽样基础信息_食品次亚类"],
+			"type4": fddetail["抽样基础信息_食品细类"],
+			"bsflA": fddetail["抽样基础信息_报送分类A"],
+			"bsflB": fddetail["抽样基础信息_报送分类B"],
 		},
 		UserAgent: useragent,
 	})
@@ -529,7 +533,72 @@ func Test_platform_api_food_getTestItems(sd string, ck string, session *Session)
 	//}
 	return &rs, nil
 }
+//获取agriculture_testinfo
+func Test_platform_api_agriculture_getTestInfo(sd string, ck string, session *Session) (*Test_platform_api_food_getTestInfo_r, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/agriculture/getTestInfo")
+	r, err := cli.Post(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		Data: map[string]string{
+			"sd": sd,
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
+	}
+	var rs Test_platform_api_food_getTestInfo_r
+	err = r.JSON(&rs)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	//if len(rs.Rows) == 0 {
+	//	return nil, errors.New("至少需要一个检验项目")
+	//}
+	return &rs, nil
+}
 
+
+
+//获取food_getTestItems
+func Test_platform_api_food_getTestItems(fddetail map[string]string, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getTestItems")
+	r, err := cli.Post(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		Data: map[string]string{
+			"type1": fddetail["抽样基础信息_食品大类"],
+			"type2": fddetail["抽样基础信息_食品亚类"],
+			"type3": fddetail["抽样基础信息_食品次亚类"],
+			"type4": fddetail["抽样基础信息_食品细类"],
+			"bsflA": fddetail["抽样基础信息_报送分类A"],
+			"bsflB": fddetail["抽样基础信息_报送分类B"],
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
+	}
+	var rs Test_platform_api_food_getTestItems_r
+	err = r.JSON(&rs)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	//if len(rs.Rows) == 0 {
+	//	return nil, errors.New("至少需要一个检验项目")
+	//}
+	return &rs, nil
+}
 //获取testinfo
 func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) (*Test_platform_api_food_getTestInfo_r, error) {
 	cli := Cli(session)

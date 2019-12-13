@@ -1036,9 +1036,18 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 		t.Fatal(err)
 	}
 	sd:=fddetail["sd"]
-	itemsr,err:=Test_platform_api_food_getTestItems(sd,ck,nil)
+	itemsr,err:=Test_platform_api_food_getTestItems(fddetail,test_platform_ck,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(itemsr)
+	testinfor,err:=Test_platform_api_food_getTestInfo(sd,test_platform_ck,nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rmp:=TestInfotoMap(testinfor.Rows,itemsr.Rows)
+	fmt.Println(rmp)
+	for k,v:=range rmp[0]{
+		fmt.Printf("%s:%s\n",k,v)
+	}
 }

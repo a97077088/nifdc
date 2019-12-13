@@ -6,15 +6,33 @@ import (
 	"strings"
 )
 //转换检测项目
-func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o) []map[string]string {
+func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o,ios []*Test_platform_api_food_getTestItems_o) []map[string]string {
 	r := make([]map[string]string, 0)
-	for _, to := range tos {
+	for _,io:=range ios{
 		subr := make(map[string]string)
+		subr["检验项目*"] = io.Item
+		subr["检验结果*"] = ""
+		subr["结果单位*"] = io.TestReason[0].Spdata_18
+		subr["结果判定*"] ="未检验"
+		subr["检验依据*"] = io.TestReason[0].Sm
+		subr["判定依据*"] = io.VerifyReason[0].Spdata_4
+		subr["最小允许限*"] = io.VerifyReason[0].Spdata_9
+		subr["最大允许限*"] = io.VerifyReason[0].Spdata_13
+		subr["允许限单位*"] = io.VerifyReason[0].Spdata_10
+		subr["方法检出限*"] = io.TestReason[0].Spdata_5
+		subr["检出限单位*"] = io.VerifyReason[0].Spdata_14
+		subr["备注"] = io.TestReason[0].Bz
+		subr["说明"] = ""
+		r = append(r, subr)
+	}
+
+	for i, to := range tos {
+		subr := r[i]
 		subr["检验项目*"] = to.Spdata_0
 		subr["检验结果*"] = to.Spdata_1
 		subr["结果单位*"] = to.Spdata_18
 		subr["结果判定*"] = to.Spdata_2
-		subr["检验依据*"] = to.Spdata_3
+		subr["检验依据*"] = to.Spdata_19
 		subr["判定依据*"] = to.Spdata_4
 		subr["最小允许限*"] = to.Spdata_11
 		subr["最大允许限*"] = to.Spdata_15
@@ -23,7 +41,6 @@ func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o) []map[string]str
 		subr["检出限单位*"] = to.Spdata_8
 		subr["备注"] = to.Spdata_20
 		subr["说明"] = to.Spdata_17
-		r = append(r, subr)
 	}
 	return r
 }
