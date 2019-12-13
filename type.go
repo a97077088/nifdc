@@ -106,6 +106,34 @@ type Test_platform_api_food_getTestInfo_r struct {
 	Rows  []*Test_platform_api_food_getTestInfo_o
 }
 
+
+type TestReason_o struct {
+	Spdata_21 string
+	Bz string
+	InReserve string
+	Spdata_3 string
+	Spdata_18 string
+	Sm string
+	Spdata_6 string
+	Spdata_5 string
+}
+type VerifyReason_o struct {
+	Spdata_10 string
+	Spdata_9 string
+	Spdata_13 string
+	Spdata_14 string
+	Spdata_4 string
+}
+type Test_platform_api_food_getTestItems_o struct {
+	Item string
+	ItemType string
+	TestReason []*TestReason_o
+	VerifyReason []* VerifyReason_o
+}
+type Test_platform_api_food_getTestItems_r struct {
+	Rows  []*Test_platform_api_food_getTestItems_o
+}
+
 type Test_platform_api_food_save_r struct {
 	Msg     string
 	Success bool

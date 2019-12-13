@@ -46,7 +46,7 @@ func FindFdval(s string, k string) string {
 	return strings.TrimSpace(v)
 }
 func FindNextNodeVal(nd *goquery.Selection, k string) string {
-	v := nd.Find(fmt.Sprintf("label:contains(%s：)+div", k)).Text()
+	v := nd.Find(fmt.Sprintf("label:contains(%s)+div", k)).Text()
 	return strings.TrimSpace(v)
 }
 func FindNextNodeVal_with_tag_nexttag_k(nd *goquery.Selection, tag, nexttag string, k string) string {
@@ -495,6 +495,39 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 		rmp[k] = v
 	}
 	return rmp, nil
+}
+
+
+
+
+//获取food_getTestItems
+func Test_platform_api_food_getTestItems(sd string, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://test.nifdc.org.cn/test_platform/api/food/getTestItems")
+	r, err := cli.Get(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		Data: map[string]string{
+			"sd": sd,
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nil, nettool.New_neterror_with_s("http状态错误")
+	}
+	var rs Test_platform_api_food_getTestItems_r
+	err = r.JSON(&rs)
+	if err != nil {
+		return nil, nettool.New_neterror_with_e(err)
+	}
+	//if len(rs.Rows) == 0 {
+	//	return nil, errors.New("至少需要一个检验项目")
+	//}
+	return &rs, nil
 }
 
 //获取testinfo
