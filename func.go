@@ -129,6 +129,7 @@ func StoMap_foodDetail(s string) map[string]string {
 	mkr["抽检样品信息_样品名称"] = FindNextNodeVal(sel4, "样品名称")
 	mkr["抽检样品信息_生产日期"] = FindNextNodeVal(sel4, "生产日期")
 	mkr["抽检样品信息_购进日期"] = FindNextNodeVal(sel4, "购进日期")
+	mkr["抽检样品信息_加工日期"] = FindNextNodeVal(sel4, "加工日期")
 
 	mkr["抽检样品信息_保质期"] = FindNextNodeVal(sel4, "保质期")
 	mkr["抽检样品信息_样品批号"] = FindNextNodeVal(sel4, "样品批号")
