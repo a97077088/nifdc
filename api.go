@@ -46,7 +46,18 @@ func FindFdval(s string, k string) string {
 	return strings.TrimSpace(v)
 }
 func FindNextNodeVal(nd *goquery.Selection, k string) string {
-	v := nd.Find(fmt.Sprintf("label:contains(%s)+div", k)).Text()
+
+
+
+	v:=nd.Find(fmt.Sprintf("label:contains(%s\\:)+div", k)).Text()
+	if v==""{
+		v=nd.Find(fmt.Sprintf("label:contains(%s：)+div", k)).Text()
+	}
+	//if k=="抽样人员"{
+	//
+	//}
+	//v := nd.Find(fmt.Sprintf("label:contains(%s)+div", k)).Text()
+	v=strings.Trim(v,"	")
 	return strings.TrimSpace(v)
 }
 func FindNextNodeVal_with_tag_nexttag_k(nd *goquery.Selection, tag, nexttag string, k string) string {
