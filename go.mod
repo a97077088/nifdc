@@ -1,4 +1,4 @@
-module nifdc
+module github.com/a97077088/nifdc
 
 go 1.13
 
