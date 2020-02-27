@@ -5,6 +5,35 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"strings"
 )
+
+//合并检验项目
+func Merge_subitem(items []map[string]string,subitems []map[string]string){
+	for _,subit:=range subitems{
+		tmpitm:=Get_item(subit["检验项目"],items)
+		tmpitm["检验结果*"]=subit["检验结果"]
+		tmpitm["结果单位*"]=subit["结果单位"]
+		tmpitm["结果判定*"]=subit["结果判定"]
+		tmpitm["检验依据*"]=subit["检验依据"]
+		tmpitm["判定依据*"]=subit["判定依据"]
+		tmpitm["最小允许限*"]=subit["最小允许限"]
+		tmpitm["最大允许限*"]=subit["最大允许限"]
+		tmpitm["允许限单位*"]=subit["允许限单位"]
+		tmpitm["方法检出限*"]=subit["方法检出限"]
+		tmpitm["检出限单位*"]=subit["检出限单位"]
+		tmpitm["备注"]=subit["备注"]
+		tmpitm["说明"]=subit["说明"]
+	}
+}
+func Get_item(k string, items []map[string]string) map[string]string {
+	for _, it := range items {
+		if it["检验项目*"] == k {
+			return it
+		}
+	}
+	return nil
+}
+
+
 //转换检测项目
 func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o,ios []*Test_platform_api_food_getTestItems_o) []map[string]string {
 	r := make([]map[string]string, 0)

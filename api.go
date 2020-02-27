@@ -569,6 +569,190 @@ func Test_platform_api_agriculture_getTestInfo(sd string, ck string, session *Se
 	return &rs, nil
 }
 
+//保存testinfo
+func Test_platform_api_food_init(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestItems_o, ck string, session *Session) error {
+	items := make([]map[string]string, 0)
+	for _, tinfo := range testinfos {
+		itmap := make(map[string]string)
+		itmap["id"] = fmt.Sprintf("")
+		itmap["item_old"] = tinfo.Item
+		itmap["item"] = tinfo.Item
+		itmap["sp_data_1"] = "" //结果
+		itmap["sp_data_2"] = "未检验"
+		itmap["sp_data_3"] = tinfo.TestReason[0].Sm
+		itmap["sp_data_4"] = tinfo.VerifyReason[0].Spdata_4
+		//itmap["sp_data_5"] = tinfo.Spdata_5
+		//itmap["sp_data_6"] = tinfo.Spdata_6
+		//itmap["sp_data_7"] = tinfo.Spdata_7
+		//itmap["sp_data_8"] = tinfo.Spdata_8
+		//itmap["sp_data_9"] = tinfo.Spdata_9
+		//itmap["sp_data_10"] = tinfo.Spdata_10
+		//itmap["sp_data_11"] = tinfo.Spdata_11
+		//itmap["sp_data_12"] = tinfo.Spdata_12
+		//itmap["sp_data_13"] = tinfo.Spdata_13
+		//itmap["sp_data_15"] = tinfo.Spdata_15
+		//itmap["sp_data_16"] = tinfo.Spdata_16
+		//itmap["sp_data_17"] = tinfo.Spdata_17
+		//itmap["sp_data_18"] = tinfo.Spdata_18
+		//itmap["bz"] = tinfo.Spdata_20
+		//itmap["sm"] = tinfo.Spdata_19
+		//itmap["sp_data_21"] = tinfo.Spdata_21
+		//itmap["jylx"] = tinfo.Jylx
+		items = append(items, itmap)
+	}
+
+	sitems, err := json.Marshal(items)
+	if err != nil {
+		return err
+	}
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/save")
+	r, err := cli.Post(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie":       ck,
+			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+		},
+		Data: map[string]string{
+			"type1":           fooddetail["type1"],
+			"type2":           fooddetail["type2"],
+			"type3":           fooddetail["type3"],
+			"type4":           fooddetail["type4"],
+			"bsfla":           fooddetail["bsfla"],
+			"bsflb":           fooddetail["bsflb"],
+			"test_unit":       fooddetail["test_unit"],
+			"report_no":       fooddetail["report_no"],
+			"test_date":       fooddetail["test_date"],
+			"contact":         fooddetail["contact"],
+			"contact_tel":     fooddetail["contact_tel"],
+			"contact_email":   fooddetail["contact_email"],
+			"fy_person":       fooddetail["fy_person"],
+			"fy_tel":          fooddetail["fy_tel"],
+			"fy_email":        fooddetail["fy_email"],
+			"conclusion":      fooddetail["conclusion"],
+			"jd_bz":           fooddetail["jd_bz"],
+			"fx_bz":           fooddetail["fx_bz"],
+			"tb_date":         fooddetail["tb_date"],
+			"report_type":     fooddetail["report_type"],
+			"test_aims":       fooddetail["test_aims"],
+			"test_conclusion": fooddetail["test_conclusion"],
+			"sign_date":       fooddetail["sign_date"],
+			"sd":              fooddetail["sd"],
+			"fdtoken12":       "201812FoodDetail",
+			"fdtoken1201":     "20181201FoodDetail",
+			"isSubmit":        "false",
+			"items":           string(sitems),
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nettool.New_neterror_with_s("http状态错误")
+	}
+	var rs Test_platform_api_food_save_r
+	err = r.JSON(&rs)
+	if err != nil {
+		return nettool.New_neterror_with_e(err)
+	}
+	if rs.Success != true {
+		return errors.New(rs.Msg)
+	}
+	return nil
+}
+
+//保存agriculture_init
+func 	Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestItems_o, ck string, session *Session) error {
+	items := make([]map[string]string, 0)
+	for _, tinfo := range testinfos {
+		itmap := make(map[string]string)
+		itmap["id"] = fmt.Sprintf("")
+		itmap["item_old"] = tinfo.Item
+		itmap["item"] = tinfo.Item
+		itmap["sp_data_1"] = "" //结果
+		itmap["sp_data_2"] = "未检验"
+		itmap["sp_data_3"] = tinfo.TestReason[0].Sm
+		itmap["sp_data_4"] = tinfo.VerifyReason[0].Spdata_4
+		//itmap["sp_data_5"] = tinfo.Spdata_5
+		//itmap["sp_data_6"] = tinfo.Spdata_6
+		//itmap["sp_data_7"] = tinfo.Spdata_7
+		//itmap["sp_data_8"] = tinfo.Spdata_8
+		//itmap["sp_data_9"] = tinfo.Spdata_9
+		//itmap["sp_data_10"] = tinfo.Spdata_10
+		//itmap["sp_data_11"] = tinfo.Spdata_11
+		//itmap["sp_data_12"] = tinfo.Spdata_12
+		//itmap["sp_data_13"] = tinfo.Spdata_13
+		//itmap["sp_data_15"] = tinfo.Spdata_15
+		//itmap["sp_data_16"] = tinfo.Spdata_16
+		//itmap["sp_data_17"] = tinfo.Spdata_17
+		//itmap["sp_data_18"] = tinfo.Spdata_18
+		//itmap["bz"] = tinfo.Spdata_20
+		//itmap["sm"] = tinfo.Spdata_19
+		//itmap["sp_data_21"] = tinfo.Spdata_21
+		//itmap["jylx"] = tinfo.Jylx
+		items = append(items, itmap)
+	}
+
+	sitems, err := json.Marshal(items)
+	if err != nil {
+		return err
+	}
+	cli := Cli(session)
+	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/save")
+	r, err := cli.Post(surl, &RequestOptions{
+		Headers: map[string]string{
+			"Cookie":       ck,
+			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+		},
+		Data: map[string]string{
+			"type1":           fooddetail["type1"],
+			"type2":           fooddetail["type2"],
+			"type3":           fooddetail["type3"],
+			"type4":           fooddetail["type4"],
+			"bsfla":           fooddetail["bsfla"],
+			"bsflb":           fooddetail["bsflb"],
+			"test_unit":       fooddetail["test_unit"],
+			"report_no":       fooddetail["report_no"],
+			"test_date":       fooddetail["test_date"],
+			"contact":         fooddetail["contact"],
+			"contact_tel":     fooddetail["contact_tel"],
+			"contact_email":   fooddetail["contact_email"],
+			"fy_person":       fooddetail["fy_person"],
+			"fy_tel":          fooddetail["fy_tel"],
+			"fy_email":        fooddetail["fy_email"],
+			"conclusion":      fooddetail["conclusion"],
+			"jd_bz":           fooddetail["jd_bz"],
+			"fx_bz":           fooddetail["fx_bz"],
+			"tb_date":         fooddetail["tb_date"],
+			"report_type":     fooddetail["report_type"],
+			"test_aims":       fooddetail["test_aims"],
+			"test_conclusion": fooddetail["test_conclusion"],
+			"sign_date":       fooddetail["sign_date"],
+			"sd":              fooddetail["sd"],
+			"fdtoken12":       "201812FoodDetail",
+			"fdtoken1201":     "20181201FoodDetail",
+			"isSubmit":        "false",
+			"items":           string(sitems),
+		},
+		UserAgent: useragent,
+	})
+	if err != nil {
+		return nettool.New_neterror_with_e(err)
+	}
+	if r.StatusCode != 200 {
+		return nettool.New_neterror_with_s("http状态错误")
+	}
+	var rs Test_platform_api_food_save_r
+	err = r.JSON(&rs)
+	if err != nil {
+		return nettool.New_neterror_with_e(err)
+	}
+	if rs.Success != true {
+		return errors.New(rs.Msg)
+	}
+	return nil
+}
+
 //保存agriculture_testinfo
 func Test_platform_api_agriculture_save(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestInfo_o, ck string, session *Session) error {
 	items := make([]map[string]string, 0)
