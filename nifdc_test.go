@@ -56,958 +56,397 @@ func TestLogin(t *testing.T) {
 func TestRe(t *testing.T) {
 	olds := `
 
-
-
-
-
+<!DOCTYPE html>
 <html>
 <head>
-    <title>普通食品检验填报</title>
-     
- <link href="/test_platform/css/bootstrap.min.css?v=1.0.1" rel="stylesheet">
-
- <link href="/test_platform/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
- <link href="/test_platform/css/animate.min.css" rel="stylesheet">
- <link href="/test_platform/css/style.min.css?v=4.0.2" rel="stylesheet">
- <link href="/test_platform/css/plugins/toastr/toastr.min.css?v=4.0.2" rel="stylesheet">
- <link href="/test_platform/css/plugins/datapicker/datepicker3.css?v=4.0.2" rel="stylesheet">
- <link href="/test_platform/css/plugins/chosen/chosen.css?v=4.0.2" rel="stylesheet">
- <link rel="shortcut icon" href="/test_platform/favicon.ico">
- <link href="/test_platform/js/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
- <link href="/test_platform/layer/theme/default/layer.css" rel="stylesheet">
-
- <style>
-  .fixed-table-body{
-   height: auto !important;
-  }
-  .row input[type=text],.row select,.row textarea{
-   font-size: 13px !important;
-  }
-
- </style>
-
-    <link rel="stylesheet" type="text/css" href="/test_platform/easyui/themes/metro/easyui.css">
-    <link rel="stylesheet" type="text/css" href="/test_platform/easyui/themes/icon.css">
-    <link rel="stylesheet" type="text/css" href="/test_platform/easyui/themes/color.css">
-    <link rel="stylesheet" type="text/css" href="/test_platform/css/webuploader.css">
-    <link rel="stylesheet" type="text/css" href="/test_platform/js/plugins/fancybox/viewer.min.css">
-    <style>
-        .tb_input {
-            border: none;
-            text-align: center;
-            background: transparent;
-            margin: 0 auto;
-        }
-
-        /*bootstrap兼容问题和easyui的bug*/
-        .panel-header, .panel-body {
-
-        }
-
-        .datagrid, .combo-p {
-            border: solid 1px #D4D4D4;
-        }
-
-        .datagrid * {
-            -webkit-box-sizing: content-box;
-            -moz-box-sizing: content-box;
-            box-sizing: content-box;
-        }
-    </style>
-</head>
-<body>
-<div class="wrapper wrapper-content   fadeInDown">
-    <div class="container-fluid">
-        <h1>普通食品检验数据填报
-            <small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp; 抽样编号:DC19413100463237016</small>
-        </h1>
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <i class="fa fa-info-circle"></i> 抽样信息内容
-            </div>
-
-            <div class="panel-body" style="padding: 15px;">
-                
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="ibox float-e-margins">
-                            <h2>抽样基础信息</h2>
-                            <div class="hr-line-dashed"></div>
-                            <div class="row form-group">
-                                <div class="col-sm-4 ">
-                                    <label class="control-label col-sm-4">任务来源：</label>
-                                    <div class="col-sm-8">兰考县市场监督管理局</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">报送分类A：</label>
-                                    <div class="col-sm-8" id="bsfla">抽检监测（市级本级）
-                                        <input type="hidden" id="hid_bsfla" value="抽检监测（市级本级）"/>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">报送分类B：</label>
-                                    <div class="col-sm-8" id="bsflb">2019年河南兰考县抽检计划（二）
-                                        <input type="hidden" id="hid_bsflb" value="2019年河南兰考县抽检计划（二）"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">食品大类：</label>
-                                    <div class="col-sm-8" id="type1">餐饮食品
-                                        <input type="hidden" id="hid_type1" value="餐饮食品"/>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">食品亚类：</label>
-                                    <div class="col-sm-8" id="type2">肉制品(自制)
-                                        <input type="hidden" id="hid_type2" value="肉制品(自制)"/>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">食品次亚类：</label>
-                                    <div class="col-sm-8" id="type3">熟肉制品(自制)
-                                        <input type="hidden" id="hid_type3" value="熟肉制品(自制)"/>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">食品细类：</label>
-                                    <div class="col-sm-8" id="type4">酱卤肉制品、肉灌肠、其他熟肉(自制)
-                                        <input type="hidden" id="hid_type4" value="酱卤肉制品、肉灌肠、其他熟肉(自制)"/>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样单编号：</label>
-                                    <div class="col-sm-8">DC19413100463237016</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样类型：</label>
-                                    <div class="col-sm-8">常规抽样</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        <div class="ibox float-e-margins">
-                            <h2>抽样单位信息</h2>
-                            <div class="hr-line-dashed"></div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样单位名称：</label>
-                                    <div class="col-sm-8">河南恒晟检测技术有限公司</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">单位地址：</label>
-                                    <div class="col-sm-8">新郑市薛店镇中德产业园2-3号</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">所在省份：</label>
-                                    <div class="col-sm-8">河南</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样人员：</label>
-                                    <div class="col-sm-8">杨超、杜鹏举</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样人员电话：</label>
-                                    <div class="col-sm-8">0371-55929768</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">单位联系人：</label>
-                                    <div class="col-sm-8">王力</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                
-                                
-                                
-                                
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">传真：</label>
-                                    <div class="col-sm-8">0371-55929768</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">邮编：</label>
-                                    <div class="col-sm-8">451162</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">联系人电话：</label>
-                                    <div class="col-sm-8">0371-55929768</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        <div class="ibox float-e-margins">
-                            <h2>抽检场所信息</h2>
-                            <div class="hr-line-dashed"></div>
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">单位名称：</label>
-                                    <div class="col-sm-8">兰考县谷营镇浩然饭店</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">单位地址：</label>
-                                    <div class="col-sm-8">兰考县谷营乡谷西村泰奥发超市对面</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">所在地：</label>
-                                    <div class="col-sm-8">河南/兰考县/兰考县</div>
-                                </div>
-                            </div>
-
-
-                            
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">区域类型：</label>
-                                    <div class="col-sm-8">乡村</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样环节：</label>
-                                    <div class="col-sm-8">餐饮</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样地点：</label>
-                                    <div class="col-sm-8">中型餐馆</div>
-                                </div>
-
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">营业执照/社会信用代码：</label>
-                                    <div class="col-sm-8">92410225MA40MERN2F</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">许可证类型：</label>
-                                    <div class="col-sm-8">经营许可证</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">许可证号：</label>
-                                    <div class="col-sm-8">JY24102250037880</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">单位法人：</label>
-                                    <div class="col-sm-8">谷光辉</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">联系人：</label>
-                                    <div class="col-sm-8">金青</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">联系人电话：</label>
-                                    <div class="col-sm-8">18537377892</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">传真：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">邮编：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">年销售额：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        <div class="ibox float-e-margins">
-                            <h2>生产企业信息</h2>
-                            <div class="hr-line-dashed"></div>
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">企业名称：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">所在地：</label>
-                                    <div class="col-sm-8">河南/兰考县/兰考县</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">企业地址：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">生产许可证编号：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">联系人：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">电话：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">是否存在第三方企业信息：</label>
-                                    <div class="col-sm-8">否</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    
-                                </div>
-                                <div class="col-sm-4">
-                                    
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-sm-12 ">
-                        <div class="ibox float-e-margins">
-                            <h2>抽检样品信息</h2>
-                            <div class="hr-line-dashed"></div>
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品条码：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品商标：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品类型：</label>
-                                    <div class="col-sm-8">餐饮加工食品</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品来源：</label>
-                                    <div class="col-sm-8">加工/自制</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品属性：</label>
-                                    <div class="col-sm-8">普通食品</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">包装规格：</label>
-                                    <div class="col-sm-8">无包装</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品名称：</label>
-                                    <div class="col-sm-8">卤鸡爪</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">生产日期:</label>
-                                    <div class="col-sm-8">2019-12-09</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">保质期：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品批号：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">样品规格：</label>
-                                    <div class="col-sm-8">计量称重</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">质量等级：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">单价：</label>
-                                    <div class="col-sm-8">10元/kg</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">是否进口：</label>
-                                    <div class="col-sm-8">否</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">原产地：</label>
-                                    <div class="col-sm-8">中国</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样日期：</label>
-                                    <div class="col-sm-8">2019-12-09</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样方式：</label>
-                                    <div class="col-sm-8">非无菌采样</div>
-                                </div>
-                                
-                                    
-                                    
-                                
-                            </div>
-
-                            <div class="row form-group">
-                                
-                                    
-                                    
-                                
-                                
-                                    
-                                    
-                                
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样时样品储存条件：</label>
-                                    <div class="col-sm-8">常温</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样基数：</label>
-                                    <div class="col-sm-8">6kg</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样数量：</label>
-                                    <div class="col-sm-8">1.0</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">备样数量：</label>
-                                    <div class="col-sm-8">0.5kg</div>
-                                </div>
-                            </div>
-
-                            <div class="row form-group">
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">抽样数量单位：</label>
-                                    <div class="col-sm-8">kg</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">执行标准/技术文件：</label>
-                                    <div class="col-sm-8">/</div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="control-label col-sm-4">备注：</label>
-                                    <div class="col-sm-8">1.抽样包装为塑料袋。2.抽样品为固体。以上息由被抽样单位提供</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="ibox float-e-margins">
-                            <h2>照片信息</h2>
-                            <div class="row form-group">
-                                <div class="col-sm-12">
-                                    <ul id="dowebok">
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215062300710.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215062300710.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片1</p>
-                                            </div>
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215061615455.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215061615455.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片2</p>
-                                            </div>
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215060496823.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215060496823.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片3</p>
-                                            </div>
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215097954296.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215097954296.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片4</p>
-                                            </div>
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215067206447.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215067206447.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片5</p>
-                                            </div>
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215112338220.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215112338220.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片6</p>
-                                            </div>
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215110994150.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215110994150.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片7</p>
-                                            </div>
-                                        
-                                            <div style="display: inline-block;  overflow: hidden">
-                                                <img style="width:150px;height:150px;margin-right: 15px;"
-                                                     src="http://upload1.nifdc.org.cn/image/2019/12/09/157589215127612692.png"    data-original="http://upload1.nifdc.org.cn/image/2019/12/09/157589215127612692.png"
-                                                     alt="现场抽样图片">
-                                                <p>图片8</p>
-                                            </div>
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-sm-12">
-                                    
-                                        
-                                        
-                                            <a href="http://upload1.nifdc.org.cn/image/2019/12/09/157589212557848813.png" target="_blank"
-                                               class="btn btn-danger btn-xs"><i
-                                                    class="fa fa-search"></i> 抽样单电子版</a>
-                                        
-                                    
-                                    
-                                        
-                                        
-                                            <a href="http://upload1.nifdc.org.cn/image/2019/12/09/157589210673658150.png" target="_blank"
-                                               class="btn btn-danger btn-xs"><i
-                                                    class="fa fa-search"></i> 抽样检验告知书电子版</a>
-                                        
-                                    
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检验完成</title>
         
-        <div class="row">
-
-            <div class="col-sm-12 form-horizontal">
-                <div class="ibox float-e-margins">
-                    <h2>检验信息</h2>
-                    <div class="hr-line-dashed"></div>
-                    <form id="testform">
-                        <div class="row">
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">检验机构名称：</label>
-                                <div class="col-sm-7  text-left">
-                                    <label class="control-label">河南恒晟检测技术有限公司</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">报告书编号：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">2019（食）C2249</label>
-
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">样品到达日期：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">
-                                        2019-12-09</label>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">联系人：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">王力</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">联系人电话：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">0371-55929768</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">联系人邮箱：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">hengshengjiance23@163.com</label>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">检查封样人员：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">河南恒晟检测技术有限公司</label>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">检查封样人电话：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">15738889730</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">检查封样人邮箱：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">rdh123@163.com</label>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">结论：</label>
-                                <div class="col-sm-7">
-                                    <label id="hid_conclusion" class="control-label">纯抽检合格样品</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">监督抽检报告备注：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">
-                                        
-                                            
-                                                /
-                                            
-                                            
-                                        
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">风险监测报告备注：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">
-                                        
-                                            
-                                                /
-                                            
-                                            
-                                        
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 form-group hidden">
-                                <label class="control-label col-sm-5">接样日期：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">
-                                        
-                                            2019-12-12
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">报告类别：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">
-                                        
-                                            
-                                            
-                                                合格报告
-                                            
-                                        
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5">检验目的/任务类别：</label>
-                                <div class="col-sm-7">
-                                    <label class="control-label">监督抽检</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-4 form-group">
-                                <label class="control-label col-sm-5" disabled>历史退回原因：</label>
-                                <div class="col-sm-7">
-                                    <a id="showBackReason" class="btn btn-success btn-xs">点击查看</a>
-                                </div>
-                            </div>
-                            
-                                
-                                
-                                
-                            
-                            
-                                
-
-                                
-                                
-                            
-                        </div>
+    <link rel="shortcut icon" href="/Public/cfda.ico">
+    <link href="/Public/AdminNew/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Public/AdminNew/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/Public/AdminNew/css/animate.min.css" rel="stylesheet">
+    <link href="/Public/AdminNew/css/datatables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/Public/AdminLTE/css/style.css?v=1.3.6" rel="stylesheet">
+    <link href="/Public/AdminLTE/css/maintain.css?v=1.3.6" rel="stylesheet">
+</head>
+<body class="gray-bg">
+	<div class="wrapper wrapper-content">
+		<div class="row">
+			<div class="col-xs-12 animated fadeInUp">
+                <div class="mb20">
 
                         
-
-                            <div class="row">
-                                <div class="col-sm-4 form-group">
-                                    <label class="control-label col-sm-5">复检状态：</label>
-                                    <div class="col-sm-7">
-                                        
-                                            
-
-                                            
-                                            
-                                            
-                                            
-                                            
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        
-
-                        <div class="row hidden" id="unqualified-upload1">
-                            <div class="col-sm-6">
-                                <div class="alert alert-danger">
-                                    <div id="uploader2" class="wu-example">
-                                        <!--用来存放文件信息-->
-                                        <div id="thelist2" class="uploader-list"></div>
-                                        <span id="picker2">选择文件</span>
-                                        <p class="help-block">只能上传 word 和 pdf 格式的文件</p>
-                                        <label class="help-block m-b-none text-danger">上传不合格结果通知书</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="alert alert-info alert-dismissable">
-                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×
-                                    </button>
-                                    <p>（1）标准最小允许限、标准最大允许限是根据判定依据确定或根据常见食品品种核定，承检机构应根据检验的具体产品确定最小允许限、最大允许限。</p>
-                                    <p>（2）标准方法检出限是根据检验方法标准确定或核定（标准中未规定检出限或定量限时），承检机构应根据具体情况确定。</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                
-                                <table id="dg" title="检验结果" class="easyui-datagrid" style="width:auto;height: 460px;"
-                                       rownumbers="true" fitColumns="true" singleSelect="true">
-                                </table>
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a id="showFujianInfo" class="btn btn-success btn-xs">复检信息</a>
-                                <div class="hr-line-dashed"></div>
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h3>检验结论</h3>
-                                <div class="hr-line-dashed"></div>
-                                <p>
-                                    经抽样检验，所检项目符合 卫生部、国家食品药品监督管理局2012年第10号公告，GB 2760-2014《食品安全国家标准 食品添加剂使用标准》 要求。
-                                </p>
-                            </div>
-                        </div>
-                        <input type="hidden" id="sd" name="sd" value="AxBfS8NHO2ouNkcGelOAnfOF8ZC2ZFYVLEbniz3pKeI=">
-                        <input type="hidden" id="st" name="st" value="4">
-                        <input type="hidden" id="sis" name="sis" value="9">
-                        <input type="hidden" id="rd" name="rd" value="1">
-                        <input type="hidden" id="unqualifed" value="">
-                    </form>
-                    <div class="hr-line-dashed"></div>
-                    <div class="row hidden" id="unqualified-upload">
-                        <div class="col-sm-6">
-                            <div class="alert alert-danger">
-                                <div id="uploader1" class="wu-example">
-                                    <!--用来存放文件信息-->
-                                    <div id="thelist1" class="uploader-list"></div>
-                                    <span id="picker1">选择文件</span>
-                                    <p class="help-block">只能上传 word 和 pdf 格式的文件</p>
-                                    <label class="help-block m-b-none text-danger">上传不合格结果通知书</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            
-                                
-                                
-                                
-                                
-                                
-                                
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            
-                                                
-                                                    <button data-toggle="tooltip" data-placement="top" title="查看"
-                                                            onclick="detailManager.viewReport('http://111.204.20.233:39054/report/jd_report/4907/20191228/DC19413100463237016_JDCJ_dc8ec2b9-2ab6-437b-ad8e-862dde1081a5.pdf','查看监督抽检报告')"
-                                                            class="btn btn-primary btn-xs btn-outline"
-                                                            id="btn-previewJd" type="button">
-                                                        <i class="fa fa-eye"></i> 监督抽检报告预览
-                                                    </button>
-                                                
-                                                
-                                                
-                                                
-                                            
-                                        </div>
-                                    </div>
-                                    <h2 class="text-navy">状态: 已完全提交</h2>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-
-                                
-                                
-                                
-                                
-                                
-                                
-
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                            
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <div class="row hidden">
-                        <div class="col-sm-12">
-                            <h3>历史报告</h3>
-                            <button class="btn btn-default" type="button">无</button>
-                        </div>
-                    </div>
                 </div>
+				<div class="ibox clearfix">
+					<div class="ibox-title clearfix pl20 borderline">
+						<h5>国家食品安全抽样检验抽样单</h5>
+					</div>
+					<div class="area">
+                        <!--抽样基础信息start-->
+						<div class="formArea1 formAreaCom">
+                            <h6 class="areaTitle">抽样基础信息</h6>
+                            <div class="areaContent">
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-12 pl0">
+                                        任务来源：鹤壁市市场监督管理局鹤山分局                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-12 pl0">
+                                        报送分类：市县级农产品专项抽检2020年河南鹤壁鹤山区抽检计划                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-6 pl0">
+                                        检验机构名称：河南恒晟检测技术有限公司                                    </div>
+                                    <div class="col-xs-6 pl0">
+                                        抽样类型：农产品抽样                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-12 pl0">
+                                        部署机构：鹤壁市市场监督管理局鹤山分局                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-6 pl0">
+                                        抽样环节：流通                                    </div>
+                                    <div class="col-xs-6 pl0">
+                                        抽样地点：农贸市场                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-6 pl0">
+                                        食品分类：食用农产品                                        畜禽肉及副产品                                        畜肉                                        猪肉                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-6 pl0">
+                                        抽样单编号： NCP20410602463230031                                    </div>
+                                    <div class="col-xs-6 pl0">
+                                        检验目的/任务类别：   监督抽检                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--抽样基础信息end-->
+                        <!--抽样单位信息start-->
+                        <div class="formArea1 formAreaCom">
+                            <h6 class="areaTitle">抽样单位信息</h6>
+                            <div class="areaContent">
+                                <div class="form-group clearfix">
+                                    <div class="widthtwo pull-left">
+                                        单位名称：河南恒晟检测技术有限公司                                                                                </div>
+                                    <!-- <div class="widTone pull-left">
+                                        单位级别：省（区）级                                    </div> -->
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="widthtwo pull-left">
+                                        单位地址：新郑市薛店镇中德产业园2-3号                                                                                </div>
+                                    <div class="widTone pull-left">
+                                       所在省份：河南                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="widTone pull-left">
+                                        抽样人员：凌振峰、杜鹏举、杜冰                                    </div>
+                                    <div class="widTone pull-left">
+                                        联系人：王力                                                                                </div>
+                                    <div class="widTone pull-left">
+                                        电子邮箱：hengshengjiance23@163.com                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="widTone pull-left">
+                                        电话：
+                                        0371-55929768                                                                                </div>
+                                    <div class="widTone pull-left">
+                                        传真：
+                                        0371-55929768                                                                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--抽样单位信息end-->
+                        <!--抽样场所信息start-->
+                        <div class="formArea1 formAreaCom">
+                            <h6 class="areaTitle">抽检场所信息</h6>
+                            <div class="areaContent">
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-6 pl0">
+                                        <span class="pull-left insLabelForm">所在地：河南 鹤壁                                        鹤山区</span>
+                                    </div>
+                                    <div class="col-xs-6 pl0">
+                                        <span class="pull-left insLabelForm ar">区域类型：城市</span>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-12 pl0">
+                                        <span class="pull-left insLabelForm">单位名称：鹤壁市鹤山区秀成生肉店</span>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-12 pl0">
+                                        <span class="pull-left insLabelForm ar">单位地址：鹤山区鹤壁集惠恩贸易中心内</span>
+                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                                                            <div class="widTone pull-left">
+                                            营业执照/社会信用代码：92410602MA457NW89C                                        </div>
+                                        <div class="widTone pull-left">
+                                            许可证类型：经营许可证                                        </div>                                    <div class="widTone pull-left">
+                                        许可证号：/                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="widTone pull-left">
+                                        法人代表：高雅                                    </div>
+                                    <div class="widTone pull-left">
+                                        联系人：高雅                                    </div>
+                                    <div class="widTone pull-left">
+                                        联系电话：18539233111                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                        <div class="widTone pull-left">
+                                            摊位号或姓名：高雅                                        </div>
+                                        <div class="widTone pull-left">
+                                            身份证号：410602199603161026                                        </div>
+                                    </div>                                                            </div>
+                        </div>
+                        <!--抽样场所信息end-->
+                        
+                        <!--抽样生产企业信息start-->
+                        <div class="formArea1 formAreaCom">
+                                                            <h6 class="areaTitle">抽样生产企业信息</h6>
+                                <div class="areaContent">
+                                    <div class="form-group clearfix">
+                                        <div class="col-xs-12 pl0">
+                                            所在地：河南                                            鹤壁                                            鹤山区                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <div class="col-xs-12 pl0">
+                                            生产者地址：/                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <div class="col-xs-6 pl0">
+                                            生产者名称：/                                        </div>
+                                        <div class="col-xs-6">
+                                            生产许可证编号：/                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <div class="widTone pull-left">
+                                            联系电话：/                                        </div>
+                                        <div class="widTone pull-left pl10">
+                                            是否存在第三方企业信息：否                                        </div>
+                                    </div>
+                                                                    </div>                        </div>
+                        <!--抽样生产企业信息end-->
+                        <!--抽样样品信息start-->
+                                                    <div class="formArea1 formAreaCom">
+                            <h6 class="areaTitle">抽检样品信息</h6>
+                            <div class="areaContent">
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-6 pl0">
+                                        样品条码：/                                    </div>
+                                    <div class="col-xs-3">
+                                        样品商标：/                                    </div>
+                                    <div class="col-xs-3">
+                                        样品类型：食用农产品                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-3 pl0">
+                                        样品来源：外购                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        样品属性：普通食品                                    </div>
+                                    <div class="col-xs-3">
+                                        包装分类：无包装                                    </div>
+                                    <div class="col-xs-3 ">
+                                        样品名称：猪五花肉                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-6 pl0">
+                                        购进日期：2020-01-20                                    </div>
+                                    <div class="col-xs-3">
+                                        保质期：/                                    </div>
+                                    <div class="col-xs-3">
+                                        样品批号：/                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-3 pl0">
+                                        规格型号：/                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        质量等级：/                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        单价：54元/kg                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        是否进口：否                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-3 pl0">
+                                        抽样日期：2020-01-20                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        抽样方式：非无菌采样                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        原产地：中国                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        储存条件：常温                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-3 pl0">
+                                        抽样基数：20kg                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        抽样数量：1.5                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        备样数量：0.5kg                                    </div>
+                                    <div class="col-xs-3 pl0">
+                                        抽样数量单位：Kg                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-15 pl0">
+                                        执行标准/技术文件：/                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-15 pl0">
+                                        整个样品备注：以上信息由被抽样单位提供                                    </div>
+                                </div>
+                            </div>
+                        </div>                        <!--抽样样品信息end-->
+                        <!--抽样生产企业信息start-->
+                        <div class="formArea1 formAreaCom">
+                            <h6 class="areaTitle">现场照片</h6>
+                            <div class="areaContent pb30">
+                                <ul class="addList clearfix">
+                                    <li>
+                                                <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/15794988411266.835.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                    <img src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/15794988411266.835.png">
+                                                </a>
+                                            </li><li>
+                                                <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884015823752.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                    <img src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884015823752.png">
+                                                </a>
+                                            </li><li>
+                                                <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884045359761.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                    <img src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884045359761.png">
+                                                </a>
+                                            </li><li>
+                                                <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884024170830.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                    <img src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884024170830.png">
+                                                </a>
+                                            </li><li>
+                                                <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884045945427.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                    <img src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884045945427.png">
+                                                </a>
+                                            </li><li>
+                                                <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884119255399.png" data-magnify="gallery" data-group="g1" data-caption="">
+                                                    <img src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949884119255399.png">
+                                                </a>
+                                            </li>                                </ul>
+                            </div>
+                        </div>
+                        <!--抽样生产企业信息end-->
+                        <!--告知书&抽样单start-->
+                        <div class="formArea1 formAreaCom attention">
+                            <h6 class="areaTitle">告知书&抽样单</h6>
+                            <div class="areaContent pb30 ">
+                                <span class="downResult btn-sm cydUpload" id="">
+                                <i>抽样单:
+                                                                        <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949885021321168.png" data-magnify="gallery" data-group="g2">
+                                        157949885021321168.png</a>
+                                                                    </i>
+                                    </span>
+                                <span class="downResult btn-sm gzsUpload">
+                                    <i>告知书:
+                                                                                <a href="javascript:void(0)" data-src="http://spcjupload2.gsxt.gov.cn/image/2020/01/20/157949885666614315.png" data-magnify="gallery" data-group="g2">
+                                            157949885666614315.png</a>
+                                                                            </i>
+                                </span>
+                            </div>
+                        </div>
+                        <!--抽告知书&抽样单end-->
+                        <div class="ibox-title clearfix pl20 borderline">
+                            检验信息
+                        </div>
+                        <div class="formAreaCom">
+                            <div class="areaContent">
+                                <div class="form-group clearfix">
+                                    <div class="col-xs-12 pl0">
+                                        检验机构名称：河南恒晟检测技术有限公司                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="widTone pull-left">
+                                        样品送达日期：2020-01-20                                    </div>
+                                    <div class="widTone pull-left pl10">
+                                        联系人：王力                                    </div>
+                                    <div class="widTone pull-left pl10">
+                                        联系人电话：0371-55929768                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="widTone pull-left">
+                                        联系人邮箱：hengshengjiance23@163.com                                    </div>
+                                    <div class="widTone pull-left pl10">
+                                        检查封样人员：河南恒晟检测技术有限公司                                    </div>
+                                    <div class="widTone pull-left pl10">
+                                        系统接样日期：2020-02-01                                    </div>
+                                </div>
+                                <div class="form-group clearfix">
+                                    <div class="widTone pull-left">
+                                        检查封样人电话：15738889730                                    </div>
+                                    <div class="widTone pull-left pl10">
+                                        检查封样人邮箱：rdh123@163.com                                    </div>
+                                </div>
+                                
+                                                            </div>
+                        </div>					</div>
+				</div>
             </div>
-        </div>
-    </div>
-</div>
+		</div>	
+	</div>
+	<script src="/Public/AdminNew/js/jquery.min.js"></script>
+	<script src="/Public/AdminNew/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/Public/AdminNew/js/plugins/dataTables/jquery.dataTables.js"></script>
+	<script type="text/javascript" src="/Public/AdminNew/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+    <script src="/Public/AdminNew/plugins/laydate/laydate.js?v=2.1.4"></script>
+    <script src="/Public/AdminNew/js/jquery.rotate.index.min.js?v=1"></script>
+    <script src="/Public/AdminNew/js/jquery.rotate.min.js?v=1"></script>
+    <script>
+        $(function () {
+            $('[data-magnify]').Magnify({
+                Toolbar: [
+                    'prev',
+                    'next',
+                    'rotateLeft',
+                    'rotateRight',
+                    'zoomIn',
+                    'actualSize',
+                    'zoomOut'
+                ],
+                keyboard:true,
+                draggable:true,
+                movable:true,
+                modalSize:[800,600],
+                beforeOpen:function (obj,data) {
+                    //console.log('beforeOpen')
+                },
+                opened:function (obj,data) {
+                    //console.log('opened')
+                },
+                beforeClose:function (obj,data) {
+                    //console.log('beforeClose')
+                },
+                closed:function (obj,data) {
+                    // console.log('closed')
+                },
+                beforeChange:function (obj,data) {
+                    //console.log('beforeChange')
+                },
+                changed:function (obj,data) {
+                    //console.log('changed')
+                }
+            });
 
-<div class="hidden" id="back-div">
-    <textarea class="form-control " style="width: 99%; margin: 5px auto;overflow-x: hidden" rows="5"
-              placeholder="请输入退回原因..." id="backReason"></textarea>
-    <div class="text-right">
-        <button id="btn-back" type="button" style="margin: 5px 5px" class="btn btn-danger">退回</button>
-        <button id="btn-cancel" type="button" style="margin: 5px 5px" class="btn btn-default">取消</button>
-    </div>
-</div>
+        })
 
-<input type="hidden" id="test_aims" value="监督抽检"/>
-
-
-<script type="text/javascript" src="/test_platform/js/jquery.min.js"></script>
-<script type="text/javascript" src="/test_platform/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/test_platform/js/plugins/toastr/toastr.min.js"></script>
-<script type="text/javascript" src="/test_platform/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="/test_platform/js/plugins/chosen/chosen.jquery.js"></script>
-<script type="text/javascript" src="/test_platform/js/plugins/layer/layer.min.js"></script>
-<script type="text/javascript" src="/test_platform/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="/test_platform/js/common/globaltools.js?v=1.2.0.43"></script>
-
-
-<script>
-    $(function () {
-        $("[data-toggle='tooltip']").tooltip();
-        var viewer = new Viewer(document.getElementById('dowebok'), {
-            url: 'data-original'
-        });
-    });
-</script>
-<script src="/test_platform/js/webuploader.js"></script>
-<script src="/test_platform/js/plugins/fancybox/jquery.fancybox.js?v=1.2.0.43"></script>
-<script src="/test_platform/easyui/jquery.easyui.min.js?v=1.2.0.43"></script>
-<script src="/test_platform/js/plugins/fancybox/viewer.min.js"></script>
-<script src="/test_platform/easyui/locale/easyui-lang-zh_CN.js?v=1.2.0.43"></script>
-<script src="/test_platform/js/uploadTool.js"></script>
-<script src="/test_platform/js/food/foodDetailReadOnly.js?v=1.2.0.43"></script>
+    </script>
 </body>
 </html>
-
 `
 
-	mkr := StoMap_foodDetail(olds)
+	mkr := StoMap_yijieshou_full(olds)
 	fmt.Println(mkr["抽检样品信息_生产日期"])
-	//for k, v := range mkr {
-	//	fmt.Printf("%s:%s\n", k, v)
-	//}
+	for k, v := range mkr {
+		fmt.Printf("%s:%s\n", k, v)
+	}
 	//tmj := template.New("tmj")
 	//tmj.Funcs(map[string]interface{}{
 	//	"replace": strings.ReplaceAll,
