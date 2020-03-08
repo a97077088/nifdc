@@ -754,37 +754,8 @@ func 	Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos
 }
 
 //保存agriculture_testinfo
-func Test_platform_api_agriculture_save(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestInfo_o, ck string, session *Session) error {
-	items := make([]map[string]string, 0)
-	for _, tinfo := range testinfos {
-		itmap := make(map[string]string)
-		itmap["id"] = fmt.Sprintf("%d", tinfo.Id)
-		itmap["item_old"] = tinfo.Spdata_0_old
-		itmap["item"] = tinfo.Spdata_0
-		itmap["sp_data_1"] = tinfo.Spdata_1 //结果
-		itmap["sp_data_2"] = tinfo.Spdata_2
-		itmap["sp_data_3"] = tinfo.Spdata_3
-		itmap["sp_data_4"] = tinfo.Spdata_4
-		itmap["sp_data_5"] = tinfo.Spdata_5
-		itmap["sp_data_6"] = tinfo.Spdata_6
-		itmap["sp_data_7"] = tinfo.Spdata_7
-		itmap["sp_data_8"] = tinfo.Spdata_8
-		itmap["sp_data_9"] = tinfo.Spdata_9
-		itmap["sp_data_10"] = tinfo.Spdata_10
-		itmap["sp_data_11"] = tinfo.Spdata_11
-		itmap["sp_data_12"] = tinfo.Spdata_12
-		itmap["sp_data_13"] = tinfo.Spdata_13
-		itmap["sp_data_15"] = tinfo.Spdata_15
-		itmap["sp_data_16"] = tinfo.Spdata_16
-		itmap["sp_data_17"] = tinfo.Spdata_17
-		itmap["sp_data_18"] = tinfo.Spdata_18
-		itmap["bz"] = tinfo.Spdata_20
-		itmap["sm"] = tinfo.Spdata_19
-		itmap["sp_data_21"] = tinfo.Spdata_21
-		itmap["jylx"] = tinfo.Jylx
-		items = append(items, itmap)
-	}
-
+func Test_platform_api_agriculture_save(fooddetail map[string]string, updatas []map[string]string, ck string, session *Session) error {
+	items := updatas
 	sitems, err := json.Marshal(items)
 	if err != nil {
 		return err
@@ -911,36 +882,8 @@ func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) 
 }
 
 //保存testinfo
-func Test_platform_api_food_save(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestInfo_o, ck string, session *Session) error {
-	items := make([]map[string]string, 0)
-	for _, tinfo := range testinfos {
-		itmap := make(map[string]string)
-		itmap["id"] = fmt.Sprintf("%d", tinfo.Id)
-		itmap["item_old"] = tinfo.Spdata_0_old
-		itmap["item"] = tinfo.Spdata_0
-		itmap["sp_data_1"] = tinfo.Spdata_1 //结果
-		itmap["sp_data_2"] = tinfo.Spdata_2
-		itmap["sp_data_3"] = tinfo.Spdata_3
-		itmap["sp_data_4"] = tinfo.Spdata_4
-		itmap["sp_data_5"] = tinfo.Spdata_5
-		itmap["sp_data_6"] = tinfo.Spdata_6
-		itmap["sp_data_7"] = tinfo.Spdata_7
-		itmap["sp_data_8"] = tinfo.Spdata_8
-		itmap["sp_data_9"] = tinfo.Spdata_9
-		itmap["sp_data_10"] = tinfo.Spdata_10
-		itmap["sp_data_11"] = tinfo.Spdata_11
-		itmap["sp_data_12"] = tinfo.Spdata_12
-		itmap["sp_data_13"] = tinfo.Spdata_13
-		itmap["sp_data_15"] = tinfo.Spdata_15
-		itmap["sp_data_16"] = tinfo.Spdata_16
-		itmap["sp_data_17"] = tinfo.Spdata_17
-		itmap["sp_data_18"] = tinfo.Spdata_18
-		itmap["bz"] = tinfo.Spdata_20
-		itmap["sm"] = tinfo.Spdata_19
-		itmap["sp_data_21"] = tinfo.Spdata_21
-		itmap["jylx"] = tinfo.Jylx
-		items = append(items, itmap)
-	}
+func Test_platform_api_food_save(fooddetail map[string]string, updatas []map[string]string, ck string, session *Session) error {
+	items := updatas
 
 	sitems, err := json.Marshal(items)
 	if err != nil {

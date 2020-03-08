@@ -208,114 +208,135 @@ func StoMap_foodDetail(s string) map[string]string {
 func StoMap_yijieshou_full(s string) map[string]string {
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(s))
 	//抽样基础信息
-	sel0 := rt.Find(".formAreaCom").Eq(0)
-	sel0html, _ := sel0.Html()
-	//抽样单位信息
-	sel1 := rt.Find(".formAreaCom").Eq(1)
-	sel1html, _ := sel1.Html()
-	//抽样场所信息
-	sel2 := rt.Find(".formAreaCom").Eq(2)
-	sel2html, _ := sel2.Html()
-	//抽样生产企业信
-	sel3 := rt.Find(".formAreaCom").Eq(3)
-	sel3html, _ := sel3.Html()
-	//抽检样品信息
-	sel4 := rt.Find(".formAreaCom").Eq(4)
-	sel4html, _ := sel4.Html()
-	//检验信息
-	sel7 := rt.Find(".formAreaCom").Eq(7)
-	sel7html, _ := sel7.Html()
+	//sel0 := rt.Find(".formAreaCom").Eq(0)
+	//sel0html, _ := sel0.Html()
+	////抽样单位信息
+	//sel1 := rt.Find(".formAreaCom").Eq(1)
+	//sel1html, _ := sel1.Html()
+	////抽样场所信息
+	//sel2 := rt.Find(".formAreaCom").Eq(2)
+	//sel2html, _ := sel2.Html()
+	////抽样生产企业信
+	//sel3 := rt.Find(".formAreaCom").Eq(3)
+	//sel3html, _ := sel3.Html()
+	////抽检样品信息
+	//sel4 := rt.Find(".formAreaCom").Eq(4)
+	//sel4html, _ := sel4.Html()
+	////检验信息
+	//sel7 := rt.Find(".formAreaCom").Eq(7)
+	//sel7html, _ := sel7.Html()
 
 	mkr := make(map[string]string, 0)
 
-	mkr["抽样基础信息_任务来源"] = FindFdval(sel0html, "任务来源")
-	mkr["抽样基础信息_报送分类"] = FindFdval(sel0html, "报送分类")
-	mkr["抽样基础信息_检验机构名称"] = FindFdval(sel0html, "检验机构名称")
-	mkr["抽样基础信息_部署机构"] = FindFdval(sel0html, "部署机构")
-	mkr["抽样基础信息_抽样类型"] = FindFdval(sel0html, "抽样类型")
-	mkr["抽样基础信息_抽样环节"] = FindFdval(sel0html, "抽样环节")
-	mkr["抽样基础信息_抽样地点"] = FindFdval(sel0html, "抽样地点")
-	mkr["抽样基础信息_食品分类"] = strings.ReplaceAll(FindFdval(sel0html, "食品分类"), "                                    ", " ")
-	mkr["抽样基础信息_抽样单编号"] = FindFdval(sel0html, "抽样单编号")
-	mkr["抽样基础信息_检验目的/任务类别"] = FindFdval(sel0html, "检验目的\\/任务类别")
-	mkr["抽样单位信息_单位名称"] = FindFdval(sel1html, "单位名称")
-	mkr["抽样单位信息_单位地址"] = FindFdval(sel1html, "单位地址")
-	mkr["抽样单位信息_所在省份"] = FindFdval(sel1html, "所在省份")
-	mkr["抽样单位信息_抽样人员"] = FindFdval(sel1html, "抽样人员")
-	mkr["抽样单位信息_联系人"] = FindFdval(sel1html, "联系人")
-	mkr["抽样单位信息_电子邮箱"] = FindFdval(sel1html, "电子邮箱")
-	mkr["抽样单位信息_电话"] = FindFdval(sel1html, "电话")
-	mkr["抽样单位信息_传真"] = FindFdval(sel1html, "传真")
-	mkr["抽检场所信息_所在地"] = strings.ReplaceAll(FindFdval(sel2html, "所在地"), "                                        ", " ")
-	mkr["抽检场所信息_区域类型"] = FindFdval(sel2html, "区域类型")
-	mkr["抽检场所信息_单位名称"] = FindFdval(sel2html, "单位名称")
-	mkr["抽检场所信息_单位地址"] = FindFdval(sel2html, "单位地址")
-	mkr["抽检场所信息_营业执照/社会信用代码"] = FindFdval(sel2html, "营业执照\\/社会信用代码")
-	mkr["抽检场所信息_许可证类型"] = FindFdval(sel2html, "许可证类型")
-	mkr["抽检场所信息_许可证号"] = FindFdval(sel2html, "许可证号")
-	mkr["抽检场所信息_法人代表"] = FindFdval(sel2html, "法人代表")
-	mkr["抽检场所信息_联系人"] = FindFdval(sel2html, "联系人")
-	mkr["抽检场所信息_联系电话"] = FindFdval(sel2html, "联系电话")
-	mkr["抽检场所信息_摊位号或姓名"] = FindFdval(sel2html, "摊位号或姓名")
-	mkr["抽检场所信息_身份证号"] = FindFdval(sel2html, "身份证号")
-	mkr["抽样生产企业信息_所在地"] = strings.ReplaceAll(FindFdval(sel3html, "所在地"), "                                        ", " ")
-	mkr["抽样生产企业信息_生产者地址"] = FindFdval(sel3html, "生产者地址")
-	mkr["抽样生产企业信息_生产者名称"] = FindFdval(sel3html, "生产者名称")
-	mkr["抽样生产企业信息_生产许可证编号"] = FindFdval(sel3html, "生产许可证编号")
-	mkr["抽样生产企业信息_联系电话"] = FindFdval(sel3html, "联系电话")
-	mkr["抽样生产企业信息_是否存在第三方企业信息"] = FindFdval(sel3html, "是否存在第三方企业信息")
-	if mkr["抽样生产企业信息_是否存在第三方企业信息"] == "是" {
-		rhm, _ := sel3.Find(".wtsc.clearfix").Html()
-		dsfdz := strings.ReplaceAll(FindFdval(rhm, "所在地"), "                                                ", " ")
-		spdsfdz := strings.Split(dsfdz, " ")
-		if len(spdsfdz) == 3 {
-			mkr["抽样生产企业信息_第三方企业省份"] = spdsfdz[0]
-			mkr["抽样生产企业信息_第三方企业市区"] = spdsfdz[1]
-			mkr["抽样生产企业信息_第三方企业县区"] = spdsfdz[2]
+	rt.Find(".formAreaCom").Each(func(i int, sel *goquery.Selection) {
+		title:=sel.Find(".areaTitle").Text()
+		if i==7&&title==""{
+			title="检验信息"
 		}
-		mkr["抽样生产企业信息_第三方企业地址"] = FindFdval(sel3html, "第三方企业地址")
-		mkr["抽样生产企业信息_第三方企业名称"] = FindFdval(sel3html, "第三方企业名称")
-		mkr["抽样生产企业信息_第三方企业许可证编号"] = FindFdval(sel3html, "第三方企业许可证编号")
-		mkr["抽样生产企业信息_第三方企业联系人"] = ""
-		mkr["抽样生产企业信息_第三方企业电话"] = FindFdval(sel3html, "第三方企业电话")
-		mkr["抽样生产企业信息_第三方企业性质"] = FindFdval(sel3html, "第三方企业性质")
-	}
-	mkr["抽检样品信息_样品条码"] = FindFdval(sel4html, "样品条码")
-	mkr["抽检样品信息_样品商标"] = FindFdval(sel4html, "样品商标")
-	mkr["抽检样品信息_样品类型"] = FindFdval(sel4html, "样品类型")
-	mkr["抽检样品信息_样品来源"] = FindFdval(sel4html, "样品来源")
-	mkr["抽检样品信息_样品属性"] = FindFdval(sel4html, "样品属性")
-	mkr["抽检样品信息_包装分类"] = FindFdval(sel4html, "包装分类")
-	mkr["抽检样品信息_样品名称"] = FindFdval(sel4html, "样品名称")
-	mkr["抽检样品信息_生产日期"] = FindFdval(sel4html, "生产日期")
-	mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期")
-	mkr["抽检样品信息_加工日期"] = FindFdval(sel4html, "加工日期")
-	mkr["抽检样品信息_保质期"] = FindFdval(sel4html, "保质期")
-	mkr["抽检样品信息_样品批号"] = FindFdval(sel4html, "样品批号")
-	mkr["抽检样品信息_规格型号"] = FindFdval(sel4html, "规格型号")
-	mkr["抽检样品信息_质量等级"] = FindFdval(sel4html, "质量等级")
-	mkr["抽检样品信息_单价"] = FindFdval(sel4html, "单价")
-	mkr["抽检样品信息_是否进口"] = FindFdval(sel4html, "是否进口")
-	mkr["抽检样品信息_抽样日期"] = FindFdval(sel4html, "抽样日期")
-	mkr["抽检样品信息_抽样方式"] = FindFdval(sel4html, "抽样方式")
-	mkr["抽检样品信息_原产地"] = FindFdval(sel4html, "原产地")
-	mkr["抽检样品信息_储存条件"] = FindFdval(sel4html, "储存条件")
-	mkr["抽检样品信息_抽样基数"] = FindFdval(sel4html, "抽样基数")
-	mkr["抽检样品信息_抽样数量"] = FindFdval(sel4html, "抽样数量")
-	mkr["抽检样品信息_备样数量"] = FindFdval(sel4html, "备样数量")
-	mkr["抽检样品信息_抽样数量单位"] = FindFdval(sel4html, "抽样数量单位")
-	mkr["抽检样品信息_执行标准/技术文件"] = FindFdval(sel4html, "执行标准\\/技术文件")
-	mkr["抽检样品信息_整个样品备注"] = FindFdval(sel4html, "整个样品备注")
 
-	mkr["检验信息_检验机构名称"] = FindFdval(sel7html, "检验机构名称")
-	mkr["检验信息_样品送达日期"] = FindFdval(sel7html, "样品送达日期")
-	mkr["检验信息_联系人"] = FindFdval(sel7html, "联系人")
-	mkr["检验信息_联系人电话"] = FindFdval(sel7html, "联系人电话")
-	mkr["检验信息_联系人邮箱"] = FindFdval(sel7html, "联系人邮箱")
-	mkr["检验信息_检查封样人员"] = FindFdval(sel7html, "检查封样人员")
-	mkr["检验信息_系统接样日期"] = FindFdval(sel7html, "系统接样日期")
-	mkr["检验信息_检查封样人电话"] = FindFdval(sel7html, "检查封样人电话")
-	mkr["检验信息_检查封样人邮箱"] = FindFdval(sel7html, "检查封样人邮箱")
+		sel.Find("div:contains(：)").Each(func(i int, selection *goquery.Selection) {
+			spsel:=strings.Split(selection.Text(),"：")
+			if len(spsel)!=2{
+				return
+			}
+			k:=fmt.Sprintf("%s_%s",title,strings.TrimSpace(spsel[0]))
+			fmt.Println(k)
+			v:=strings.TrimSpace(spsel[1])
+			v=strings.ReplaceAll(v,"                                        "," ")
+			mkr[k]=v
+		})
+	})
+
+
+
+	//mkr["抽样基础信息_任务来源"] = FindFdval(sel0html, "任务来源")
+	//mkr["抽样基础信息_报送分类"] = FindFdval(sel0html, "报送分类")
+	//mkr["抽样基础信息_检验机构名称"] = FindFdval(sel0html, "检验机构名称")
+	//mkr["抽样基础信息_部署机构"] = FindFdval(sel0html, "部署机构")
+	//mkr["抽样基础信息_抽样类型"] = FindFdval(sel0html, "抽样类型")
+	//mkr["抽样基础信息_抽样环节"] = FindFdval(sel0html, "抽样环节")
+	//mkr["抽样基础信息_抽样地点"] = FindFdval(sel0html, "抽样地点")
+	//mkr["抽样基础信息_食品分类"] = strings.ReplaceAll(FindFdval(sel0html, "食品分类"), "                                    ", " ")
+	//mkr["抽样基础信息_抽样单编号"] = FindFdval(sel0html, "抽样单编号")
+	//mkr["抽样基础信息_检验目的/任务类别"] = FindFdval(sel0html, "检验目的\\/任务类别")
+	//mkr["抽样单位信息_单位名称"] = FindFdval(sel1html, "单位名称")
+	//mkr["抽样单位信息_单位地址"] = FindFdval(sel1html, "单位地址")
+	//mkr["抽样单位信息_所在省份"] = FindFdval(sel1html, "所在省份")
+	//mkr["抽样单位信息_抽样人员"] = FindFdval(sel1html, "抽样人员")
+	//mkr["抽样单位信息_联系人"] = FindFdval(sel1html, "联系人")
+	//mkr["抽样单位信息_电子邮箱"] = FindFdval(sel1html, "电子邮箱")
+	//mkr["抽样单位信息_电话"] = FindFdval(sel1html, "电话")
+	//mkr["抽样单位信息_传真"] = FindFdval(sel1html, "传真")
+	//mkr["抽检场所信息_所在地"] = strings.ReplaceAll(FindFdval(sel2html, "所在地"), "                                        ", " ")
+	//mkr["抽检场所信息_区域类型"] = FindFdval(sel2html, "区域类型")
+	//mkr["抽检场所信息_单位名称"] = FindFdval(sel2html, "单位名称")
+	//mkr["抽检场所信息_单位地址"] = FindFdval(sel2html, "单位地址")
+	//mkr["抽检场所信息_营业执照/社会信用代码"] = FindFdval(sel2html, "营业执照\\/社会信用代码")
+	//mkr["抽检场所信息_许可证类型"] = FindFdval(sel2html, "许可证类型")
+	//mkr["抽检场所信息_许可证号"] = FindFdval(sel2html, "许可证号")
+	//mkr["抽检场所信息_法人代表"] = FindFdval(sel2html, "法人代表")
+	//mkr["抽检场所信息_联系人"] = FindFdval(sel2html, "联系人")
+	//mkr["抽检场所信息_联系电话"] = FindFdval(sel2html, "联系电话")
+	//mkr["抽检场所信息_摊位号或姓名"] = FindFdval(sel2html, "摊位号或姓名")
+	//mkr["抽检场所信息_身份证号"] = FindFdval(sel2html, "身份证号")
+	//mkr["抽样生产企业信息_所在地"] = strings.ReplaceAll(FindFdval(sel3html, "所在地"), "                                        ", " ")
+	//mkr["抽样生产企业信息_生产者地址"] = FindFdval(sel3html, "生产者地址")
+	//mkr["抽样生产企业信息_生产者名称"] = FindFdval(sel3html, "生产者名称")
+	//mkr["抽样生产企业信息_生产许可证编号"] = FindFdval(sel3html, "生产许可证编号")
+	//mkr["抽样生产企业信息_联系电话"] = FindFdval(sel3html, "联系电话")
+	//mkr["抽样生产企业信息_是否存在第三方企业信息"] = FindFdval(sel3html, "是否存在第三方企业信息")
+	//if mkr["抽样生产企业信息_是否存在第三方企业信息"] == "是" {
+	//	rhm, _ := sel3.Find(".wtsc.clearfix").Html()
+	//	dsfdz := strings.ReplaceAll(FindFdval(rhm, "所在地"), "                                                ", " ")
+	//	spdsfdz := strings.Split(dsfdz, " ")
+	//	if len(spdsfdz) == 3 {
+	//		mkr["抽样生产企业信息_第三方企业省份"] = spdsfdz[0]
+	//		mkr["抽样生产企业信息_第三方企业市区"] = spdsfdz[1]
+	//		mkr["抽样生产企业信息_第三方企业县区"] = spdsfdz[2]
+	//	}
+	//	mkr["抽样生产企业信息_第三方企业地址"] = FindFdval(sel3html, "第三方企业地址")
+	//	mkr["抽样生产企业信息_第三方企业名称"] = FindFdval(sel3html, "第三方企业名称")
+	//	mkr["抽样生产企业信息_第三方企业许可证编号"] = FindFdval(sel3html, "第三方企业许可证编号")
+	//	mkr["抽样生产企业信息_第三方企业联系人"] = ""
+	//	mkr["抽样生产企业信息_第三方企业电话"] = FindFdval(sel3html, "第三方企业电话")
+	//	mkr["抽样生产企业信息_第三方企业性质"] = FindFdval(sel3html, "第三方企业性质")
+	//}
+	//mkr["抽检样品信息_样品条码"] = FindFdval(sel4html, "样品条码")
+	//mkr["抽检样品信息_样品商标"] = FindFdval(sel4html, "样品商标")
+	//mkr["抽检样品信息_样品类型"] = FindFdval(sel4html, "样品类型")
+	//mkr["抽检样品信息_样品来源"] = FindFdval(sel4html, "样品来源")
+	//mkr["抽检样品信息_样品属性"] = FindFdval(sel4html, "样品属性")
+	//mkr["抽检样品信息_包装分类"] = FindFdval(sel4html, "包装分类")
+	//mkr["抽检样品信息_样品名称"] = FindFdval(sel4html, "样品名称")
+	//mkr["抽检样品信息_生产日期"] = FindFdval(sel4html, "生产日期")
+	//mkr["抽检样品信息_购进日期"] = FindFdval(sel4html, "购进日期")
+	//mkr["抽检样品信息_加工日期"] = FindFdval(sel4html, "加工日期")
+	//mkr["抽检样品信息_保质期"] = FindFdval(sel4html, "保质期")
+	//mkr["抽检样品信息_样品批号"] = FindFdval(sel4html, "样品批号")
+	//mkr["抽检样品信息_规格型号"] = FindFdval(sel4html, "规格型号")
+	//mkr["抽检样品信息_质量等级"] = FindFdval(sel4html, "质量等级")
+	//mkr["抽检样品信息_单价"] = FindFdval(sel4html, "单价")
+	//mkr["抽检样品信息_是否进口"] = FindFdval(sel4html, "是否进口")
+	//mkr["抽检样品信息_抽样日期"] = FindFdval(sel4html, "抽样日期")
+	//mkr["抽检样品信息_抽样方式"] = FindFdval(sel4html, "抽样方式")
+	//mkr["抽检样品信息_原产地"] = FindFdval(sel4html, "原产地")
+	//mkr["抽检样品信息_储存条件"] = FindFdval(sel4html, "储存条件")
+	//mkr["抽检样品信息_抽样基数"] = FindFdval(sel4html, "抽样基数")
+	//mkr["抽检样品信息_抽样数量"] = FindFdval(sel4html, "抽样数量")
+	//mkr["抽检样品信息_备样数量"] = FindFdval(sel4html, "备样数量")
+	//mkr["抽检样品信息_抽样数量单位"] = FindFdval(sel4html, "抽样数量单位")
+	//mkr["抽检样品信息_执行标准/技术文件"] = FindFdval(sel4html, "执行标准\\/技术文件")
+	//mkr["抽检样品信息_整个样品备注"] = FindFdval(sel4html, "整个样品备注")
+	//
+	//mkr["检验信息_检验机构名称"] = FindFdval(sel7html, "检验机构名称")
+	//mkr["检验信息_样品送达日期"] = FindFdval(sel7html, "样品送达日期")
+	//mkr["检验信息_联系人"] = FindFdval(sel7html, "联系人")
+	//mkr["检验信息_联系人电话"] = FindFdval(sel7html, "联系人电话")
+	//mkr["检验信息_联系人邮箱"] = FindFdval(sel7html, "联系人邮箱")
+	//mkr["检验信息_检查封样人员"] = FindFdval(sel7html, "检查封样人员")
+	//mkr["检验信息_系统接样日期"] = FindFdval(sel7html, "系统接样日期")
+	//mkr["检验信息_检查封样人电话"] = FindFdval(sel7html, "检查封样人电话")
+	//mkr["检验信息_检查封样人邮箱"] = FindFdval(sel7html, "检查封样人邮箱")
 
 	return mkr
 }
@@ -409,7 +430,7 @@ func Buildpanduanyiju(yj string, testinfos []map[string]string) string {
 	return r
 }
 
-//生成报告
+//构建报告
 func Buildbaogao(testinfos []map[string]string) string {
 	unqualifieds := Getunqualified(testinfos)
 	allpdyiju := GetAllPandingyiju(testinfos)
@@ -438,4 +459,137 @@ func Buildbaogao(testinfos []map[string]string) string {
 	rs = strings.ReplaceAll(rs, ",", "，")
 	rs = fmt.Sprintf("%s，检验结论为不合格。", rs)
 	return rs
+}
+
+
+
+func loop_testinfo(k string,testinfos []*Test_platform_api_food_getTestInfo_o)*Test_platform_api_food_getTestInfo_o{
+	for _,it:=range testinfos{
+		if it.Spdata_0==k{
+			return it
+		}
+	}
+	return nil
+}
+func loop_userdata(k string,userdata []map[string]string)map[string]string{
+	for _,it:=range userdata{
+		if it["检验项目"]==k{
+			return it
+		}
+	}
+	return nil
+}
+func loop_TestReason(k string,testreasons []*TestReason_o)*TestReason_o{
+	for _,it:=range testreasons{
+		if strings.Contains(it.Spdata_3,k){
+			return it
+		}
+	}
+	return nil
+}
+func loop_VerifyReason(k string,testreasons []*VerifyReason_o)*VerifyReason_o{
+	for _,it:=range testreasons{
+		if strings.Contains(it.Spdata_4,k){
+			return it
+		}
+	}
+	return nil
+}
+
+//构建农产品上传
+func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o,testinfos []*Test_platform_api_food_getTestInfo_o,userdatas []map[string]string)[]map[string]string{
+	r:=make([]map[string]string,0)
+	for _,it:=range testitems{
+		itmap := make(map[string]string)
+		itmap["id"] = ""
+		itmap["item_old"] = it.Item
+		itmap["item"] = it.Item
+		itmap["sp_data_1"] = "" //结果
+		itmap["sp_data_2"] = "未检验" //结果判定
+		itmap["sp_data_3"] = it.TestReason[0].Spdata_3 //检验依据
+		itmap["sp_data_4"] = it.VerifyReason[0].Spdata_4 //判定依据
+		itmap["sp_data_5"] = it.TestReason[0].Spdata_5 //方法检出限
+		itmap["sp_data_6"] = it.TestReason[0].Spdata_6 //结果单位
+		itmap["sp_data_7"] = it.TestReason[0].Spdata_5 //方法检出限
+		itmap["sp_data_8"] = it.TestReason[0].Spdata_18 //检出限单位
+		itmap["sp_data_9"] = it.VerifyReason[0].Spdata_9 //最小允许限
+		itmap["sp_data_10"] = it.VerifyReason[0].Spdata_10 //允许限单位
+		itmap["sp_data_11"] = it.VerifyReason[0].Spdata_9 //最小允许限
+		itmap["sp_data_12"] = it.TestReason[0].Spdata_6 //结果单位
+		itmap["sp_data_13"] = it.VerifyReason[0].Spdata_13 //最大允许限
+		itmap["sp_data_15"] = it.VerifyReason[0].Spdata_13 //最大允许限
+		itmap["sp_data_16"] = it.VerifyReason[0].Spdata_10 //允许限单位
+		itmap["sp_data_17"] = "" //说明
+		itmap["sp_data_18"] = it.VerifyReason[0].Spdata_10 //允许限单位
+		itmap["bz"] = it.TestReason[0].Bz //备注
+		itmap["sm"] = it.TestReason[0].Sm //检测依据简写
+		itmap["sp_data_21"] = it.TestReason[0].Spdata_21 //spdata_21提示
+		itmap["jylx"] = it.ItemType //抽检类型
+
+		ittestinfo:=loop_testinfo(it.Item,testinfos)
+		if ittestinfo!=nil{
+			itmap["id"] = fmt.Sprintf("%d", ittestinfo.Id)
+			itmap["sp_data_1"] = ittestinfo.Spdata_1 //结果
+			itmap["sp_data_2"] = ittestinfo.Spdata_2 //结果判定
+			itmap["sp_data_3"] = ittestinfo.Spdata_3 //检验依据
+			itmap["sp_data_4"] = ittestinfo.Spdata_4 //判定依据
+			itmap["sp_data_5"] = ittestinfo.Spdata_5 //方法检出限
+			itmap["sp_data_6"] = ittestinfo.Spdata_6
+			itmap["sp_data_7"] = ittestinfo.Spdata_7
+			itmap["sp_data_8"] = ittestinfo.Spdata_8
+			itmap["sp_data_9"] = ittestinfo.Spdata_9
+			itmap["sp_data_10"] = ittestinfo.Spdata_10
+			itmap["sp_data_11"] = ittestinfo.Spdata_11
+			itmap["sp_data_12"] = ittestinfo.Spdata_12
+			itmap["sp_data_13"] = ittestinfo.Spdata_13
+			itmap["sp_data_15"] = ittestinfo.Spdata_15
+			itmap["sp_data_16"] = ittestinfo.Spdata_16
+			itmap["sp_data_17"] = ittestinfo.Spdata_17  //说明
+			itmap["sp_data_18"] = ittestinfo.Spdata_18
+			itmap["bz"] = ittestinfo.Spdata_20
+			itmap["sm"] = ittestinfo.Spdata_19
+			itmap["sp_data_21"] = ittestinfo.Spdata_21
+			itmap["jylx"] = ittestinfo.Jylx
+		}
+		userdata:=loop_userdata(it.Item,userdatas)
+		if userdata!=nil{
+			jyff:=userdata["检验方法"]
+			pdyj:=userdata["判定依据"]
+			if jyff!="/" && jyff!=""{
+				jyffo:=loop_TestReason(jyff,it.TestReason)
+				if jyffo!=nil{
+					itmap["sp_data_3"] = jyffo.Spdata_3 //检验依据
+					itmap["sm"] = jyffo.Sm //检测依据简写
+					itmap["bz"] = jyffo.Bz //检测依据简写
+					itmap["sp_data_21"] = jyffo.Spdata_21 //检测依据简写
+					itmap["sp_data_12"] = jyffo.Spdata_6 //结果单位
+					itmap["sp_data_5"] = jyffo.Spdata_5 //方法检出限
+					itmap["sp_data_6"] = jyffo.Spdata_6 //结果单位
+					itmap["sp_data_7"] = jyffo.Spdata_5 //方法检出限
+					itmap["sp_data_8"] = jyffo.Spdata_18 //检出限单位
+					itmap["sp_data_18"] = jyffo.Spdata_18 //允许限单位
+					itmap["sp_data_16"] = jyffo.Spdata_18 //允许限单位
+					itmap["sp_data_10"] = jyffo.Spdata_18 //允许限单位
+				}
+			}
+			if pdyj!="/" && jyff!=""{
+				pdyjo:=loop_VerifyReason(pdyj,it.VerifyReason)
+				if pdyjo!=nil{
+					itmap["sp_data_4"] = pdyjo.Spdata_4 //判定依据
+					itmap["sp_data_13"] = pdyjo.Spdata_13 //最大允许限
+					itmap["sp_data_15"] = pdyjo.Spdata_13 //最大允许限
+					itmap["sp_data_11"] = pdyjo.Spdata_9 //最小允许限
+					itmap["sp_data_9"] = pdyjo.Spdata_9 //最小允许限
+				}
+			}
+
+
+			itmap["sp_data_1"] = userdata["检验结果"] //结果
+			itmap["sp_data_2"] = userdata["结果判定"] //结果判定
+			itmap["sp_data_17"] = userdata["说明"] //结果
+
+		}
+		r = append(r, itmap)
+	}
+	return r
 }

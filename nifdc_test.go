@@ -6,52 +6,7 @@ import (
 )
 
 func TestLogin(t *testing.T) {
-	a, b, c, err := InitLoginck(nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	ck, err := Login("15738889730", "12345678", a, b, c, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	test_platform_ck, err := Test_platform_login(ck, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	fddetail, err := Test_platform_foodTest_foodDetail(10268179, test_platform_ck, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	testinfo, err := Test_platform_api_food_getTestInfo(fddetail["sd"], test_platform_ck, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	Fill_item(map[string]string{
-		"报告书编号":    "w3c",
-		"监督抽检报告备注": "监督抽检报告备注",
-		"风险监测报告备注": "风险监测报告备注",
-	}, fddetail)
-	Fill_subitem([]map[string]string{
-		{
-			"检验项目":  "蛋白质",
-			"结果单位":  "jkm",
-			"检验结果":  "0.87",
-			"结果判定":  "不合格项",
-			"判定依据":  "GB 19645-2010《食品安全国家标准 巴氏杀菌乳》",
-			"检验依据":  "GB 5009.5-2016(第一法)",
-			"最小允许限": "0.1",
-			"最大允许限": "1.0",
-			"允许限单位": "km",
-			"方法检出限": "wkm",
-			"检出限单位": "jdm",
-			"说明":    "测试",
-		},
-	}, testinfo.Rows)
-	err = Test_platform_api_food_save(fddetail, testinfo.Rows, test_platform_ck, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	fmt.Println(testinfo.Rows[0])
+
 }
 func TestRe(t *testing.T) {
 	olds := `
@@ -443,10 +398,12 @@ func TestRe(t *testing.T) {
 `
 
 	mkr := StoMap_yijieshou_full(olds)
-	fmt.Println(mkr["抽检样品信息_生产日期"])
-	for k, v := range mkr {
-		fmt.Printf("%s:%s\n", k, v)
-	}
+
+	fmt.Println(mkr)
+	//fmt.Println(mkr["抽检样品信息_生产日期"])
+	//for k, v := range mkr {
+	//	fmt.Printf("%s:%s\n", k, v)
+	//}
 	//tmj := template.New("tmj")
 	//tmj.Funcs(map[string]interface{}{
 	//	"replace": strings.ReplaceAll,
@@ -467,23 +424,37 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fddetail, err := Test_platform_foodTest_foodDetail(12156977, test_platform_ck, nil)
+	fddetail, err := Test_platform_agricultureTest_agricultureDetail(12940542, test_platform_ck, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	sd:=fddetail["sd"]
-	itemsr,err:=Test_platform_api_food_getTestItems(fddetail,test_platform_ck,nil)
+	itemsr,err:=Test_platform_api_agriculture_getTestItems(fddetail,test_platform_ck,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	testinfor,err:=Test_platform_api_food_getTestInfo(sd,test_platform_ck,nil)
+	testinfor,err:=Test_platform_api_agriculture_getTestInfo(sd,test_platform_ck,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rmp:=TestInfotoMap(testinfor.Rows,itemsr.Rows)
-	fmt.Println(rmp)
-	for k,v:=range rmp[0]{
-		fmt.Printf("%s:%s\n",k,v)
-	}
+	mps:=Build_agriculture_updata(itemsr.Rows,testinfor.Rows,[]map[string]string{
+		{
+			"检验项目":"五氯酚酸钠(以五氯酚计)",
+			"检验结果":"0.1",
+			"结果判定":"合格项",
+			"检验方法":"/",
+			"判定依据":"/1",
+			"说明":"aaa",
+		},
+	})
+
+	err=Test_platform_api_agriculture_save(fddetail,mps,test_platform_ck,nil)
+	fmt.Println(err)
+	//for _,it:=range mps{
+	//	for k,v:=range it{
+	//		fmt.Printf("%s:%s\n",k,v)
+	//	}
+	//}
+
 }
