@@ -56,6 +56,10 @@ func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o,ios []*Test_platf
 	}
 
 	for i, to := range tos {
+		if len(r)<=i{
+			subr := make(map[string]string)
+			r = append(r, subr)
+		}
 		subr := r[i]
 		subr["检验项目*"] = to.Spdata_0
 		subr["检验结果*"] = to.Spdata_1
