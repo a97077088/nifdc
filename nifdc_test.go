@@ -1,7 +1,9 @@
 package nifdc
 
 import (
+	"encoding/gob"
 	"fmt"
+	"os"
 	"testing"
 )
 
@@ -428,28 +430,28 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	sd:=fddetail["sd"]
-	itemsr,err:=Test_platform_api_agriculture_getTestItems(fddetail,test_platform_ck,nil)
+	sd := fddetail["sd"]
+	itemsr, err := Test_platform_api_agriculture_getTestItems(fddetail, test_platform_ck, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	testinfor,err:=Test_platform_api_agriculture_getTestInfo(sd,test_platform_ck,nil)
+	testinfor, err := Test_platform_api_agriculture_getTestInfo(sd, test_platform_ck, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	mps:=Build_agriculture_updata(itemsr.Rows,testinfor.Rows,[]map[string]string{
+	mps := Build_agriculture_updata(itemsr.Rows, testinfor.Rows, []map[string]string{
 		{
-			"检验项目":"五氯酚酸钠(以五氯酚计)",
-			"检验结果":"0.1",
-			"结果判定":"合格项",
-			"检验方法":"/",
-			"判定依据":"/1",
-			"说明":"aaa",
+			"检验项目": "五氯酚酸钠(以五氯酚计)",
+			"检验结果": "0.1",
+			"结果判定": "合格项",
+			"检验方法": "/",
+			"判定依据": "/1",
+			"说明":   "aaa",
 		},
 	})
 
-	err=Test_platform_api_agriculture_save(fddetail,mps,test_platform_ck,nil)
+	err = Test_platform_api_agriculture_save(fddetail, mps, test_platform_ck, nil)
 	fmt.Println(err)
 	//for _,it:=range mps{
 	//	for k,v:=range it{
@@ -457,4 +459,22 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 	//	}
 	//}
 
+}
+
+func TestBuildbaogao(t *testing.T) {
+	var updates []map[string]string
+	redf, err := os.Open("./test_baogaodata")
+	if err != nil {
+		panic(err)
+	}
+	dc := gob.NewDecoder(redf)
+	err = dc.Decode(&updates)
+	if err != nil {
+		panic(err)
+	}
+	for _, item := range updates {
+		fmt.Println(item)
+	}
+	cvdata := Convbaotaodata(updates)
+	fmt.Println(Buildbaogao(cvdata))
 }

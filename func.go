@@ -7,21 +7,21 @@ import (
 )
 
 //合并检验项目
-func Merge_subitem(items []map[string]string,subitems []map[string]string){
-	for _,subit:=range subitems{
-		tmpitm:=Get_item(subit["检验项目"],items)
-		tmpitm["检验结果*"]=subit["检验结果"]
-		tmpitm["结果单位*"]=subit["结果单位"]
-		tmpitm["结果判定*"]=subit["结果判定"]
-		tmpitm["检验依据*"]=subit["检验依据"]
-		tmpitm["判定依据*"]=subit["判定依据"]
-		tmpitm["最小允许限*"]=subit["最小允许限"]
-		tmpitm["最大允许限*"]=subit["最大允许限"]
-		tmpitm["允许限单位*"]=subit["允许限单位"]
-		tmpitm["方法检出限*"]=subit["方法检出限"]
-		tmpitm["检出限单位*"]=subit["检出限单位"]
-		tmpitm["备注"]=subit["备注"]
-		tmpitm["说明"]=subit["说明"]
+func Merge_subitem(items []map[string]string, subitems []map[string]string) {
+	for _, subit := range subitems {
+		tmpitm := Get_item(subit["检验项目"], items)
+		tmpitm["检验结果*"] = subit["检验结果"]
+		tmpitm["结果单位*"] = subit["结果单位"]
+		tmpitm["结果判定*"] = subit["结果判定"]
+		tmpitm["检验依据*"] = subit["检验依据"]
+		tmpitm["判定依据*"] = subit["判定依据"]
+		tmpitm["最小允许限*"] = subit["最小允许限"]
+		tmpitm["最大允许限*"] = subit["最大允许限"]
+		tmpitm["允许限单位*"] = subit["允许限单位"]
+		tmpitm["方法检出限*"] = subit["方法检出限"]
+		tmpitm["检出限单位*"] = subit["检出限单位"]
+		tmpitm["备注"] = subit["备注"]
+		tmpitm["说明"] = subit["说明"]
 	}
 }
 func Get_item(k string, items []map[string]string) map[string]string {
@@ -33,16 +33,15 @@ func Get_item(k string, items []map[string]string) map[string]string {
 	return nil
 }
 
-
 //转换检测项目
-func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o,ios []*Test_platform_api_food_getTestItems_o) []map[string]string {
+func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o, ios []*Test_platform_api_food_getTestItems_o) []map[string]string {
 	r := make([]map[string]string, 0)
-	for _,io:=range ios{
+	for _, io := range ios {
 		subr := make(map[string]string)
 		subr["检验项目*"] = io.Item
 		subr["检验结果*"] = ""
 		subr["结果单位*"] = io.TestReason[0].Spdata_18
-		subr["结果判定*"] ="未检验"
+		subr["结果判定*"] = "未检验"
 		subr["检验依据*"] = io.TestReason[0].Sm
 		subr["判定依据*"] = io.VerifyReason[0].Spdata_4
 		subr["最小允许限*"] = io.VerifyReason[0].Spdata_9
@@ -56,7 +55,7 @@ func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o,ios []*Test_platf
 	}
 
 	for i, to := range tos {
-		if len(r)<=i{
+		if len(r) <= i {
 			subr := make(map[string]string)
 			r = append(r, subr)
 		}
@@ -77,6 +76,7 @@ func TestInfotoMap(tos []*Test_platform_api_food_getTestInfo_o,ios []*Test_platf
 	}
 	return r
 }
+
 //转换检测模块
 func StoMap_foodDetail(s string) map[string]string {
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(s))
@@ -208,6 +208,7 @@ func StoMap_foodDetail(s string) map[string]string {
 	}
 	return mkr
 }
+
 //转换任务大平台
 func StoMap_yijieshou_full(s string) map[string]string {
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(s))
@@ -233,25 +234,23 @@ func StoMap_yijieshou_full(s string) map[string]string {
 	mkr := make(map[string]string, 0)
 
 	rt.Find(".formAreaCom").Each(func(i int, sel *goquery.Selection) {
-		title:=sel.Find(".areaTitle").Text()
-		if i==7&&title==""{
-			title="检验信息"
+		title := sel.Find(".areaTitle").Text()
+		if i == 7 && title == "" {
+			title = "检验信息"
 		}
 
 		sel.Find("div:contains(：)").Each(func(i int, selection *goquery.Selection) {
-			spsel:=strings.Split(selection.Text(),"：")
-			if len(spsel)!=2{
+			spsel := strings.Split(selection.Text(), "：")
+			if len(spsel) != 2 {
 				return
 			}
-			k:=fmt.Sprintf("%s_%s",title,strings.TrimSpace(spsel[0]))
+			k := fmt.Sprintf("%s_%s", title, strings.TrimSpace(spsel[0]))
 			fmt.Println(k)
-			v:=strings.TrimSpace(spsel[1])
-			v=strings.ReplaceAll(v,"                                        "," ")
-			mkr[k]=v
+			v := strings.TrimSpace(spsel[1])
+			v = strings.ReplaceAll(v, "                                        ", " ")
+			mkr[k] = v
 		})
 	})
-
-
 
 	//mkr["抽样基础信息_任务来源"] = FindFdval(sel0html, "任务来源")
 	//mkr["抽样基础信息_报送分类"] = FindFdval(sel0html, "报送分类")
@@ -434,6 +433,23 @@ func Buildpanduanyiju(yj string, testinfos []map[string]string) string {
 	return r
 }
 
+func Convbaotaodata(testinfos []map[string]string) []map[string]string {
+	r := make([]map[string]string, 0)
+	for _, item := range testinfos {
+		ditem := map[string]string{}
+		for k, v := range item {
+			ditem[k] = v
+			if k == "sp_data_2" {
+				ditem["结果判定"] = v
+			} else if k == "sp_data_4" {
+				ditem["判定依据"] = v
+			}
+		}
+		r = append(r, ditem)
+	}
+	return r
+}
+
 //构建报告
 func Buildbaogao(testinfos []map[string]string) string {
 	unqualifieds := Getunqualified(testinfos)
@@ -465,35 +481,33 @@ func Buildbaogao(testinfos []map[string]string) string {
 	return rs
 }
 
-
-
-func loop_testinfo(k string,testinfos []*Test_platform_api_food_getTestInfo_o)*Test_platform_api_food_getTestInfo_o{
-	for _,it:=range testinfos{
-		if it.Spdata_0==k{
+func loop_testinfo(k string, testinfos []*Test_platform_api_food_getTestInfo_o) *Test_platform_api_food_getTestInfo_o {
+	for _, it := range testinfos {
+		if it.Spdata_0 == k {
 			return it
 		}
 	}
 	return nil
 }
-func loop_userdata(k string,userdata []map[string]string)map[string]string{
-	for _,it:=range userdata{
-		if it["检验项目"]==k{
+func loop_userdata(k string, userdata []map[string]string) map[string]string {
+	for _, it := range userdata {
+		if it["检验项目"] == k {
 			return it
 		}
 	}
 	return nil
 }
-func loop_TestReason(k string,testreasons []*TestReason_o)*TestReason_o{
-	for _,it:=range testreasons{
-		if strings.Contains(it.Spdata_3,k){
+func loop_TestReason(k string, testreasons []*TestReason_o) *TestReason_o {
+	for _, it := range testreasons {
+		if strings.Contains(it.Spdata_3, k) {
 			return it
 		}
 	}
 	return nil
 }
-func loop_VerifyReason(k string,testreasons []*VerifyReason_o)*VerifyReason_o{
-	for _,it:=range testreasons{
-		if strings.Contains(it.Spdata_4,k){
+func loop_VerifyReason(k string, testreasons []*VerifyReason_o) *VerifyReason_o {
+	for _, it := range testreasons {
+		if strings.Contains(it.Spdata_4, k) {
 			return it
 		}
 	}
@@ -501,37 +515,37 @@ func loop_VerifyReason(k string,testreasons []*VerifyReason_o)*VerifyReason_o{
 }
 
 //构建农产品上传
-func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o,testinfos []*Test_platform_api_food_getTestInfo_o,userdatas []map[string]string)[]map[string]string{
-	r:=make([]map[string]string,0)
-	for _,it:=range testitems{
+func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o, testinfos []*Test_platform_api_food_getTestInfo_o, userdatas []map[string]string) []map[string]string {
+	r := make([]map[string]string, 0)
+	for _, it := range testitems {
 		itmap := make(map[string]string)
 		itmap["id"] = ""
 		itmap["item_old"] = it.Item
 		itmap["item"] = it.Item
-		itmap["sp_data_1"] = "" //结果
-		itmap["sp_data_2"] = "未检验" //结果判定
-		itmap["sp_data_3"] = it.TestReason[0].Spdata_3 //检验依据
-		itmap["sp_data_4"] = it.VerifyReason[0].Spdata_4 //判定依据
-		itmap["sp_data_5"] = it.TestReason[0].Spdata_5 //方法检出限
-		itmap["sp_data_6"] = it.TestReason[0].Spdata_6 //结果单位
-		itmap["sp_data_7"] = it.TestReason[0].Spdata_5 //方法检出限
-		itmap["sp_data_8"] = it.TestReason[0].Spdata_18 //检出限单位
-		itmap["sp_data_9"] = it.VerifyReason[0].Spdata_9 //最小允许限
+		itmap["sp_data_1"] = ""                            //结果
+		itmap["sp_data_2"] = "未检验"                         //结果判定
+		itmap["sp_data_3"] = it.TestReason[0].Spdata_3     //检验依据
+		itmap["sp_data_4"] = it.VerifyReason[0].Spdata_4   //判定依据
+		itmap["sp_data_5"] = it.TestReason[0].Spdata_5     //方法检出限
+		itmap["sp_data_6"] = it.TestReason[0].Spdata_6     //结果单位
+		itmap["sp_data_7"] = it.TestReason[0].Spdata_5     //方法检出限
+		itmap["sp_data_8"] = it.TestReason[0].Spdata_18    //检出限单位
+		itmap["sp_data_9"] = it.VerifyReason[0].Spdata_9   //最小允许限
 		itmap["sp_data_10"] = it.VerifyReason[0].Spdata_10 //允许限单位
-		itmap["sp_data_11"] = it.VerifyReason[0].Spdata_9 //最小允许限
-		itmap["sp_data_12"] = it.TestReason[0].Spdata_6 //结果单位
+		itmap["sp_data_11"] = it.VerifyReason[0].Spdata_9  //最小允许限
+		itmap["sp_data_12"] = it.TestReason[0].Spdata_6    //结果单位
 		itmap["sp_data_13"] = it.VerifyReason[0].Spdata_13 //最大允许限
 		itmap["sp_data_15"] = it.VerifyReason[0].Spdata_13 //最大允许限
 		itmap["sp_data_16"] = it.VerifyReason[0].Spdata_10 //允许限单位
-		itmap["sp_data_17"] = "" //说明
+		itmap["sp_data_17"] = ""                           //说明
 		itmap["sp_data_18"] = it.VerifyReason[0].Spdata_10 //允许限单位
-		itmap["bz"] = it.TestReason[0].Bz //备注
-		itmap["sm"] = it.TestReason[0].Sm //检测依据简写
-		itmap["sp_data_21"] = it.TestReason[0].Spdata_21 //spdata_21提示
-		itmap["jylx"] = it.ItemType //抽检类型
+		itmap["bz"] = it.TestReason[0].Bz                  //备注
+		itmap["sm"] = it.TestReason[0].Sm                  //检测依据简写
+		itmap["sp_data_21"] = it.TestReason[0].Spdata_21   //spdata_21提示
+		itmap["jylx"] = it.ItemType                        //抽检类型
 
-		ittestinfo:=loop_testinfo(it.Item,testinfos)
-		if ittestinfo!=nil{
+		ittestinfo := loop_testinfo(it.Item, testinfos)
+		if ittestinfo != nil {
 			itmap["id"] = fmt.Sprintf("%d", ittestinfo.Id)
 			itmap["sp_data_1"] = ittestinfo.Spdata_1 //结果
 			itmap["sp_data_2"] = ittestinfo.Spdata_2 //结果判定
@@ -548,49 +562,48 @@ func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o
 			itmap["sp_data_13"] = ittestinfo.Spdata_13
 			itmap["sp_data_15"] = ittestinfo.Spdata_15
 			itmap["sp_data_16"] = ittestinfo.Spdata_16
-			itmap["sp_data_17"] = ittestinfo.Spdata_17  //说明
+			itmap["sp_data_17"] = ittestinfo.Spdata_17 //说明
 			itmap["sp_data_18"] = ittestinfo.Spdata_18
 			itmap["bz"] = ittestinfo.Spdata_20
 			itmap["sm"] = ittestinfo.Spdata_19
 			itmap["sp_data_21"] = ittestinfo.Spdata_21
 			itmap["jylx"] = ittestinfo.Jylx
 		}
-		userdata:=loop_userdata(it.Item,userdatas)
-		if userdata!=nil{
-			jyff:=userdata["检验方法"]
-			pdyj:=userdata["判定依据"]
-			if jyff!="/" && jyff!=""{
-				jyffo:=loop_TestReason(jyff,it.TestReason)
-				if jyffo!=nil{
-					itmap["sp_data_3"] = jyffo.Spdata_3 //检验依据
-					itmap["sm"] = jyffo.Sm //检测依据简写
-					itmap["bz"] = jyffo.Bz //检测依据简写
+		userdata := loop_userdata(it.Item, userdatas)
+		if userdata != nil {
+			jyff := userdata["检验方法"]
+			pdyj := userdata["判定依据"]
+			if jyff != "/" && jyff != "" {
+				jyffo := loop_TestReason(jyff, it.TestReason)
+				if jyffo != nil {
+					itmap["sp_data_3"] = jyffo.Spdata_3   //检验依据
+					itmap["sm"] = jyffo.Sm                //检测依据简写
+					itmap["bz"] = jyffo.Bz                //检测依据简写
 					itmap["sp_data_21"] = jyffo.Spdata_21 //检测依据简写
-					itmap["sp_data_12"] = jyffo.Spdata_6 //结果单位
-					itmap["sp_data_5"] = jyffo.Spdata_5 //方法检出限
-					itmap["sp_data_6"] = jyffo.Spdata_6 //结果单位
-					itmap["sp_data_7"] = jyffo.Spdata_5 //方法检出限
-					itmap["sp_data_8"] = jyffo.Spdata_18 //检出限单位
+					itmap["sp_data_12"] = jyffo.Spdata_6  //结果单位
+					itmap["sp_data_5"] = jyffo.Spdata_5   //方法检出限
+					itmap["sp_data_6"] = jyffo.Spdata_6   //结果单位
+					itmap["sp_data_7"] = jyffo.Spdata_5   //方法检出限
+					itmap["sp_data_8"] = jyffo.Spdata_18  //检出限单位
 					itmap["sp_data_18"] = jyffo.Spdata_18 //允许限单位
 					itmap["sp_data_16"] = jyffo.Spdata_18 //允许限单位
 					itmap["sp_data_10"] = jyffo.Spdata_18 //允许限单位
 				}
 			}
-			if pdyj!="/" && jyff!=""{
-				pdyjo:=loop_VerifyReason(pdyj,it.VerifyReason)
-				if pdyjo!=nil{
-					itmap["sp_data_4"] = pdyjo.Spdata_4 //判定依据
+			if pdyj != "/" && jyff != "" {
+				pdyjo := loop_VerifyReason(pdyj, it.VerifyReason)
+				if pdyjo != nil {
+					itmap["sp_data_4"] = pdyjo.Spdata_4   //判定依据
 					itmap["sp_data_13"] = pdyjo.Spdata_13 //最大允许限
 					itmap["sp_data_15"] = pdyjo.Spdata_13 //最大允许限
-					itmap["sp_data_11"] = pdyjo.Spdata_9 //最小允许限
-					itmap["sp_data_9"] = pdyjo.Spdata_9 //最小允许限
+					itmap["sp_data_11"] = pdyjo.Spdata_9  //最小允许限
+					itmap["sp_data_9"] = pdyjo.Spdata_9   //最小允许限
 				}
 			}
 
-
 			itmap["sp_data_1"] = userdata["检验结果"] //结果
 			itmap["sp_data_2"] = userdata["结果判定"] //结果判定
-			itmap["sp_data_17"] = userdata["说明"] //结果
+			itmap["sp_data_17"] = userdata["说明"]  //结果
 
 		}
 		r = append(r, itmap)
