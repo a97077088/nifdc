@@ -6,28 +6,27 @@ import (
 	"strings"
 )
 
-
 func Get_mapsitem(key string, items []map[string]string) map[string]string {
 	for _, it := range items {
 		//fmt.Println(it["items"],"=>",key)
-		if it["item"]==key{
+		if it["item"] == key {
 
 			return it
 		}
 	}
 	return nil
 }
-func MergeUpdates(updates []map[string]string,remotes[]map[string]string)[]map[string]string{
+func MergeUpdates(updates []map[string]string, remotes []map[string]string) []map[string]string {
 
 	for _, remote := range remotes {
-		xm:=remote["检验项目"]
-		xm=strings.ReplaceAll(xm,"（","(")
-		xm=strings.ReplaceAll(xm,"）",")")
-		update:=Get_mapsitem(xm,updates)
-		if update!=nil{
-			update["sp_data_1"]=remote["检验结果"]
-			update["sp_data_2"]=remote["结果判定"]
-			update["sp_data_17"]=remote["说明"]
+		xm := remote["检验项目"]
+		xm = strings.ReplaceAll(xm, "（", "(")
+		xm = strings.ReplaceAll(xm, "）", ")")
+		update := Get_mapsitem(xm, updates)
+		if update != nil {
+			update["sp_data_1"] = remote["检验结果"]
+			update["sp_data_2"] = remote["结果判定"]
+			update["sp_data_17"] = remote["说明"]
 		}
 	}
 	return updates
@@ -421,31 +420,41 @@ func Getunqualified(testinfos []map[string]string) []map[string]string {
 	}
 	return r
 }
-
-//获取所有判定依据
-func GetAllPandingyiju(testinfos []map[string]string) []string {
-	r := make([]string, 0)
+func Panding(yj string, testinfos []map[string]string) bool {
 	for _, it := range testinfos {
-		pd := false
-		for _, rit := range r {
-			if it["判定依据"] == rit {
-				pd = true
-				break
-			}
-		}
-		if pd == false {
-			r = append(r, it["判定依据"])
+		if it["sp_data_2"] == "不合格项" {
+			return false
 		}
 	}
-	return r
+	return true
+}
+
+//获取所有判定依据
+func GetAllPandingyiju(testinfos []map[string]string) ([]string, []string) {
+	allyiju := make(map[string]string, 0)
+	for _, it := range testinfos {
+		if it["sp_data_2"] != "未检验" {
+			allyiju[it["sp_data_4"]] = ""
+		}
+	}
+	okyiju := []string{}
+	erryiju := []string{}
+	for yiju, _ := range allyiju {
+		if Panding(yiju, testinfos) == true {
+			okyiju = append(okyiju, yiju)
+		} else {
+			erryiju = append(erryiju, yiju)
+		}
+	}
+	return okyiju, erryiju
 }
 
 //生成指定判断依据
 func Buildpanduanyiju(yj string, testinfos []map[string]string) string {
 	r := ""
 	for _, it := range testinfos {
-		if it["结果判定"] == "不合格项" && it["判定依据"] == yj {
-			r = fmt.Sprintf("%s%s", r, it["检验项目"])
+		if it["sp_data_2"] == "不合格项" && it["sp_data_4"] == yj {
+			r = fmt.Sprintf("%s%s", r, it["item"])
 			r = fmt.Sprintf("%s,", r)
 		}
 	}
@@ -479,33 +488,38 @@ func Convbaotaodata(testinfos []map[string]string) []map[string]string {
 
 //构建报告
 func Buildbaogao(testinfos []map[string]string) string {
-	unqualifieds := Getunqualified(testinfos)
-	allpdyiju := GetAllPandingyiju(testinfos)
-	if len(unqualifieds) == 0 {
+	okyiju, erryiju := GetAllPandingyiju(testinfos)
+	if len(okyiju) == 0 && len(erryiju) == 0 {
+		return ""
+	}
+	if len(erryiju) != 0 {
+		rs := "经抽样检验，"
+		for _, unq := range erryiju {
+			sps := Buildpanduanyiju(unq, testinfos)
+			if sps != "" {
+				rs = fmt.Sprintf("%s%s", rs, sps)
+				rs = fmt.Sprintf("%s,", rs)
+			}
+		}
+		if string(rs[len(rs)-1]) == "," {
+			rs = rs[:len(rs)-1]
+		}
+		rs = strings.ReplaceAll(rs, ",", "，")
+		rs = fmt.Sprintf("%s，检验结论为不合格。", rs)
+		return rs
+	} else {
 		rs := "经抽样检验，所检项目符合 "
-		for i, yj := range allpdyiju {
+		for i, yj := range okyiju {
 			rs = fmt.Sprintf("%s%s", rs, yj)
-			if len(allpdyiju)-1 != i {
+			if len(okyiju)-1 != i {
 				rs = fmt.Sprintf("%s，", rs)
 			}
 		}
 		rs = fmt.Sprintf("%s要求。", rs)
 		return rs
 	}
-	rs := "经抽样检验，"
-	for _, unq := range allpdyiju {
-		sps := Buildpanduanyiju(unq, unqualifieds)
-		if sps != "" {
-			rs = fmt.Sprintf("%s%s", rs, sps)
-			rs = fmt.Sprintf("%s,", rs)
-		}
-	}
-	if string(rs[len(rs)-1]) == "," {
-		rs = rs[:len(rs)-1]
-	}
-	rs = strings.ReplaceAll(rs, ",", "，")
-	rs = fmt.Sprintf("%s，检验结论为不合格。", rs)
-	return rs
+
+	return ""
 }
 
 func loop_testinfo(k string, testinfos []*Test_platform_api_food_getTestInfo_o) *Test_platform_api_food_getTestInfo_o {

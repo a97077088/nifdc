@@ -472,30 +472,35 @@ func TestBuildbaogao(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	for _, item := range updates {
-		fmt.Println(item)
-	}
+	fmt.Println(updates[0]["item"])
+	updates[0]["sp_data_2"] = "不合格项"
+	updates[1]["sp_data_2"] = "不合格项"
+	updates[2]["sp_data_2"] = "不合格项"
+	updates[3]["sp_data_2"] = "不合格项"
+	//for _, item := range updates {
+	//	fmt.Println(item)
+	//}
 	cvdata := Convbaotaodata(updates)
 	fmt.Println(Buildbaogao(cvdata))
 }
 
 func TestMerge_subitem(t *testing.T) {
-	updatas:=make([]map[string]string,0)
-	subitem:=make([]map[string]string,0)
-	fc,_:=os.Open("./jobtmp")
-	e:=gob.NewDecoder(fc)
+	updatas := make([]map[string]string, 0)
+	subitem := make([]map[string]string, 0)
+	fc, _ := os.Open("./jobtmp")
+	e := gob.NewDecoder(fc)
 	e.Decode(&updatas)
 
-	fc1,_:=os.Open("./jobtmp1")
-	e1:=gob.NewDecoder(fc1)
+	fc1, _ := os.Open("./jobtmp1")
+	e1 := gob.NewDecoder(fc1)
 	e1.Decode(&subitem)
-	updatas=MergeUpdates(updatas,subitem)
+	updatas = MergeUpdates(updatas, subitem)
 
 	for _, update := range subitem {
-		fmt.Println(update["检验项目"],"=>",update["检验结果"])
+		fmt.Println(update["检验项目"], "=>", update["检验结果"])
 	}
 
 	for _, update := range updatas {
-		fmt.Println(update["item"],"=>",update["sp_data_1"])
+		fmt.Println(update["item"], "=>", update["sp_data_1"])
 	}
 }
