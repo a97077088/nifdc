@@ -478,3 +478,24 @@ func TestBuildbaogao(t *testing.T) {
 	cvdata := Convbaotaodata(updates)
 	fmt.Println(Buildbaogao(cvdata))
 }
+
+func TestMerge_subitem(t *testing.T) {
+	updatas:=make([]map[string]string,0)
+	subitem:=make([]map[string]string,0)
+	fc,_:=os.Open("./jobtmp")
+	e:=gob.NewDecoder(fc)
+	e.Decode(&updatas)
+
+	fc1,_:=os.Open("./jobtmp1")
+	e1:=gob.NewDecoder(fc1)
+	e1.Decode(&subitem)
+	updatas=MergeUpdates(updatas,subitem)
+
+	for _, update := range subitem {
+		fmt.Println(update["检验项目"],"=>",update["检验结果"])
+	}
+
+	for _, update := range updatas {
+		fmt.Println(update["item"],"=>",update["sp_data_1"])
+	}
+}

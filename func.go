@@ -6,6 +6,33 @@ import (
 	"strings"
 )
 
+
+func Get_mapsitem(key string, items []map[string]string) map[string]string {
+	for _, it := range items {
+		//fmt.Println(it["items"],"=>",key)
+		if it["item"]==key{
+
+			return it
+		}
+	}
+	return nil
+}
+func MergeUpdates(updates []map[string]string,remotes[]map[string]string)[]map[string]string{
+
+	for _, remote := range remotes {
+		xm:=remote["检验项目"]
+		xm=strings.ReplaceAll(xm,"（","(")
+		xm=strings.ReplaceAll(xm,"）",")")
+		update:=Get_mapsitem(xm,updates)
+		if update!=nil{
+			update["sp_data_1"]=remote["检验结果"]
+			update["sp_data_2"]=remote["结果判定"]
+			update["sp_data_17"]=remote["说明"]
+		}
+	}
+	return updates
+}
+
 //合并检验项目
 func Merge_subitem(items []map[string]string, subitems []map[string]string) {
 	for _, subit := range subitems {
