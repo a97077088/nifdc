@@ -1,8 +1,10 @@
 package nifdc
 
 import (
+	"encoding/gob"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"os"
 	"strings"
 )
 
@@ -612,7 +614,7 @@ func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o
 		}
 		userdata := loop_userdata(it.Item, userdatas)
 		if userdata != nil {
-			jyff := userdata["检验方法"]
+			jyff := userdata["检验依据"]
 			pdyj := userdata["判定依据"]
 			if jyff != "/" && jyff != "" {
 				jyffo := loop_TestReason(jyff, it.TestReason)
@@ -650,4 +652,25 @@ func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o
 		r = append(r, itmap)
 	}
 	return r
+}
+
+func Savegob(i interface{}, fname string) error {
+	of, err := os.Create(fname)
+	if err != nil {
+		return err
+	}
+	defer of.Close()
+	en := gob.NewEncoder(of)
+	en.Encode(i)
+	return nil
+}
+func Lavegob(i interface{}, fname string) error {
+	of, err := os.Create(fname)
+	if err != nil {
+		return err
+	}
+	defer of.Close()
+	en := gob.NewDecoder(of)
+	en.Decode(i)
+	return nil
 }
