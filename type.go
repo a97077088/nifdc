@@ -18,7 +18,7 @@ type Data_o struct {
 	Sp_d_38           string
 	Sp_s_3            string
 	Sp_s_20           string
-	User         appuser.AppUser `json:"userx"`
+	User              appuser.AppUser `json:"userx"`
 }
 type Download_Data_r struct {
 	RecordsTotal int
@@ -59,18 +59,18 @@ type UploadData struct {
 }
 
 func (this *UploadData) Subitem() []map[string]string {
-	if this.Env_for_key("subitem") == nil {
+	if this.EV("subitem") == nil {
 		return nil
 	}
-	return this.Env_for_key("subitem").([]map[string]string)
+	return this.EV("subitem").([]map[string]string)
 }
 func (this *UploadData) AddSubitem(mp map[string]string) {
-	if this.Env_for_key("subitem") == nil {
-		this.Set_env_value("subitem", make([]map[string]string, 0))
+	if this.EV("subitem") == nil {
+		this.SEV("subitem", make([]map[string]string, 0))
 	}
 	subitem := this.Subitem()
 	subitem = append(subitem, mp)
-	this.Set_env_value("subitem", subitem)
+	this.SEV("subitem", subitem)
 }
 
 type Test_platform_api_food_getTestInfo_o struct {
@@ -106,32 +106,31 @@ type Test_platform_api_food_getTestInfo_r struct {
 	Rows  []*Test_platform_api_food_getTestInfo_o
 }
 
-
 type TestReason_o struct {
 	Spdata_21 string
-	Bz string
+	Bz        string
 	InReserve string
-	Spdata_3 string
+	Spdata_3  string
 	Spdata_18 string
-	Sm string
-	Spdata_6 string
-	Spdata_5 string
+	Sm        string
+	Spdata_6  string
+	Spdata_5  string
 }
 type VerifyReason_o struct {
 	Spdata_10 string
-	Spdata_9 string
+	Spdata_9  string
 	Spdata_13 string
 	Spdata_14 string
-	Spdata_4 string
+	Spdata_4  string
 }
 type Test_platform_api_food_getTestItems_o struct {
-	Item string
-	ItemType string
-	TestReason []*TestReason_o
-	VerifyReason []* VerifyReason_o
+	Item         string
+	ItemType     string
+	TestReason   []*TestReason_o
+	VerifyReason []*VerifyReason_o
 }
 type Test_platform_api_food_getTestItems_r struct {
-	Rows  []*Test_platform_api_food_getTestItems_o
+	Rows []*Test_platform_api_food_getTestItems_o
 }
 
 type Test_platform_api_food_save_r struct {
