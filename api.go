@@ -321,6 +321,8 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 	sdatatype := ""
 	if datatype != 0 {
 		sdatatype = fmt.Sprintf("dataType=%d", datatype)
+	} else {
+		sdatatype = fmt.Sprintf("dataType=%d", 8)
 	}
 	if sort != "" {
 		sort = fmt.Sprintf("sort=%s", sort)
