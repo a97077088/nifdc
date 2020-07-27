@@ -267,7 +267,7 @@ func Viewcheckedsample_full(sample_code string, ck string, session *Session) (ma
 }
 
 //数据查看
-func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string, ck string, session *Session) (*Download_Data_r, error) {
+func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string,smple_code string, ck string, session *Session) (*Download_Data_r, error) {
 	cli := Cli(session)
 	surl := "http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
 	r, err := cli.Post(surl, &RequestOptions{
@@ -297,6 +297,7 @@ func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd s
 			"sample_state":    fmt.Sprintf("%d", sample_state),
 			"cyTimeStart":     cyTimeStart,
 			"cyTimeEnd":       cyTimeEnd,
+			"sample_code":     smple_code,
 			"resource_org_id": resource_org_id,
 		},
 		UserAgent: useragent,
@@ -315,7 +316,7 @@ func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd s
 }
 
 //搜索 普通食品
-func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Test_platform_r, error) {
+func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string,sampleNo string, ck string, session *Session) (*Test_platform_r, error) {
 	cli := Cli(session)
 	datatype = datatype
 	sdatatype := ""
@@ -327,7 +328,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 	if sort != "" {
 		sort = fmt.Sprintf("sort=%s", sort)
 	}
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/getFood?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom, time.Now().UnixNano())
+	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/getFood?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=%s&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom,sampleNo, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -351,7 +352,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 }
 
 //搜索 农产品
-func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Test_platform_r, error) {
+func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string,sampleNo string, ck string, session *Session) (*Test_platform_r, error) {
 	cli := Cli(session)
 	datatype = datatype
 	sdatatype := ""
@@ -361,7 +362,7 @@ func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int,
 	if sort != "" {
 		sort = fmt.Sprintf("sort=%s", sort)
 	}
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/getAgriculture?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom, time.Now().UnixNano())
+	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/getAgriculture?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=%s&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom,sampleNo, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,

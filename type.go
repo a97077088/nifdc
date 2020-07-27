@@ -10,6 +10,7 @@ type Data_o struct {
 	Pcname_dd         string
 	Resource_org_name string
 	Check_org_name    string
+	Check_result      string
 	Update_time       string
 	New_sample_name   string
 	Check_user_name   string
