@@ -27,6 +27,31 @@ type Download_Data_r struct {
 }
 type Viewnormalsample_o struct {
 }
+type Test_platform_r struct {
+	Total int
+	Rows  []*Test_platform_o
+}
+type Test_platform_o struct {
+	Id           int
+	Org_type     int
+	Sample_state int
+	Sp_d_38      int64
+	Sp_d_46      int64
+	Sp_d_86      int64
+	Sp_i_state   int
+	Sp_s_1       string
+	Sp_s_2_1     string
+	Sp_s_3       string
+	Sp_s_14      string
+	Sp_s_16      string
+	Sp_s_35      string
+	Sp_s_71      string
+	Sp_s_43      string
+	Sp_s_44      string
+	Created_at   int64
+	Updated_at   int64
+	User         appuser.AppUser
+}
 
 type Api_food_getFood_o struct {
 	Id           int

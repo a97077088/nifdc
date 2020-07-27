@@ -315,7 +315,7 @@ func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd s
 }
 
 //搜索 普通食品
-func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Api_food_getFood_r, error) {
+func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Test_platform_r, error) {
 	cli := Cli(session)
 	datatype = datatype
 	sdatatype := ""
@@ -340,7 +340,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 		return nil, errors.New("登录状态错误")
 	}
 
-	var rs Api_food_getFood_r
+	var rs Test_platform_r
 	err = json.Unmarshal([]byte(s), &rs)
 	if err != nil {
 		return nil, nettool.New_neterror_with_e(err)
@@ -349,7 +349,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 }
 
 //搜索 农产品
-func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Api_food_getFood_r, error) {
+func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, ck string, session *Session) (*Test_platform_r, error) {
 	cli := Cli(session)
 	datatype = datatype
 	sdatatype := ""
@@ -374,7 +374,7 @@ func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int,
 		return nil, errors.New("登录状态错误")
 	}
 
-	var rs Api_food_getFood_r
+	var rs Test_platform_r
 	err = json.Unmarshal([]byte(s), &rs)
 	if err != nil {
 		return nil, nettool.New_neterror_with_e(err)
@@ -662,7 +662,7 @@ func Test_platform_api_food_init(fooddetail map[string]string, testinfos []*Test
 }
 
 //保存agriculture_init
-func 	Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestItems_o, ck string, session *Session) error {
+func Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos []*Test_platform_api_food_getTestItems_o, ck string, session *Session) error {
 	items := make([]map[string]string, 0)
 	for _, tinfo := range testinfos {
 		itmap := make(map[string]string)
