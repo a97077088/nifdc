@@ -6,8 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/a97077088/errorv"
 	. "github.com/a97077088/grequests"
-	"github.com/a97077088/nettool"
 	"net/url"
 	"regexp"
 	"strings"
@@ -113,7 +113,7 @@ func Login(username string, password string, lt string, execution string, ck str
 		UserAgent:     useragent,
 	})
 	if err != nil {
-		return "", nettool.New_neterror_with_e(err)
+		return "", errorv.NewNetError_e(err)
 	}
 	sbd := r.String()
 	if strings.Index(sbd, "<i class=\"icon-user\"></i>") == -1 {
@@ -147,7 +147,7 @@ func Index(ck string, session *Session) error {
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if strings.Index(r.String(), "<a href=\"/ui/userInfor?userName=\">") != -1 {
 		return errors.New("登录已过期")
@@ -235,7 +235,7 @@ func Sample_switchchannel(uuid string, _type string, ck string, session *Session
 		UserAgent:     useragent,
 	})
 	if err != nil {
-		return "", nettool.New_neterror_with_e(err)
+		return "", errorv.NewNetError_e(err)
 	}
 	cks := r.RawResponse.Cookies()
 	scks := ""
@@ -256,10 +256,10 @@ func Viewcheckedsample_full(sample_code string, ck string, session *Session) (ma
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
+		return nil, errorv.NewNetError("http状态错误")
 	}
 	sbd := r.String()
 
@@ -308,7 +308,7 @@ func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd s
 	s := r.String()
 	err = json.Unmarshal([]byte(s), &rs)
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 
 	return &rs, nil
@@ -343,7 +343,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 	var rs Test_platform_r
 	err = json.Unmarshal([]byte(s), &rs)
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	return &rs, nil
 }
@@ -377,7 +377,7 @@ func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int,
 	var rs Test_platform_r
 	err = json.Unmarshal([]byte(s), &rs)
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	return &rs, nil
 }
@@ -397,16 +397,16 @@ func Test_platform_agricultureTest_agricultureDetail(id int, ck string, session 
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
+		return nil, errorv.NewNetError("http状态错误")
 	}
 	sbd := r.String()
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
 	sd := rt.Find("#sd").AttrOr("value", "")
 	if sd == "" {
-		return nil, nettool.New_neterror_with_e(errors.New("获取sd失败"))
+		return nil, errorv.NewNetError_e(errors.New("获取sd失败"))
 	}
 	rmp := make(map[string]string, 0)
 	rmp["sample_code"] = rt.Find("#hid_sp_s_16").AttrOr("value", "")
@@ -458,16 +458,16 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
+		return nil, errorv.NewNetError("http状态错误")
 	}
 	sbd := r.String()
 	rt, _ := goquery.NewDocumentFromReader(strings.NewReader(sbd))
 	sd := rt.Find("#sd").AttrOr("value", "")
 	if sd == "" {
-		return nil, nettool.New_neterror_with_e(errors.New("获取sd失败"))
+		return nil, errorv.NewNetError_e(errors.New("获取sd失败"))
 	}
 	rmp := make(map[string]string, 0)
 	rmp["sample_code"] = rt.Find("#hid_sp_s_16").AttrOr("value", "")
@@ -523,15 +523,15 @@ func Test_platform_api_agriculture_getTestItems(fddetail map[string]string, ck s
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
+		return nil, errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_getTestItems_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	//if len(rs.Rows) == 0 {
 	//	return nil, errors.New("至少需要一个检验项目")
@@ -553,15 +553,15 @@ func Test_platform_api_agriculture_getTestInfo(sd string, ck string, session *Se
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
+		return nil, errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_getTestInfo_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	//if len(rs.Rows) == 0 {
 	//	return nil, errors.New("至少需要一个检验项目")
@@ -645,15 +645,15 @@ func Test_platform_api_food_init(fooddetail map[string]string, testinfos []*Test
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nettool.New_neterror_with_s("http状态错误")
+		return errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_save_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if rs.Success != true {
 		return errors.New(rs.Msg)
@@ -737,15 +737,15 @@ func Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos 
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nettool.New_neterror_with_s("http状态错误")
+		return errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_save_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if rs.Success != true {
 		return errors.New(rs.Msg)
@@ -800,15 +800,15 @@ func Test_platform_api_agriculture_save(fooddetail map[string]string, updatas []
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nettool.New_neterror_with_s("http状态错误")
+		return errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_save_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if rs.Success != true {
 		return errors.New(rs.Msg)
@@ -835,15 +835,15 @@ func Test_platform_api_food_getTestItems(fddetail map[string]string, ck string, 
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
+		return nil, errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_getTestItems_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	//if len(rs.Rows) == 0 {
 	//	return nil, errors.New("至少需要一个检验项目")
@@ -865,15 +865,15 @@ func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) 
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nil, nettool.New_neterror_with_s("http状态错误")
+		return nil, errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_getTestInfo_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nil, nettool.New_neterror_with_e(err)
+		return nil, errorv.NewNetError_e(err)
 	}
 	//if len(rs.Rows) == 0 {
 	//	return nil, errors.New("至少需要一个检验项目")
@@ -929,15 +929,15 @@ func Test_platform_api_food_save(fooddetail map[string]string, updatas []map[str
 		UserAgent: useragent,
 	})
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if r.StatusCode != 200 {
-		return nettool.New_neterror_with_s("http状态错误")
+		return errorv.NewNetError("http状态错误")
 	}
 	var rs Test_platform_api_food_save_r
 	err = r.JSON(&rs)
 	if err != nil {
-		return nettool.New_neterror_with_e(err)
+		return errorv.NewNetError_e(err)
 	}
 	if rs.Success != true {
 		return errors.New(rs.Msg)
