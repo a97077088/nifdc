@@ -8,6 +8,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"github.com/a97077088/errorv"
 	. "github.com/a97077088/grequests"
+	jsoniter "github.com/json-iterator/go"
 	"net/url"
 	"regexp"
 	"strings"
@@ -16,7 +17,7 @@ import (
 
 var useragent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
 
-//验证码获取
+//验证码获取,暂时用不到
 func Code(ck string, session *Session) ([]byte, error) {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcj.gsxt.gov.cn/code")
@@ -31,37 +32,7 @@ func Code(ck string, session *Session) ([]byte, error) {
 	img := r.Bytes()
 	return img, nil
 }
-func Findtextval(s string, name string) string {
-	re := regexp.MustCompile(fmt.Sprintf("<input type=\"hidden\" name=\"%s\" value=\"(.*)?\"/>", name))
-	fds := re.FindStringSubmatch(s)
-	if len(fds) < 2 {
-		return ""
-	}
-	return fds[1]
-}
 
-//搜索信息
-func FindFdval(s string, k string) string {
-	v := Findval(s, fmt.Sprintf(`%s：([^<]+)`, k))
-	return strings.TrimSpace(v)
-}
-func FindNextNodeVal(nd *goquery.Selection, k string) string {
-
-	v := nd.Find(fmt.Sprintf("label:contains(%s\\:)+div", k)).Text()
-	if v == "" {
-		v = nd.Find(fmt.Sprintf("label:contains(%s：)+div", k)).Text()
-	}
-	//if k=="抽样人员"{
-	//
-	//}
-	//v := nd.Find(fmt.Sprintf("label:contains(%s)+div", k)).Text()
-	v = strings.Trim(v, "	")
-	return strings.TrimSpace(v)
-}
-func FindNextNodeVal_with_tag_nexttag_k(nd *goquery.Selection, tag, nexttag string, k string) string {
-	v := nd.Find(fmt.Sprintf("%s:contains(%s)+%s", tag, k, nexttag)).Text()
-	return strings.TrimSpace(v)
-}
 func Findval(s string, sre string) string {
 	re := regexp.MustCompile(sre)
 	fds := re.FindStringSubmatch(s)
@@ -69,11 +40,6 @@ func Findval(s string, sre string) string {
 		return ""
 	}
 	return fds[1]
-}
-func Findvaln(s string, sre string, idx int) string {
-	re := regexp.MustCompile(sre)
-	fds := re.FindStringSubmatch(s)
-	return fds[idx]
 }
 
 //登录准备
@@ -262,12 +228,11 @@ func Viewcheckedsample_full(sample_code string, ck string, session *Session) (ma
 		return nil, errorv.NewNetError("http状态错误")
 	}
 	sbd := r.String()
-
-	return StoMap_yijieshou_full(sbd), nil
+	return StoMap_sample(sbd), nil
 }
 
-//数据查看
-func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string,smple_code string, ck string, session *Session) (*Download_Data_r, error) {
+//数据查看,任务大平台
+func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string, smple_code string, ck string, session *Session) (*Download_Data_r, error) {
 	cli := Cli(session)
 	surl := "http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
 	r, err := cli.Post(surl, &RequestOptions{
@@ -316,7 +281,7 @@ func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd s
 }
 
 //搜索 普通食品
-func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string,sampleNo string, ck string, session *Session) (*Test_platform_r, error) {
+func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, sampleNo string, ck string, session *Session) (*Test_platform_r, error) {
 	cli := Cli(session)
 	datatype = datatype
 	sdatatype := ""
@@ -328,7 +293,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 	if sort != "" {
 		sort = fmt.Sprintf("sort=%s", sort)
 	}
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/getFood?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=%s&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom,sampleNo, time.Now().UnixNano())
+	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/getFood?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=%s&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom, sampleNo, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -352,7 +317,7 @@ func Test_platform_api_food_getFood(taskfrom string, datatype int, startdate str
 }
 
 //搜索 农产品
-func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string,sampleNo string, ck string, session *Session) (*Test_platform_r, error) {
+func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int, startdate string, enddate string, offset int, limit int, sort string, order string, sampleNo string, ck string, session *Session) (*Test_platform_r, error) {
 	cli := Cli(session)
 	datatype = datatype
 	sdatatype := ""
@@ -362,7 +327,7 @@ func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int,
 	if sort != "" {
 		sort = fmt.Sprintf("sort=%s", sort)
 	}
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/getAgriculture?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=%s&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom,sampleNo, time.Now().UnixNano())
+	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/getAgriculture?%s&order=%s&offset=%d&limit=%d&%s&startDate=%s&endDate=%s&taskFrom=%s&samplingUnit=&testUnit=&enterprise=&sampledUnit=&foodName=&province=&reportNo=&bsfla=&bsflb=&sampleNo=%s&foodType1=&foodType4=&_=%d", sort, order, offset, limit, sdatatype, startdate, enddate, taskfrom, sampleNo, time.Now().UnixNano())
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -386,7 +351,7 @@ func Test_platform_api_agriculture_getAgriculture(taskfrom string, datatype int,
 }
 
 //农产品查看详情
-func Test_platform_agricultureTest_agricultureDetail(id int, ck string, session *Session) (map[string]string, error) {
+func Test_platform_agricultureTest_agricultureDetail(id int, fetchitems bool, ck string, session *Session) (jsoniter.Any, error) {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/agricultureTest/agricultureDetail/%d", id)
 	r, err := cli.Get(surl, &RequestOptions{
@@ -411,7 +376,7 @@ func Test_platform_agricultureTest_agricultureDetail(id int, ck string, session 
 	if sd == "" {
 		return nil, errorv.NewNetError_e(errors.New("获取sd失败"))
 	}
-	rmp := make(map[string]string, 0)
+	rmp := make(map[string]interface{}, 0)
 	rmp["sample_code"] = rt.Find("#hid_sp_s_16").AttrOr("value", "")
 	rmp["sd"] = sd
 	rmp["type1"] = rt.Find("#hid_type1").AttrOr("value", "")
@@ -439,15 +404,42 @@ func Test_platform_agricultureTest_agricultureDetail(id int, ck string, session 
 	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
 	rmp["sd"] = sd
 
-	detailmp := StoMap_foodDetail(sbd)
+	detailmp := StoMap_test_platform(sbd)
 	for k, v := range detailmp {
 		rmp[k] = v
 	}
-	return rmp, nil
+
+	rmp["检验项目"] = make([]map[string]string, 0)
+	if fetchitems == true {
+		tr, err := Test_platform_api_food_getTestInfo(sd, ck, cli)
+		if err != nil {
+			return nil, err
+		}
+		for _, it := range tr.Rows {
+			jyitem := make(map[string]string)
+			jyitem["检验项目"] = it.Spdata_0
+			jyitem["检验结果"] = it.Spdata_1
+			jyitem["结果单位"] = it.Spdata_18
+			jyitem["结果判定"] = it.Spdata_2
+			jyitem["检验依据"] = it.Spdata_3
+			jyitem["判定依据"] = it.Spdata_4
+			jyitem["最小允许限"] = it.Spdata_11
+			jyitem["最大允许限"] = it.Spdata_15
+			jyitem["允许限单位"] = it.Spdata_16
+			jyitem["方法检出限"] = it.Spdata_7
+			jyitem["检出限单位"] = it.Spdata_8
+			jyitem["备注"] = it.Spdata_20
+			jyitem["说明"] = it.Spdata_17
+			rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+		}
+
+	}
+
+	return jsoniter.Wrap(rmp), nil
 }
 
 //普通食品查看详情
-func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map[string]string, error) {
+func Test_platform_foodTest_foodDetail(id int, fetchitems bool, ck string, session *Session) (jsoniter.Any, error) {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/foodTest/foodDetail/%d", id)
 	r, err := cli.Get(surl, &RequestOptions{
@@ -472,7 +464,7 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 	if sd == "" {
 		return nil, errorv.NewNetError_e(errors.New("获取sd失败"))
 	}
-	rmp := make(map[string]string, 0)
+	rmp := make(map[string]interface{}, 0)
 	rmp["sample_code"] = rt.Find("#hid_sp_s_16").AttrOr("value", "")
 	rmp["sd"] = sd
 	rmp["type1"] = rt.Find("#hid_type1").AttrOr("value", "")
@@ -499,16 +491,40 @@ func Test_platform_foodTest_foodDetail(id int, ck string, session *Session) (map
 	rmp["test_conclusion"] = rt.Find("#test_conclusion").Text()
 	rmp["sign_date"] = rt.Find("#sign_date").Find("option[selected=selected]").AttrOr("value", "")
 	rmp["sd"] = sd
-
-	detailmp := StoMap_foodDetail(sbd)
+	detailmp := StoMap_test_platform(sbd)
 	for k, v := range detailmp {
 		rmp[k] = v
 	}
-	return rmp, nil
+	rmp["检验项目"] = make([]map[string]string, 0)
+	if fetchitems == true {
+		tr, err := Test_platform_api_food_getTestInfo(sd, ck, cli)
+		if err != nil {
+			return nil, err
+		}
+		for _, it := range tr.Rows {
+			jyitem := make(map[string]string)
+			jyitem["检验项目"] = it.Spdata_0
+			jyitem["检验结果"] = it.Spdata_1
+			jyitem["结果单位"] = it.Spdata_18
+			jyitem["结果判定"] = it.Spdata_2
+			jyitem["检验依据"] = it.Spdata_3
+			jyitem["判定依据"] = it.Spdata_4
+			jyitem["最小允许限"] = it.Spdata_11
+			jyitem["最大允许限"] = it.Spdata_15
+			jyitem["允许限单位"] = it.Spdata_16
+			jyitem["方法检出限"] = it.Spdata_7
+			jyitem["检出限单位"] = it.Spdata_8
+			jyitem["备注"] = it.Spdata_20
+			jyitem["说明"] = it.Spdata_17
+			rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+		}
+
+	}
+	return jsoniter.Wrap(rmp), nil
 }
 
 //获取agriculture_getTestItems
-func Test_platform_api_agriculture_getTestItems(fddetail map[string]string, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
+func Test_platform_api_agriculture_getTestItems(fddetail jsoniter.Any, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/getTestItems")
 	r, err := cli.Post(surl, &RequestOptions{
@@ -516,12 +532,12 @@ func Test_platform_api_agriculture_getTestItems(fddetail map[string]string, ck s
 			"Cookie": ck,
 		},
 		Data: map[string]string{
-			"type1": fddetail["抽样基础信息_食品大类"],
-			"type2": fddetail["抽样基础信息_食品亚类"],
-			"type3": fddetail["抽样基础信息_食品次亚类"],
-			"type4": fddetail["抽样基础信息_食品细类"],
-			"bsflA": fddetail["抽样基础信息_报送分类A"],
-			"bsflB": fddetail["抽样基础信息_报送分类B"],
+			"type1": fddetail.Get("抽样基础信息_食品大类").ToString(),
+			"type2": fddetail.Get("抽样基础信息_食品亚类").ToString(),
+			"type3": fddetail.Get("抽样基础信息_食品次亚类").ToString(),
+			"type4": fddetail.Get("抽样基础信息_食品细类").ToString(),
+			"bsflA": fddetail.Get("抽样基础信息_报送分类A").ToString(),
+			"bsflB": fddetail.Get("抽样基础信息_报送分类B").ToString(),
 		},
 		UserAgent: useragent,
 	})
@@ -757,7 +773,7 @@ func Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos 
 }
 
 //保存agriculture_testinfo
-func Test_platform_api_agriculture_save(fooddetail map[string]string, updatas []map[string]string, ck string, session *Session) error {
+func Test_platform_api_agriculture_save(fooddetail jsoniter.Any, updatas []map[string]string, ck string, session *Session) error {
 	items := updatas
 	sitems, err := json.Marshal(items)
 	if err != nil {
@@ -771,30 +787,30 @@ func Test_platform_api_agriculture_save(fooddetail map[string]string, updatas []
 			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
 		},
 		Data: map[string]string{
-			"type1":           fooddetail["type1"],
-			"type2":           fooddetail["type2"],
-			"type3":           fooddetail["type3"],
-			"type4":           fooddetail["type4"],
-			"bsfla":           fooddetail["bsfla"],
-			"bsflb":           fooddetail["bsflb"],
-			"test_unit":       fooddetail["test_unit"],
-			"report_no":       fooddetail["report_no"],
-			"test_date":       fooddetail["test_date"],
-			"contact":         fooddetail["contact"],
-			"contact_tel":     fooddetail["contact_tel"],
-			"contact_email":   fooddetail["contact_email"],
-			"fy_person":       fooddetail["fy_person"],
-			"fy_tel":          fooddetail["fy_tel"],
-			"fy_email":        fooddetail["fy_email"],
-			"conclusion":      fooddetail["conclusion"],
-			"jd_bz":           fooddetail["jd_bz"],
-			"fx_bz":           fooddetail["fx_bz"],
-			"tb_date":         fooddetail["tb_date"],
-			"report_type":     fooddetail["report_type"],
-			"test_aims":       fooddetail["test_aims"],
-			"test_conclusion": fooddetail["test_conclusion"],
-			"sign_date":       fooddetail["sign_date"],
-			"sd":              fooddetail["sd"],
+			"type1":           fooddetail.Get("type1").ToString(),
+			"type2":           fooddetail.Get("type2").ToString(),
+			"type3":           fooddetail.Get("type3").ToString(),
+			"type4":           fooddetail.Get("type4").ToString(),
+			"bsfla":           fooddetail.Get("bsfla").ToString(),
+			"bsflb":           fooddetail.Get("bsflb").ToString(),
+			"test_unit":       fooddetail.Get("test_unit").ToString(),
+			"report_no":       fooddetail.Get("report_no").ToString(),
+			"test_date":       fooddetail.Get("test_date").ToString(),
+			"contact":         fooddetail.Get("contact").ToString(),
+			"contact_tel":     fooddetail.Get("contact_tel").ToString(),
+			"contact_email":   fooddetail.Get("contact_email").ToString(),
+			"fy_person":       fooddetail.Get("fy_person").ToString(),
+			"fy_tel":          fooddetail.Get("fy_tel").ToString(),
+			"fy_email":        fooddetail.Get("fy_email").ToString(),
+			"conclusion":      fooddetail.Get("conclusion").ToString(),
+			"jd_bz":           fooddetail.Get("jd_bz").ToString(),
+			"fx_bz":           fooddetail.Get("fx_bz").ToString(),
+			"tb_date":         fooddetail.Get("tb_date").ToString(),
+			"report_type":     fooddetail.Get("report_type").ToString(),
+			"test_aims":       fooddetail.Get("test_aims").ToString(),
+			"test_conclusion": fooddetail.Get("test_conclusion").ToString(),
+			"sign_date":       fooddetail.Get("sign_date").ToString(),
+			"sd":              fooddetail.Get("sd").ToString(),
 			"fdtoken12":       "201812FoodDetail",
 			"fdtoken1201":     "20181201FoodDetail",
 			"isSubmit":        "false",

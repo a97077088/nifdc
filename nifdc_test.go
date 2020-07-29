@@ -399,7 +399,7 @@ func TestRe(t *testing.T) {
 </html>
 `
 
-	mkr := StoMap_yijieshou_full(olds)
+	mkr := StoMap_test_platform(olds)
 
 	fmt.Println(mkr)
 	//fmt.Println(mkr["抽检样品信息_生产日期"])
@@ -426,11 +426,11 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fddetail, err := Test_platform_agricultureTest_agricultureDetail(12940542, test_platform_ck, nil)
+	fddetail, err := Test_platform_agricultureTest_agricultureDetail(12940542, true, test_platform_ck, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	sd := fddetail["sd"]
+	sd := fddetail.Get("sd").ToString()
 	itemsr, err := Test_platform_api_agriculture_getTestItems(fddetail, test_platform_ck, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -503,4 +503,14 @@ func TestMerge_subitem(t *testing.T) {
 	for _, update := range updatas {
 		fmt.Println(update["item"], "=>", update["sp_data_1"])
 	}
+}
+
+func TestTest_platform_foodTest_foodDetail(t *testing.T) {
+	ck := "JSESSIONID=C248ACBED0C85FC725157B9ECE50066C-n3;sod=leYDFuSnkFivrosGM5PIfUP972YJATho+2y9TVZBqWDT6EZLBtjURt+FfyxhjeremyFLs5gYY4yfC2qsdjk="
+	r, err := Test_platform_foodTest_foodDetail(15042534, true, ck, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("抽样基础信息_抽样单编号:", r.Get("抽样基础信息_抽样单编号").ToString())
+	t.Log(r.ToString())
 }

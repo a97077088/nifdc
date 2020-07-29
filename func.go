@@ -19,7 +19,6 @@ func Get_mapsitem(key string, items []map[string]string) map[string]string {
 	return nil
 }
 func MergeUpdates(updates []map[string]string, remotes []map[string]string) []map[string]string {
-
 	for _, remote := range remotes {
 		xm := remote["检验项目"]
 		xm = strings.ReplaceAll(xm, "（", "(")
@@ -113,7 +112,7 @@ func StoMap_test_platform(s string) map[string]string {
 	rt.Find(".ibox").Each(func(i int, sel *goquery.Selection) {
 		title := sel.Find("h2").Text()
 		sel.Find(".col-sm-4:contains(：)").Each(func(i int, selection *goquery.Selection) {
-			sptxt:=strings.TrimSpace(strings.ReplaceAll(selection.Text(),"\n",""))
+			sptxt := strings.TrimSpace(strings.ReplaceAll(selection.Text(), "\n", ""))
 			spsel := strings.Split(sptxt, "：")
 			if len(spsel) != 2 {
 				return
@@ -122,7 +121,7 @@ func StoMap_test_platform(s string) map[string]string {
 			//fmt.Println(k)
 			v := strings.TrimSpace(spsel[1])
 			//v = strings.ReplaceAll(v, "                                        ", " ")
-			if mkr[k]==""{
+			if mkr[k] == "" {
 				mkr[k] = v
 			}
 		})
