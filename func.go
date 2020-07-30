@@ -125,6 +125,20 @@ func StoMap_test_platform(s string) map[string]string {
 				mkr[k] = v
 			}
 		})
+		sel.Find(".col-sm-4:contains(\\:)").Each(func(i int, selection *goquery.Selection) {
+			sptxt := strings.TrimSpace(strings.ReplaceAll(selection.Text(), "\n", ""))
+			spsel := strings.Split(sptxt, ":")
+			if len(spsel) != 2 {
+				return
+			}
+			k := fmt.Sprintf("%s_%s", title, strings.TrimSpace(spsel[0]))
+			fmt.Println(k)
+			v := strings.TrimSpace(spsel[1])
+			//v = strings.ReplaceAll(v, "                                        ", " ")
+			if mkr[k] == "" {
+				mkr[k] = v
+			}
+		})
 	})
 
 	mkr["检验结论"] = strings.TrimSpace(rt.Find("#testform").Find("h3:contains(检验结论)").Parent().Find("p").Text())
@@ -289,7 +303,9 @@ func StoMap_sample(s string) map[string]string {
 			title = "检验信息"
 		}
 		sel.Find("div:contains(：)").Each(func(i int, selection *goquery.Selection) {
-			spsel := strings.Split(selection.Text(), "：")
+			sptxt := strings.TrimSpace(strings.ReplaceAll(selection.Text(), "\n", ""))
+			spsel := strings.Split(sptxt, "：")
+
 			if len(spsel) != 2 {
 				return
 			}
@@ -297,7 +313,24 @@ func StoMap_sample(s string) map[string]string {
 			//fmt.Println(k)
 			v := strings.TrimSpace(spsel[1])
 			v = strings.ReplaceAll(v, "                                        ", " ")
-			mkr[k] = v
+			if mkr[k] == "" {
+				mkr[k] = v
+			}
+		})
+		sel.Find("div:contains(\\:)").Each(func(i int, selection *goquery.Selection) {
+			sptxt := strings.TrimSpace(strings.ReplaceAll(selection.Text(), "\n", ""))
+			spsel := strings.Split(sptxt, ":")
+
+			if len(spsel) != 2 {
+				return
+			}
+			k := fmt.Sprintf("%s_%s", title, strings.TrimSpace(spsel[0]))
+			//fmt.Println(k)
+			v := strings.TrimSpace(spsel[1])
+			v = strings.ReplaceAll(v, "                                        ", " ")
+			if mkr[k] == "" {
+				mkr[k] = v
+			}
 		})
 	})
 

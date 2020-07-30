@@ -212,7 +212,7 @@ func Sample_switchchannel(uuid string, _type string, ck string, session *Session
 }
 
 //已接受全字段导出
-func Viewcheckedsample_full(sample_code string, ck string, session *Session) (map[string]string, error) {
+func Viewcheckedsample_full(sample_code string, ck string, session *Session) (jsoniter.Any, error) {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=viewcheckedsample&sample_code=%s", sample_code)
 	r, err := cli.Get(surl, &RequestOptions{
@@ -228,7 +228,7 @@ func Viewcheckedsample_full(sample_code string, ck string, session *Session) (ma
 		return nil, errorv.NewNetError("http状态错误")
 	}
 	sbd := r.String()
-	return StoMap_sample(sbd), nil
+	return jsoniter.Wrap(StoMap_sample(sbd)), nil
 }
 
 //数据查看,任务大平台
