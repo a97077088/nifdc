@@ -411,7 +411,7 @@ func Test_platform_agricultureTest_agricultureDetail(id int, fetchitems bool, ck
 
 	rmp["检验项目"] = make([]map[string]string, 0)
 	if fetchitems == true {
-		tr, err := Test_platform_api_food_getTestInfo(sd, ck, cli)
+		tr, err := Test_platform_api_agriculture_getTestInfo(sd, ck, cli)
 		if err != nil {
 			return nil, err
 		}

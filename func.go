@@ -110,7 +110,7 @@ func StoMap_test_platform(s string) map[string]string {
 	mkr := make(map[string]string, 0)
 
 	rt.Find(".ibox").Each(func(i int, sel *goquery.Selection) {
-		title := sel.Find("h2").Text()
+		title := sel.Find("h2").First().Text()
 		sel.Find(".col-sm-4:contains(：)").Each(func(i int, selection *goquery.Selection) {
 			sptxt := strings.TrimSpace(strings.ReplaceAll(selection.Text(), "\n", ""))
 			spsel := strings.Split(sptxt, "：")
@@ -298,7 +298,7 @@ func StoMap_sample(s string) map[string]string {
 	mkr := make(map[string]string, 0)
 
 	rt.Find(".formAreaCom").Each(func(i int, sel *goquery.Selection) {
-		title := sel.Find(".areaTitle").Text()
+		title := sel.Find(".areaTitle").First().Text()
 		if i == 7 && title == "" {
 			title = "检验信息"
 		}
