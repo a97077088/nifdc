@@ -18,6 +18,7 @@ func TestRe(t *testing.T) {
 
 
 
+
 <html>
 <head>
     <title>普通食品检验填报</title>
@@ -77,7 +78,7 @@ func TestRe(t *testing.T) {
 <div class="wrapper wrapper-content   fadeInDown">
     <div class="container-fluid">
         <h1>普通食品检验数据填报
-            <small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp; 抽样编号:DC20131100120631183</small>
+            <small class="text-danger">&nbsp;&nbsp;&nbsp;&nbsp; 抽样编号:GC20131100120630263</small>
         </h1>
         <div class="panel panel-success">
             <div class="panel-heading">
@@ -100,18 +101,18 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4 ">
                                         <label class="control-label col-sm-4">任务来源：</label>
-                                        <div class="col-sm-8">衡水市市场监督管理局</div>
+                                        <div class="col-sm-8">河北省市场监督管理局</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">报送分类A：</label>
-                                        <div class="col-sm-8" id="bsfla">抽检监测（市级本级）
-                                            <input type="hidden" id="hid_bsfla" value="抽检监测（市级本级）"/>
+                                        <div class="col-sm-8" id="bsfla">抽检监测（转移地方）
+                                            <input type="hidden" id="hid_bsfla" value="抽检监测（转移地方）"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">报送分类B：</label>
-                                        <div class="col-sm-8" id="bsflb">2020年河北衡水常规抽检监测计划（流通环节）
-                                            <input type="hidden" id="hid_bsflb" value="2020年河北衡水常规抽检监测计划（流通环节）"/>
+                                        <div class="col-sm-8" id="bsflb">2020年总局抽检计划
+                                            <input type="hidden" id="hid_bsflb" value="2020年总局抽检计划"/>
                                         </div>
                                     </div>
                                 </div>
@@ -124,14 +125,14 @@ func TestRe(t *testing.T) {
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">食品亚类：</label>
-                                        <div class="col-sm-8" id="type2">生干坚果与籽类食品
-                                            <input type="hidden" id="hid_type2" value="生干坚果与籽类食品"/>
+                                        <div class="col-sm-8" id="type2">畜禽肉及副产品
+                                            <input type="hidden" id="hid_type2" value="畜禽肉及副产品"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">食品次亚类：</label>
-                                        <div class="col-sm-8" id="type3">生干坚果与籽类食品
-                                            <input type="hidden" id="hid_type3" value="生干坚果与籽类食品"/>
+                                        <div class="col-sm-8" id="type3">禽肉
+                                            <input type="hidden" id="hid_type3" value="禽肉"/>
                                         </div>
                                     </div>
                                 </div>
@@ -139,14 +140,14 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">食品细类：</label>
-                                        <div class="col-sm-8" id="type4">生干坚果
-                                            <input type="hidden" id="hid_type4" value="生干坚果"/>
+                                        <div class="col-sm-8" id="type4">鸡肉
+                                            <input type="hidden" id="hid_type4" value="鸡肉"/>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">抽样单编号：</label>
-                                        <div class="col-sm-8">DC20131100120631183</div>
-                                        <input type="hidden" id="hid_sp_s_16" value="DC20131100120631183"/>
+                                        <div class="col-sm-8">GC20131100120630263</div>
+                                        <input type="hidden" id="hid_sp_s_16" value="GC20131100120630263"/>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">抽样类型：</label>
@@ -186,7 +187,7 @@ func TestRe(t *testing.T) {
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">抽样人员电话：</label>
-                                        <div class="col-sm-8">03182361893</div>
+                                        <div class="col-sm-8">2187675</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">单位联系人：</label>
@@ -201,7 +202,7 @@ func TestRe(t *testing.T) {
                                     
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">传真：</label>
-                                        <div class="col-sm-8">03182813793</div>
+                                        <div class="col-sm-8">03182187675</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">邮编：</label>
@@ -209,7 +210,7 @@ func TestRe(t *testing.T) {
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">联系人电话：</label>
-                                        <div class="col-sm-8">03182361893</div>
+                                        <div class="col-sm-8">2187675</div>
                                     </div>
                                 </div>
                             </div>
@@ -225,15 +226,15 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">单位名称：</label>
-                                        <div class="col-sm-8">衡水悦华超市有限公司</div>
+                                        <div class="col-sm-8">衡水中硕商贸有限公司</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">单位地址：</label>
-                                        <div class="col-sm-8">衡水市高新区人民路北侧、顺兴街西侧尚品林溪综合楼负一层</div>
+                                        <div class="col-sm-8">河北省衡水市桃城区榕花北大街696号嗨购广场1幢1号1-3层</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">所在地：</label>
-                                        <div class="col-sm-8">河北/衡水/工业新区</div>
+                                        <div class="col-sm-8">河北/衡水/桃城区</div>
                                     </div>
                                 </div>
 
@@ -257,7 +258,7 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">营业执照/社会信用代码：</label>
-                                        <div class="col-sm-8">91131101MA0CYJGE1F</div>
+                                        <div class="col-sm-8">91131102MA0F4BGG58</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">许可证类型：</label>
@@ -265,22 +266,22 @@ func TestRe(t *testing.T) {
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">许可证号：</label>
-                                        <div class="col-sm-8">JY11311000002991</div>
+                                        <div class="col-sm-8">JY11311020055287</div>
                                     </div>
                                 </div>
 
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">单位法人：</label>
-                                        <div class="col-sm-8">王晓东</div>
+                                        <div class="col-sm-8">孙云鹏</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">联系人：</label>
-                                        <div class="col-sm-8">武文华</div>
+                                        <div class="col-sm-8">陈华明</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">联系人电话：</label>
-                                        <div class="col-sm-8">15633543111</div>
+                                        <div class="col-sm-8">13102761536</div>
                                     </div>
                                 </div>
 
@@ -315,7 +316,7 @@ func TestRe(t *testing.T) {
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">所在地：</label>
-                                        <div class="col-sm-8">河北/衡水/工业新区</div>
+                                        <div class="col-sm-8">河北/衡水/桃城区</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">企业地址：</label>
@@ -395,11 +396,11 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">样品名称：</label>
-                                        <div class="col-sm-8">核桃</div>
+                                        <div class="col-sm-8">带骨上腿肉（鸡肉）</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">购进日期:</label>
-                                        <div class="col-sm-8">2020-08-03</div>
+                                        <div class="col-sm-8">2020-08-27</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">保质期：</label>
@@ -414,7 +415,7 @@ func TestRe(t *testing.T) {
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">样品规格：</label>
-                                        <div class="col-sm-8">计量称重</div>
+                                        <div class="col-sm-8">/</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">质量等级：</label>
@@ -425,7 +426,7 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">单价：</label>
-                                        <div class="col-sm-8">25.8元/kg</div>
+                                        <div class="col-sm-8">11.80元/kg</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">是否进口：</label>
@@ -440,7 +441,7 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">抽样日期：</label>
-                                        <div class="col-sm-8">2020-08-03</div>
+                                        <div class="col-sm-8">2020-08-27</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">抽样方式：</label>
@@ -470,11 +471,11 @@ func TestRe(t *testing.T) {
                                 <div class="row form-group">
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">抽样基数：</label>
-                                        <div class="col-sm-8">6kg</div>
+                                        <div class="col-sm-8">4kg</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">抽样数量：</label>
-                                        <div class="col-sm-8">3.236</div>
+                                        <div class="col-sm-8">3.042</div>
                                     </div>
                                     <div class="col-sm-4">
                                         <label class="control-label col-sm-4">备样数量：</label>
@@ -512,56 +513,56 @@ func TestRe(t *testing.T) {
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644279570657974.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644279570657974.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851560813442144.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851560813442144.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片1</p>
                                                 </div>
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280879772737.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280879772737.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/15985156064323218.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/15985156064323218.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片2</p>
                                                 </div>
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280878596638.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280878596638.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851561244119149.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851561244119149.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片3</p>
                                                 </div>
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280884836142.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280884836142.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851560320043979.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851560320043979.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片4</p>
                                                 </div>
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280886186155.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280886186155.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851560316332108.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851560316332108.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片5</p>
                                                 </div>
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280878899410.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644280878899410.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851562646042922.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851562646042922.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片6</p>
                                                 </div>
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/15964512646101.525.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/15964512646101.525.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851562595736573.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851562595736573.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片7</p>
                                                 </div>
                                             
                                                 <div style="display: inline-block;  overflow: hidden">
                                                     <img style="width:150px;height:150px;margin-right: 15px;"
-                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159645126427121176.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159645126427121176.jpeg"
+                                                         src="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851778475926606.jpeg"    data-original="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851778475926606.jpeg"
                                                          alt="现场抽样图片">
                                                     <p>图片8</p>
                                                 </div>
@@ -575,7 +576,7 @@ func TestRe(t *testing.T) {
                                         
                                             
                                             
-                                                <a href="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159645127886180204.png" target="_blank"
+                                                <a href="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851567457840540.png" target="_blank"
                                                    class="btn btn-danger btn-xs"><i
                                                         class="fa fa-search"></i> 抽样单电子版</a>
                                             
@@ -583,7 +584,7 @@ func TestRe(t *testing.T) {
                                         
                                             
                                             
-                                                <a href="http://spcjupload2.gsxt.gov.cn/image/2020/08/03/159644281237030686.png" target="_blank"
+                                                <a href="http://spcjupload2.gsxt.gov.cn/image/2020/08/27/159851566023639799.png" target="_blank"
                                                    class="btn btn-danger btn-xs"><i
                                                         class="fa fa-search"></i> 抽样检验告知书电子版</a>
                                             
@@ -616,7 +617,7 @@ func TestRe(t *testing.T) {
                             <div class="col-sm-4 form-group">
                                 <label class="control-label col-sm-5">报告书编号：</label>
                                 <div class="col-sm-7">
-                                    <input type="text" id="report_no" name="report_no" value="HSSP202008007"
+                                    <input type="text" id="report_no" name="report_no" value=""
                                            class="form-control"
                                            title="请输入报告书编号" required>
 
@@ -628,7 +629,7 @@ func TestRe(t *testing.T) {
                                     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input type="text" disabled id="test_date" name="test_date" class="form-control"
-                                               value="2020-08-04"
+                                               value="2020-08-28"
                                                placeholder="请选择日期"
                                                data-provide="datepicker">
                                     </div>
@@ -649,7 +650,7 @@ func TestRe(t *testing.T) {
                                 <label class="control-label col-sm-5">联系人电话：</label>
                                 <div class="col-sm-7">
                                     <input type="text" disabled id="contact_tel"  name="contact_tel"
-                                           value="03182361893"
+                                           value="2187675"
                                            class="form-control"
                                            title="请输入有效的座机号或手机号">
                                 </div>
@@ -695,10 +696,10 @@ func TestRe(t *testing.T) {
                             <div class="col-sm-4 form-group">
                                 <label class="control-label col-sm-5">结论：</label>
                                 <div class="col-sm-7">
-                                    <input type="text" disabled id="conclusion" value="纯抽检合格样品"
+                                    <input type="text" disabled id="conclusion" value=""
                                            class="form-control">
                                     <input type="hidden" id="hid_conclusion" name="conclusion"
-                                           value="纯抽检合格样品"/>
+                                           value=""/>
                                 </div>
                             </div>
                             <div class="col-sm-4 form-group">
@@ -706,7 +707,7 @@ func TestRe(t *testing.T) {
                                 <div class="col-sm-7">
                                     <select class="form-control" id="sp_bsb_bgfl" name="report_type">
                                         
-                                            <option  selected="selected"
+                                            <option 
                                                     value="合格报告">合格报告</option>
                                         
                                             <option 
@@ -753,7 +754,7 @@ func TestRe(t *testing.T) {
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input type="text" disabled="disabled" id="tb_date" name="tb_date"
                                                class="form-control"
-                                               value="2020-08-04"
+                                               value="2020-08-28"
                                                placeholder="请选择日期"
                                                data-provide="datepicker" id="startDate">
                                     </div>
@@ -763,14 +764,14 @@ func TestRe(t *testing.T) {
                                 <label class="control-label col-sm-5">监督抽检报告备注：</label>
                                 <div class="col-sm-7">
                                     <textarea id="jd_bz" rows="4" name="jd_bz"
-                                              class="form-control">123</textarea>
+                                              class="form-control"></textarea>
                                 </div>
                             </div>
                             <div class="col-sm-4 form-group">
                                 <label class="control-label col-sm-5">风险监测报告备注：</label>
                                 <div class="col-sm-7">
                                     <textarea id="fx_bz" rows="4" name="fx_bz"
-                                              class="form-control">444</textarea>
+                                              class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -879,10 +880,10 @@ func TestRe(t *testing.T) {
                             <div class="hr-line-dashed"></div>
                             <textarea id="test_conclusion" name="test_conclusion"
                                       style="width: 100%;font-size: 16px;"
-                                      rows="5">经抽样检验，所检项目符合 GB 19300-2014《食品安全国家标准 坚果与籽类食品》，GB 2762-2017《食品安全国家标准 食品中污染物限量》 要求。</textarea>
+                                      rows="5"></textarea>
                         </div>
                     </div>
-                    <input type="hidden" id="sd" name="sd" value="ISwaBUeyxhjeremy4b9Bn7Y4w4CyxhjeremyioLh4LmShC4yxhjeremykVyxhjeremyq2hBlV68=">
+                    <input type="hidden" id="sd" name="sd" value="fmHrUgGNZkr7YdZKrnFJ7YlNUXmj7YoVQjl4WqF9Z9c=">
                     <input type="hidden" id="st" name="sd" value="-1">
                     <input type="hidden" id="userId" value="R0rN23mmF5kjyxhjeremyfsZQiHBPrTlBBKtLup5">
                     <input type="hidden" id="xs" value="">
@@ -989,7 +990,6 @@ func TestRe(t *testing.T) {
 
 </body>
 </html>
-
 
 `
 

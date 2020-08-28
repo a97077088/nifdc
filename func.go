@@ -158,10 +158,15 @@ func StoMap_test_platform(s string) map[string]string {
 					if v == "" {
 						v = strings.TrimSpace(selval.Text())
 					}
-					fmt.Printf("%s=>%s\n", k, v)
+					mkr[k] = v
+					if k=="检验信息_结论"&&v==""{
+						mkr[k]="未检验样品"
+					}
+					//fmt.Printf("%s=>%s\n", k, v)
 				})
 			}
 		})
+		mkr["检验结论"] = strings.TrimSpace(rt.Find("#test_conclusion").Text())
 	}
 	////抽样基础信息
 	//sel0 := rt.Find(".ibox.float-e-margins").Eq(0)

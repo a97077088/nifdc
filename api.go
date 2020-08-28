@@ -415,22 +415,46 @@ func Test_platform_agricultureTest_agricultureDetail(id int, fetchitems bool, ck
 		if err != nil {
 			return nil, err
 		}
-		for _, it := range tr.Rows {
-			jyitem := make(map[string]string)
-			jyitem["检验项目"] = it.Spdata_0
-			jyitem["检验结果"] = it.Spdata_1
-			jyitem["结果单位"] = it.Spdata_18
-			jyitem["结果判定"] = it.Spdata_2
-			jyitem["检验依据"] = it.Spdata_3
-			jyitem["判定依据"] = it.Spdata_4
-			jyitem["最小允许限"] = it.Spdata_11
-			jyitem["最大允许限"] = it.Spdata_15
-			jyitem["允许限单位"] = it.Spdata_16
-			jyitem["方法检出限"] = it.Spdata_7
-			jyitem["检出限单位"] = it.Spdata_8
-			jyitem["备注"] = it.Spdata_20
-			jyitem["说明"] = it.Spdata_17
-			rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+		if len(tr.Rows)>0{
+			for _, it := range tr.Rows {
+				jyitem := make(map[string]string)
+				jyitem["检验项目"] = it.Spdata_0
+				jyitem["检验结果"] = it.Spdata_1
+				jyitem["结果单位"] = it.Spdata_18
+				jyitem["结果判定"] = it.Spdata_2
+				jyitem["检验依据"] = it.Spdata_3
+				jyitem["判定依据"] = it.Spdata_4
+				jyitem["最小允许限"] = it.Spdata_11
+				jyitem["最大允许限"] = it.Spdata_15
+				jyitem["允许限单位"] = it.Spdata_16
+				jyitem["方法检出限"] = it.Spdata_7
+				jyitem["检出限单位"] = it.Spdata_8
+				jyitem["备注"] = it.Spdata_20
+				jyitem["说明"] = it.Spdata_17
+				rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+			}
+		}else{
+			testitems,err:=Test_platform_api_agriculture_getTestItems(jsoniter.Wrap(rmp),ck,session)
+			if err != nil {
+				return nil, err
+			}
+			for _, it := range testitems.Rows {
+				jyitem := make(map[string]string)
+				jyitem["检验项目"] = it.Item
+				jyitem["检验结果"] = ""
+				jyitem["结果单位"] = it.TestReason[0].Spdata_18
+				jyitem["结果判定"] = "未检验"
+				jyitem["检验依据"] = it.TestReason[0].Spdata_3
+				jyitem["判定依据"] = it.VerifyReason[0].Spdata_4
+				jyitem["最小允许限"] = it.VerifyReason[0].Spdata_9
+				jyitem["最大允许限"] = it.VerifyReason[0].Spdata_13
+				jyitem["允许限单位"] = it.VerifyReason[0].Spdata_14
+				jyitem["方法检出限"] = it.TestReason[0].Spdata_5
+				jyitem["检出限单位"] = it.TestReason[0].Spdata_6
+				jyitem["备注"] = it.TestReason[0].Bz
+				jyitem["说明"] = ""
+				rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+			}
 		}
 
 	}
@@ -501,23 +525,49 @@ func Test_platform_foodTest_foodDetail(id int, fetchitems bool, ck string, sessi
 		if err != nil {
 			return nil, err
 		}
-		for _, it := range tr.Rows {
-			jyitem := make(map[string]string)
-			jyitem["检验项目"] = it.Spdata_0
-			jyitem["检验结果"] = it.Spdata_1
-			jyitem["结果单位"] = it.Spdata_18
-			jyitem["结果判定"] = it.Spdata_2
-			jyitem["检验依据"] = it.Spdata_3
-			jyitem["判定依据"] = it.Spdata_4
-			jyitem["最小允许限"] = it.Spdata_11
-			jyitem["最大允许限"] = it.Spdata_15
-			jyitem["允许限单位"] = it.Spdata_16
-			jyitem["方法检出限"] = it.Spdata_7
-			jyitem["检出限单位"] = it.Spdata_8
-			jyitem["备注"] = it.Spdata_20
-			jyitem["说明"] = it.Spdata_17
-			rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+		if len(tr.Rows)>0{
+			for _, it := range tr.Rows {
+				jyitem := make(map[string]string)
+				jyitem["检验项目"] = it.Spdata_0
+				jyitem["检验结果"] = it.Spdata_1
+				jyitem["结果单位"] = it.Spdata_18
+				jyitem["结果判定"] = it.Spdata_2
+				jyitem["检验依据"] = it.Spdata_3
+				jyitem["判定依据"] = it.Spdata_4
+				jyitem["最小允许限"] = it.Spdata_11
+				jyitem["最大允许限"] = it.Spdata_15
+				jyitem["允许限单位"] = it.Spdata_16
+				jyitem["方法检出限"] = it.Spdata_7
+				jyitem["检出限单位"] = it.Spdata_8
+				jyitem["备注"] = it.Spdata_20
+				jyitem["说明"] = it.Spdata_17
+				rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+			}
+		}else{
+			testitems,err:=Test_platform_api_food_getTestItems(jsoniter.Wrap(rmp),ck,session)
+			if err != nil {
+				return nil, err
+			}
+			for _, it := range testitems.Rows {
+				jyitem := make(map[string]string)
+				jyitem["检验项目"] = it.Item
+				jyitem["检验结果"] = ""
+				jyitem["结果单位"] = it.TestReason[0].Spdata_18
+				jyitem["结果判定"] = "未检验"
+				jyitem["检验依据"] = it.TestReason[0].Spdata_3
+				jyitem["判定依据"] = it.VerifyReason[0].Spdata_4
+				jyitem["最小允许限"] = it.VerifyReason[0].Spdata_9
+				jyitem["最大允许限"] = it.VerifyReason[0].Spdata_13
+				jyitem["允许限单位"] = it.VerifyReason[0].Spdata_14
+				jyitem["方法检出限"] = it.TestReason[0].Spdata_5
+				jyitem["检出限单位"] = it.TestReason[0].Spdata_6
+				jyitem["备注"] = it.TestReason[0].Bz
+				jyitem["说明"] = ""
+				rmp["检验项目"] = append(rmp["检验项目"].([]map[string]string), jyitem)
+			}
+
 		}
+
 
 	}
 	return jsoniter.Wrap(rmp), nil
@@ -836,7 +886,7 @@ func Test_platform_api_agriculture_save(fooddetail jsoniter.Any, updatas []map[s
 }
 
 //获取food_getTestItems
-func Test_platform_api_food_getTestItems(fddetail map[string]string, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
+func Test_platform_api_food_getTestItems(fddetail jsoniter.Any, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/getTestItems")
 	r, err := cli.Post(surl, &RequestOptions{
@@ -844,12 +894,12 @@ func Test_platform_api_food_getTestItems(fddetail map[string]string, ck string, 
 			"Cookie": ck,
 		},
 		Data: map[string]string{
-			"type1": fddetail["抽样基础信息_食品大类"],
-			"type2": fddetail["抽样基础信息_食品亚类"],
-			"type3": fddetail["抽样基础信息_食品次亚类"],
-			"type4": fddetail["抽样基础信息_食品细类"],
-			"bsflA": fddetail["抽样基础信息_报送分类A"],
-			"bsflB": fddetail["抽样基础信息_报送分类B"],
+			"type1": fddetail.Get("抽样基础信息_食品大类").ToString(),
+			"type2": fddetail.Get("抽样基础信息_食品亚类").ToString(),
+			"type3": fddetail.Get("抽样基础信息_食品次亚类").ToString(),
+			"type4": fddetail.Get("抽样基础信息_食品细类").ToString(),
+			"bsflA": fddetail.Get("抽样基础信息_报送分类A").ToString(),
+			"bsflB": fddetail.Get("抽样基础信息_报送分类B").ToString(),
 		},
 		UserAgent: useragent,
 	})
