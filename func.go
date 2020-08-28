@@ -143,7 +143,26 @@ func StoMap_test_platform(s string) map[string]string {
 
 	mkr["检验结论"] = strings.TrimSpace(rt.Find("#testform").Find("h3:contains(检验结论)").Parent().Find("p").Text())
 	mkr["状态"] = strings.TrimSpace(strings.ReplaceAll(rt.Find("h2:contains(状态\\:)").Text(), "状态:", ""))
+	if mkr["状态"] == "" && mkr["检验结论"] == "" {
+		rt.Find(".ibox").Each(func(i int, sel *goquery.Selection) {
+			title := sel.Find("h2").First().Text()
+			if title == "检验信息" {
+				sel.Find(".col-sm-4:contains(：)").Each(func(i int, selection *goquery.Selection) {
 
+					sptxt := strings.TrimSpace(strings.ReplaceAll(selection.Text(), "\n", ""))
+					spsel := strings.Split(sptxt, "：")
+					selval := selection.Find("*[value],textarea")
+					k := fmt.Sprintf("%s_%s", title, strings.TrimSpace(spsel[0]))
+					//fmt.Println(k)
+					v := strings.TrimSpace(selval.AttrOr("value", ""))
+					if v == "" {
+						v = strings.TrimSpace(selval.Text())
+					}
+					fmt.Printf("%s=>%s\n", k, v)
+				})
+			}
+		})
+	}
 	////抽样基础信息
 	//sel0 := rt.Find(".ibox.float-e-margins").Eq(0)
 	////抽样单位信息
