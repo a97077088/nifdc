@@ -4,9 +4,15 @@ import (
 	"encoding/gob"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
+	"github.com/ahmetb/go-linq/v3"
+	"github.com/json-iterator/go"
 	"os"
 	"strings"
 )
+type JudgmentbasisItem struct {
+	Name string
+	Items []map[string]interface{}
+}
 
 func Get_mapsitem(key string, items []map[string]string) map[string]string {
 	for _, it := range items {
@@ -451,156 +457,300 @@ func StoMap_sample(s string) map[string]string {
 }
 
 //填充报告
-func Fill_item(new map[string]string, fooddetail map[string]string) {
-	fooddetail["report_no"] = new["报告书编号"]
-	fooddetail["jd_bz"] = new["监督抽检报告备注"]
-	fooddetail["fx_bz"] = new["风险监测报告备注"]
-	fooddetail["conclusion"] = new["结论"]
-	fooddetail["report_type"] = new["报告类别"]
-	fooddetail["test_conclusion"] = new["检验结论"]
-}
-func GetTestInfo(k string, testinfos []*Test_platform_api_food_getTestInfo_o) *Test_platform_api_food_getTestInfo_o {
-	for _, it := range testinfos {
-		if it.Spdata_0 == k {
-			return it
-		}
-	}
-	return nil
-}
+//func Fill_item(new map[string]string, fooddetail map[string]string) {
+//	fooddetail["report_no"] = new["报告书编号"]
+//	fooddetail["jd_bz"] = new["监督抽检报告备注"]
+//	fooddetail["fx_bz"] = new["风险监测报告备注"]
+//	fooddetail["conclusion"] = new["结论"]
+//	fooddetail["report_type"] = new["报告类别"]
+//	fooddetail["test_conclusion"] = new["检验结论"]
+//}
+//func GetTestInfo(k string, testinfos []*Test_platform_api_food_getTestInfo_o) *Test_platform_api_food_getTestInfo_o {
+//	for _, it := range testinfos {
+//		if it.Spdata_0 == k {
+//			return it
+//		}
+//	}
+//	return nil
+//}
 
 //填充检测项目
-func Fill_subitem(news []map[string]string, testinfos []*Test_platform_api_food_getTestInfo_o) {
-	for _, new := range news {
-		info := GetTestInfo(new["检验项目"], testinfos)
-		if info == nil {
-			continue
-		}
-		info.Spdata_1 = new["检验结果"]
-		info.Spdata_18 = new["结果单位"]
-		info.Spdata_2 = new["结果判定"]
-		info.Spdata_19 = new["检验依据"]
-		info.Spdata_4 = new["判定依据"]
-		info.Spdata_11 = new["最小允许限"]
-		info.Spdata_15 = new["最大允许限"]
-		info.Spdata_16 = new["允许限单位"]
-		info.Spdata_7 = new["方法检出限"]
-		info.Spdata_8 = new["检出限单位"]
-		info.Spdata_17 = new["说明"]
-		fmt.Println(new)
-	}
-}
+//func Fill_subitem(news []map[string]string, testinfos []*Test_platform_api_food_getTestInfo_o) {
+//	for _, new := range news {
+//		info := GetTestInfo(new["检验项目"], testinfos)
+//		if info == nil {
+//			continue
+//		}
+//		info.Spdata_1 = new["检验结果"]
+//		info.Spdata_18 = new["结果单位"]
+//		info.Spdata_2 = new["结果判定"]
+//		info.Spdata_19 = new["检验依据"]
+//		info.Spdata_4 = new["判定依据"]
+//		info.Spdata_11 = new["最小允许限"]
+//		info.Spdata_15 = new["最大允许限"]
+//		info.Spdata_16 = new["允许限单位"]
+//		info.Spdata_7 = new["方法检出限"]
+//		info.Spdata_8 = new["检出限单位"]
+//		info.Spdata_17 = new["说明"]
+//		fmt.Println(new)
+//	}
+//}
 
+//获取报告类别
+func GetReport_type(items jsoniter.Any)string{
+	report_type:="合格报告"
+	for i := 0; i < items.Size(); i++ {
+		it:=items.Get(i)
+		if it.Get("结果判定").ToString()=="不合格项"{
+			report_type="一般不合格报告"
+			break
+		}
+	}
+	return report_type
+}
+//获取结论
+func GetConclusion(items jsoniter.Any)string{
+	jielun:="纯抽检合格样品"
+	for i := 0; i < items.Size(); i++ {
+		it:=items.Get(i)
+		if it.Get("结果判定").ToString()=="不合格项"{
+			jielun="纯抽检不合格样品"
+			break
+		}
+	}
+	return jielun
+}
 //获取所有不合格
-func Getunqualified(testinfos []map[string]string) []map[string]string {
-	r := make([]map[string]string, 0)
-	for _, it := range testinfos {
-		if it["结果判定"] == "不合格项" {
-			r = append(r, it)
-		}
-	}
-	return r
-}
-func Panding(yj string, testinfos []map[string]string) bool {
-	for _, it := range testinfos {
-		if it["sp_data_2"] == "不合格项" {
-			return false
-		}
-	}
-	return true
-}
+//func Getunqualified(testinfos []map[string]string) []map[string]string {
+//	r := make([]map[string]string, 0)
+//	for _, it := range testinfos {
+//		if it["结果判定"] == "不合格项" {
+//			r = append(r, it)
+//		}
+//	}
+//	return r
+//}
+//func Panding(yj string, testinfos []map[string]string) bool {
+//	for _, it := range testinfos {
+//		if it["sp_data_2"] == "不合格项" {
+//			return false
+//		}
+//	}
+//	return true
+//}
 
 //获取所有判定依据
-func GetAllPandingyiju(testinfos []map[string]string) ([]string, []string) {
-	allyiju := make(map[string]string, 0)
-	for _, it := range testinfos {
-		if it["sp_data_2"] != "未检验" {
-			allyiju[it["sp_data_4"]] = ""
-		}
-	}
-	okyiju := []string{}
-	erryiju := []string{}
-	for yiju, _ := range allyiju {
-		if Panding(yiju, testinfos) == true {
-			okyiju = append(okyiju, yiju)
-		} else {
-			erryiju = append(erryiju, yiju)
-		}
-	}
-	return okyiju, erryiju
-}
+//func GetAllPandingyiju(testinfos []map[string]string) ([]string, []string) {
+//	allyiju := make(map[string]string, 0)
+//	for _, it := range testinfos {
+//		if it["sp_data_2"] != "未检验" {
+//			allyiju[it["sp_data_4"]] = ""
+//		}
+//	}
+//	okyiju := []string{}
+//	erryiju := []string{}
+//	for yiju, _ := range allyiju {
+//		if Panding(yiju, testinfos) == true {
+//			okyiju = append(okyiju, yiju)
+//		} else {
+//			erryiju = append(erryiju, yiju)
+//		}
+//	}
+//	return okyiju, erryiju
+//}
 
-//生成指定判断依据
-func Buildpanduanyiju(yj string, testinfos []map[string]string) string {
-	r := ""
-	for _, it := range testinfos {
-		if it["sp_data_2"] == "不合格项" && it["sp_data_4"] == yj {
-			r = fmt.Sprintf("%s%s", r, it["item"])
-			r = fmt.Sprintf("%s,", r)
-		}
-	}
-	if r == "" {
-		return ""
-	}
-	if string(r[len(r)-1]) == "," {
-		r = r[:len(r)-1]
-	}
-	r = strings.ReplaceAll(r, ",", "，")
-	r = fmt.Sprintf("%s项目不符合%s要求", r, yj)
-	return r
-}
+////生成指定判断依据
+//func Buildpanduanyiju(yj string, testinfos []map[string]string) string {
+//	r := ""
+//	for _, it := range testinfos {
+//		if it["sp_data_2"] == "不合格项" && it["sp_data_4"] == yj {
+//			r = fmt.Sprintf("%s%s", r, it["item"])
+//			r = fmt.Sprintf("%s,", r)
+//		}
+//	}
+//	if r == "" {
+//		return ""
+//	}
+//	if string(r[len(r)-1]) == "," {
+//		r = r[:len(r)-1]
+//	}
+//	r = strings.ReplaceAll(r, ",", "，")
+//	r = fmt.Sprintf("%s项目不符合%s要求", r, yj)
+//	return r
+//}
 
-func Convbaotaodata(testinfos []map[string]string) []map[string]string {
-	r := make([]map[string]string, 0)
-	for _, item := range testinfos {
-		ditem := map[string]string{}
-		for k, v := range item {
-			ditem[k] = v
-			if k == "sp_data_2" {
-				ditem["结果判定"] = v
-			} else if k == "sp_data_4" {
-				ditem["判定依据"] = v
+//func Convbaotaodata(testinfos []map[string]string) []map[string]string {
+//	r := make([]map[string]string, 0)
+//	for _, item := range testinfos {
+//		ditem := map[string]string{}
+//		for k, v := range item {
+//			ditem[k] = v
+//			if k == "sp_data_2" {
+//				ditem["结果判定"] = v
+//			} else if k == "sp_data_4" {
+//				ditem["判定依据"] = v
+//			}
+//		}
+//		r = append(r, ditem)
+//	}
+//	return r
+//}
+
+
+//获取所有判定依据
+func QueryJudgmentbasisItems(testinfos jsoniter.Any)[]string{
+	allJudgmentbasis:=make([]string,0)
+	for i := 0; i < testinfos.Size(); i++ {
+		it:=testinfos.Get(i)
+		jieguo:=it.Get("sp_data_2").ToString()
+		pandingyiju:=it.Get("sp_data_4").ToString()
+		if jieguo!="未检验"{
+			n:=linq.From(allJudgmentbasis).Where(func(i interface{}) bool {
+				lit:=i.(string)
+				if pandingyiju==lit{
+					return true
+				}
+				return false
+			}).Count()
+			if n==0{
+				allJudgmentbasis=append(allJudgmentbasis,pandingyiju)
 			}
 		}
-		r = append(r, ditem)
 	}
-	return r
+	return allJudgmentbasis
+}
+//获取所有合格依据
+func QueryQualifiedJudgmentbasisItems(testinfos jsoniter.Any)[]*JudgmentbasisItem{
+	allyiju:=QueryJudgmentbasisItems(testinfos)
+	jits:=make([]*JudgmentbasisItem,0)
+	mptestinfos:=testinfos.GetInterface().([]map[string]interface{})
+	for _, yijuit := range allyiju {
+		qrs:=make([]map[string]interface{},0)
+		linq.From(mptestinfos).Where(func(i interface{}) bool {
+			it:=i.(map[string]interface{})
+			jieguo:=it["sp_data_2"].(string)
+			pandingyiju:=it["sp_data_4"].(string)
+			if pandingyiju==yijuit{
+				if jieguo=="合格项"{
+					return true
+				}
+			}
+			return false
+		}).ToSlice(&qrs)
+		jits=append(jits,&JudgmentbasisItem{
+			Name: yijuit,
+			Items: qrs,
+		})
+	}
+	rjits:=make([]*JudgmentbasisItem,0)
+	for _, it := range jits {
+		if len(it.Items)!=0{
+			rjits=append(rjits,it)
+		}
+	}
+	return rjits
+}
+//获取所有不合格依据
+func QueryUnqualifiedJudgmentbasisItems(testinfos jsoniter.Any)[]*JudgmentbasisItem{
+	allyiju:=QueryJudgmentbasisItems(testinfos)
+	jits:=make([]*JudgmentbasisItem,0)
+	mptestinfos:=testinfos.GetInterface().([]map[string]interface{})
+	for _, yijuit := range allyiju {
+		qrs:=make([]map[string]interface{},0)
+		linq.From(mptestinfos).Where(func(i interface{}) bool {
+			it:=i.(map[string]interface{})
+			jieguo:=it["sp_data_2"].(string)
+			pandingyiju:=it["sp_data_4"].(string)
+			if pandingyiju==yijuit{
+				if jieguo=="不合格项"{
+					return true
+				}
+			}
+			return false
+		}).ToSlice(&qrs)
+		jits=append(jits,&JudgmentbasisItem{
+			Name: yijuit,
+			Items: qrs,
+		})
+	}
+
+	rjits:=make([]*JudgmentbasisItem,0)
+	for _, it := range jits {
+		if len(it.Items)!=0{
+			rjits=append(rjits,it)
+		}
+	}
+	return rjits
 }
 
 //构建报告
-func Buildbaogao(testinfos []map[string]string) string {
-	okyiju, erryiju := GetAllPandingyiju(testinfos)
-	if len(okyiju) == 0 && len(erryiju) == 0 {
-		return ""
-	}
-	if len(erryiju) != 0 {
-		rs := "经抽样检验，"
-		for _, unq := range erryiju {
-			sps := Buildpanduanyiju(unq, testinfos)
-			if sps != "" {
-				rs = fmt.Sprintf("%s%s", rs, sps)
-				rs = fmt.Sprintf("%s,", rs)
+func BuildTest_conclusion(testinfos jsoniter.Any) string {
+	qualifieds:=QueryQualifiedJudgmentbasisItems(testinfos)
+	unqualifieds:=QueryUnqualifiedJudgmentbasisItems(testinfos)
+	results:=strings.Builder{}
+	if len(unqualifieds)>0{
+		results.WriteString("经抽样检验，")
+		for i, unqualified := range unqualifieds {
+			for idx, it := range unqualified.Items {
+				results.WriteString(fmt.Sprintf("%s",it["item"].(string)))
+				if idx!=len(unqualified.Items)-1{
+					results.WriteString("，")
+				}
+			}
+			results.WriteString(fmt.Sprintf("项目不符合%s要求",unqualified.Name))
+			if i!=len(unqualifieds)-1{
+				results.WriteString("，")
 			}
 		}
-		if string(rs[len(rs)-1]) == "," {
-			rs = rs[:len(rs)-1]
-		}
-		rs = strings.ReplaceAll(rs, ",", "，")
-		rs = fmt.Sprintf("%s，检验结论为不合格。", rs)
-		return rs
-	} else {
-		rs := "经抽样检验，所检项目符合 "
-		for i, yj := range okyiju {
-			rs = fmt.Sprintf("%s%s", rs, yj)
-			if len(okyiju)-1 != i {
-				rs = fmt.Sprintf("%s，", rs)
+		results.WriteString("，检验结论为不合格。")
+		fmt.Println(results.String())
+	}else{
+		results.WriteString("经抽样检验，所检项目符合 ")
+		for i, qualified := range qualifieds {
+			results.WriteString(fmt.Sprintf("%s",qualified.Name))
+			if i!=len(qualifieds)-1{
+				results.WriteString("，")
 			}
 		}
-		rs = fmt.Sprintf("%s要求。", rs)
-		return rs
+		results.WriteString(" 要求。")
 	}
-
-	return ""
+	return results.String()
 }
+//构建报告
+//func Buildbaogao(testinfos []map[string]string) string {
+//	okyiju, erryiju := GetAllPandingyiju(testinfos)
+//	if len(okyiju) == 0 && len(erryiju) == 0 {
+//		return ""
+//	}
+//	if len(erryiju) != 0 {
+//		rs := "经抽样检验，"
+//		for _, unq := range erryiju {
+//			sps := Buildpanduanyiju(unq, testinfos)
+//			if sps != "" {
+//				rs = fmt.Sprintf("%s%s", rs, sps)
+//				rs = fmt.Sprintf("%s,", rs)
+//			}
+//		}
+//		if string(rs[len(rs)-1]) == "," {
+//			rs = rs[:len(rs)-1]
+//		}
+//		rs = strings.ReplaceAll(rs, ",", "，")
+//		rs = fmt.Sprintf("%s，检验结论为不合格。", rs)
+//		return rs
+//	} else {
+//		rs := "经抽样检验，所检项目符合 "
+//		for i, yj := range okyiju {
+//			rs = fmt.Sprintf("%s%s", rs, yj)
+//			if len(okyiju)-1 != i {
+//				rs = fmt.Sprintf("%s，", rs)
+//			}
+//		}
+//		rs = fmt.Sprintf("%s要求。", rs)
+//		return rs
+//	}
+//
+//	return ""
+//}
 
 func loop_testinfo(k string, testinfos []*Test_platform_api_food_getTestInfo_o) *Test_platform_api_food_getTestInfo_o {
 	for _, it := range testinfos {
@@ -610,9 +760,10 @@ func loop_testinfo(k string, testinfos []*Test_platform_api_food_getTestInfo_o) 
 	}
 	return nil
 }
-func loop_userdata(k string, userdata []map[string]string) map[string]string {
-	for _, it := range userdata {
-		if it["检验项目"] == k {
+func loop_userdata(k string, userdata jsoniter.Any) jsoniter.Any {
+	for i := 0; i < userdata.Size(); i++ {
+		it:=userdata.Get(i)
+		if it.Get("检验项目").ToString()==k{
 			return it
 		}
 	}
@@ -635,11 +786,11 @@ func loop_VerifyReason(k string, testreasons []*VerifyReason_o) *VerifyReason_o 
 	return nil
 }
 
-//构建农产品上传
-func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o, testinfos []*Test_platform_api_food_getTestInfo_o, userdatas []map[string]string) []map[string]string {
-	r := make([]map[string]string, 0)
+//合并上传数据
+func Build_agriculture_updata(userdatas jsoniter.Any,testitems []*Test_platform_api_food_getTestItems_o, testinfos []*Test_platform_api_food_getTestInfo_o) jsoniter.Any {
+	r := make([]map[string]interface{}, 0)
 	for _, it := range testitems {
-		itmap := make(map[string]string)
+		itmap := make(map[string]interface{})
 		itmap["id"] = ""
 		itmap["item_old"] = it.Item
 		itmap["item"] = it.Item
@@ -692,8 +843,8 @@ func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o
 		}
 		userdata := loop_userdata(it.Item, userdatas)
 		if userdata != nil {
-			jyff := userdata["检验依据"]
-			pdyj := userdata["判定依据"]
+			jyff := userdata.Get("检验依据").ToString()
+			pdyj := userdata.Get("判定依据").ToString()
 			if jyff != "/" && jyff != "" {
 				jyffo := loop_TestReason(jyff, it.TestReason)
 				if jyffo != nil {
@@ -722,14 +873,14 @@ func Build_agriculture_updata(testitems []*Test_platform_api_food_getTestItems_o
 				}
 			}
 
-			itmap["sp_data_1"] = userdata["检验结果"] //结果
-			itmap["sp_data_2"] = userdata["结果判定"] //结果判定
-			itmap["sp_data_17"] = userdata["说明"]  //结果
+			itmap["sp_data_1"] = userdata.Get("检验结果").ToString() //结果
+			itmap["sp_data_2"] = userdata.Get("结果判定").ToString() //结果判定
+			itmap["sp_data_17"] = userdata.Get("说明").ToString()  //结果
 
 		}
 		r = append(r, itmap)
 	}
-	return r
+	return jsoniter.Wrap(r)
 }
 
 func Savegob(i interface{}, fname string) error {

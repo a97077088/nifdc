@@ -823,12 +823,7 @@ func Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos 
 }
 
 //保存agriculture_testinfo
-func Test_platform_api_agriculture_save(fooddetail jsoniter.Any, updatas []map[string]string, ck string, session *Session) error {
-	items := updatas
-	sitems, err := json.Marshal(items)
-	if err != nil {
-		return err
-	}
+func Test_platform_api_agriculture_save(fooddetail jsoniter.Any, updatas jsoniter.Any, ck string, session *Session) error {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/save")
 	r, err := cli.Post(surl, &RequestOptions{
@@ -864,7 +859,7 @@ func Test_platform_api_agriculture_save(fooddetail jsoniter.Any, updatas []map[s
 			"fdtoken12":       "201812FoodDetail",
 			"fdtoken1201":     "20181201FoodDetail",
 			"isSubmit":        "false",
-			"items":           string(sitems),
+			"items":           updatas.ToString(),
 		},
 		UserAgent: useragent,
 	})
@@ -951,13 +946,7 @@ func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) 
 }
 
 //保存testinfo
-func Test_platform_api_food_save(fooddetail map[string]string, updatas []map[string]string, ck string, session *Session) error {
-	items := updatas
-
-	sitems, err := json.Marshal(items)
-	if err != nil {
-		return err
-	}
+func Test_platform_api_food_save(fooddetail jsoniter.Any, updatas jsoniter.Any, ck string, session *Session) error {
 	cli := Cli(session)
 	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/save")
 	r, err := cli.Post(surl, &RequestOptions{
@@ -966,34 +955,34 @@ func Test_platform_api_food_save(fooddetail map[string]string, updatas []map[str
 			"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
 		},
 		Data: map[string]string{
-			"type1":           fooddetail["type1"],
-			"type2":           fooddetail["type2"],
-			"type3":           fooddetail["type3"],
-			"type4":           fooddetail["type4"],
-			"bsfla":           fooddetail["bsfla"],
-			"bsflb":           fooddetail["bsflb"],
-			"test_unit":       fooddetail["test_unit"],
-			"report_no":       fooddetail["report_no"],
-			"test_date":       fooddetail["test_date"],
-			"contact":         fooddetail["contact"],
-			"contact_tel":     fooddetail["contact_tel"],
-			"contact_email":   fooddetail["contact_email"],
-			"fy_person":       fooddetail["fy_person"],
-			"fy_tel":          fooddetail["fy_tel"],
-			"fy_email":        fooddetail["fy_email"],
-			"conclusion":      fooddetail["conclusion"],
-			"jd_bz":           fooddetail["jd_bz"],
-			"fx_bz":           fooddetail["fx_bz"],
-			"tb_date":         fooddetail["tb_date"],
-			"report_type":     fooddetail["report_type"],
-			"test_aims":       fooddetail["test_aims"],
-			"test_conclusion": fooddetail["test_conclusion"],
-			"sign_date":       fooddetail["sign_date"],
-			"sd":              fooddetail["sd"],
+			"type1":           fooddetail.Get("type1").ToString(),
+			"type2":           fooddetail.Get("type2").ToString(),
+			"type3":           fooddetail.Get("type3").ToString(),
+			"type4":           fooddetail.Get("type4").ToString(),
+			"bsfla":           fooddetail.Get("bsfla").ToString(),
+			"bsflb":           fooddetail.Get("bsflb").ToString(),
+			"test_unit":       fooddetail.Get("test_unit").ToString(),
+			"report_no":       fooddetail.Get("report_no").ToString(),
+			"test_date":       fooddetail.Get("test_date").ToString(),
+			"contact":         fooddetail.Get("contact").ToString(),
+			"contact_tel":     fooddetail.Get("contact_tel").ToString(),
+			"contact_email":   fooddetail.Get("contact_email").ToString(),
+			"fy_person":       fooddetail.Get("fy_person").ToString(),
+			"fy_tel":          fooddetail.Get("fy_tel").ToString(),
+			"fy_email":        fooddetail.Get("fy_email").ToString(),
+			"conclusion":      fooddetail.Get("conclusion").ToString(),
+			"jd_bz":           fooddetail.Get("jd_bz").ToString(),
+			"fx_bz":           fooddetail.Get("fx_bz").ToString(),
+			"tb_date":         fooddetail.Get("tb_date").ToString(),
+			"report_type":     fooddetail.Get("report_type").ToString(),
+			"test_aims":       fooddetail.Get("test_aims").ToString(),
+			"test_conclusion": fooddetail.Get("test_conclusion").ToString(),
+			"sign_date":       fooddetail.Get("sign_date").ToString(),
+			"sd":              fooddetail.Get("sd").ToString(),
 			"fdtoken12":       "201812FoodDetail",
 			"fdtoken1201":     "20181201FoodDetail",
 			"isSubmit":        "false",
-			"items":           string(sitems),
+			"items":           updatas.ToString(),
 		},
 		UserAgent: useragent,
 	})

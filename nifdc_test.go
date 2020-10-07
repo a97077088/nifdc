@@ -3,6 +3,7 @@ package nifdc
 import (
 	"encoding/gob"
 	"fmt"
+	"github.com/json-iterator/go"
 	"os"
 	"testing"
 )
@@ -1033,7 +1034,7 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	mps := Build_agriculture_updata(itemsr.Rows, testinfor.Rows, []map[string]string{
+	mps := Build_agriculture_updata(jsoniter.Wrap([]map[string]string{
 		{
 			"检验项目": "五氯酚酸钠(以五氯酚计)",
 			"检验结果": "0.1",
@@ -1042,7 +1043,7 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 			"判定依据": "/1",
 			"说明":   "aaa",
 		},
-	})
+	}),itemsr.Rows, testinfor.Rows,)
 
 	err = Test_platform_api_agriculture_save(fddetail, mps, test_platform_ck, nil)
 	fmt.Println(err)
@@ -1055,26 +1056,26 @@ func TestTest_platform_api_food_getTestItems(t *testing.T) {
 }
 
 func TestBuildbaogao(t *testing.T) {
-	var updates []map[string]string
-	redf, err := os.Open("./test_baogaodata")
-	if err != nil {
-		panic(err)
-	}
-	dc := gob.NewDecoder(redf)
-	err = dc.Decode(&updates)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(updates[0]["item"])
-	updates[0]["sp_data_2"] = "不合格项"
-	updates[1]["sp_data_2"] = "不合格项"
-	updates[2]["sp_data_2"] = "不合格项"
-	updates[3]["sp_data_2"] = "不合格项"
-	//for _, item := range updates {
-	//	fmt.Println(item)
+	//var updates []map[string]string
+	//redf, err := os.Open("./test_baogaodata")
+	//if err != nil {
+	//	panic(err)
 	//}
-	cvdata := Convbaotaodata(updates)
-	fmt.Println(Buildbaogao(cvdata))
+	//dc := gob.NewDecoder(redf)
+	//err = dc.Decode(&updates)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//fmt.Println(updates[0]["item"])
+	//updates[0]["sp_data_2"] = "不合格项"
+	//updates[1]["sp_data_2"] = "不合格项"
+	//updates[2]["sp_data_2"] = "不合格项"
+	//updates[3]["sp_data_2"] = "不合格项"
+	////for _, item := range updates {
+	////	fmt.Println(item)
+	////}
+	//cvdata := Convbaotaodata(updates)
+	//fmt.Println(Buildbaogao(cvdata))
 }
 
 func TestMerge_subitem(t *testing.T) {
