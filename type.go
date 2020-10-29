@@ -1,6 +1,6 @@
 package nifdc
 
-import "github.com/a97077088/appuser"
+import "test.com/a/appuser"
 
 type Channel struct {
 	Name string
@@ -88,7 +88,7 @@ func (this *UploadData) Subitem() []map[string]string {
 	if this.EV("subitem") == nil {
 		return nil
 	}
-	return this.EV("subitem").([]map[string]string)
+	return this.EInterface("subitem").([]map[string]string)
 }
 func (this *UploadData) AddSubitem(mp map[string]string) {
 	if this.EV("subitem") == nil {
