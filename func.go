@@ -876,7 +876,7 @@ func Build_agriculture_updata(userdatas jsoniter.Any,testitems []*Test_platform_
 			itmap["sp_data_1"] = userdata.Get("检验结果").ToString() //结果
 			itmap["sp_data_2"] = userdata.Get("结果判定").ToString() //结果判定
 			itmap["sp_data_17"] = userdata.Get("说明").ToString()  //结果
-			if userdata.Get("结果单位").ToString()!=""{
+			if userdata.Get("结果单位").ToString()!=""||userdata.Get("结果单位").ToString()!="/"{
 				itmap["sp_data_18"]=userdata.Get("结果单位").ToString()
 			}
 		}
