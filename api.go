@@ -159,6 +159,39 @@ func Sample_login(ck string, session *Session) (string, []*Channel, string, erro
 	return uid, chs, scks, nil
 }
 
+func Sample_index(ck string,session *Session)error{
+	cli := NewCli(session)
+	r, err := cli.Get("http://spcjsample.gsxt.gov.cn/index.php", &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		RedirectLimit: -1,
+		UserAgent:     useragent,
+	})
+	if err != nil {
+		return err
+	}
+	r.String()
+	return nil
+}
+
+func Test_platform_index(ck string,session *Session)error{
+	cli := NewCli(session)
+	r, err := cli.Get("http://spcjinsp.gsxt.gov.cn/test_platform/?token=", &RequestOptions{
+		Headers: map[string]string{
+			"Cookie": ck,
+		},
+		RedirectLimit: -1,
+		UserAgent:     useragent,
+	})
+	if err != nil {
+		return err
+	}
+	r.String()
+	return nil
+}
+
+
 //检验检测平台
 func Test_platform_login(ck string, session *Session) (string, error) {
 	cli := NewCli(session)
