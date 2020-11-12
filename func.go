@@ -810,7 +810,7 @@ func Build_agriculture_updata(userdatas jsoniter.Any,testitems []*Test_platform_
 		itmap["sp_data_15"] = it.VerifyReason[0].Spdata_13 //最大允许限
 		itmap["sp_data_16"] = it.VerifyReason[0].Spdata_10 //允许限单位
 		itmap["sp_data_17"] = ""                           //说明
-		itmap["sp_data_18"] = it.VerifyReason[0].Spdata_10 //允许限单位
+		itmap["sp_data_18"] = it.VerifyReason[0].Spdata_10 //结果单位
 		itmap["bz"] = it.TestReason[0].Bz                  //备注
 		itmap["sm"] = it.TestReason[0].Sm                  //检测依据简写
 		itmap["sp_data_21"] = it.TestReason[0].Spdata_21   //spdata_21提示
@@ -877,7 +877,7 @@ func Build_agriculture_updata(userdatas jsoniter.Any,testitems []*Test_platform_
 			itmap["sp_data_2"] = userdata.Get("结果判定").ToString() //结果判定
 			itmap["sp_data_17"] = userdata.Get("说明").ToString()  //结果
 			if userdata.Get("结果单位").ToString()!=""{
-				itmap["sp_data_6"]=userdata.Get("结果单位").ToString()
+				itmap["sp_data_18"]=userdata.Get("结果单位").ToString()
 			}
 		}
 		r = append(r, itmap)
