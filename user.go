@@ -18,7 +18,7 @@ type NifdcUser struct {
 func (u *NifdcUser)V(k string)jsoniter.Any{
 	u.mp_lk.Lock()
 	defer u.mp_lk.Unlock()
-	return jsoniter.Wrap(u.mp)
+	return jsoniter.Wrap(u.mp[k])
 }
 func (u *NifdcUser)SV(k string,v interface{}){
 	u.mp_lk.Lock()
@@ -28,12 +28,12 @@ func (u *NifdcUser)SV(k string,v interface{}){
 func (u *NifdcUser)EV(k string)jsoniter.Any{
 	u.evmp_lk.Lock()
 	defer u.evmp_lk.Unlock()
-	return jsoniter.Wrap(u.evmp)
+	return jsoniter.Wrap(u.evmp[k])
 }
 func (u *NifdcUser)EInterface(k string)interface{}{
 	u.evmp_lk.Lock()
 	defer u.evmp_lk.Unlock()
-	return u.evmp
+	return u.evmp[k]
 }
 func (u *NifdcUser)SEV(k string,v interface{}){
 	u.evmp_lk.Lock()
