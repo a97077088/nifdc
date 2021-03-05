@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/json-iterator/go"
 	"os"
+	"test.com/a/grequests"
 	"testing"
 )
 
@@ -1008,15 +1009,18 @@ func TestRe(t *testing.T) {
 	//fmt.Println(tmj.Execute(os.Stdout, mkr))
 }
 func TestTest_platform_api_food_getTestItems(t *testing.T) {
-	a, b, c, err := InitLoginck(nil)
+	cli:=grequests.NewSession(&grequests.RequestOptions{
+		RedirectLimit: 1000,
+	})
+	a, b, c, err := InitLoginck(cli)
 	if err != nil {
 		t.Fatal(err)
 	}
-	ck, err := Login("17761660651", "12345678", a, b, c, nil)
+	ck, err:= Login("5050620402", "sps63302570", a, b, c, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
-	test_platform_ck, err := Test_platform_login(ck, nil)
+	test_platform_ck, err := Test_platform_login(ck,nil)
 	if err != nil {
 		t.Fatal(err)
 	}
