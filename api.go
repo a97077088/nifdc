@@ -161,7 +161,7 @@ func Sample_login(ck string, session *Session) (string, []*Channel, string, erro
 
 func Sample_index(ck string,session *Session)error{
 	cli := NewCli(session)
-	r, err := cli.Get("https://spcjsample.gsxt.gov.cn/index.php", &RequestOptions{
+	r, err := cli.Get("http://spcjsample.gsxt.gov.cn/index.php", &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
 		},
@@ -262,7 +262,7 @@ func Test_platform_login(ck string, session *Session) (string, error) {
 //任务大平台通道
 func Sample_switchchannel(uuid string, _type string, ck string, session *Session) (string, error) {
 	cli := NewCli(session)
-	surl := fmt.Sprintf("https://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=SSO&a=logined&ca_uuid=%s&user_type=%s", uuid, _type)
+	surl := fmt.Sprintf("http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=SSO&a=logined&ca_uuid=%s&user_type=%s", uuid, _type)
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -284,7 +284,7 @@ func Sample_switchchannel(uuid string, _type string, ck string, session *Session
 //已接受全字段导出
 func Viewcheckedsample_full(sample_code string, ck string, session *Session) (jsoniter.Any, error) {
 	cli := NewCli(session)
-	surl := fmt.Sprintf("https://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=viewcheckedsample&sample_code=%s", sample_code)
+	surl := fmt.Sprintf("http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=viewcheckedsample&sample_code=%s", sample_code)
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -304,7 +304,7 @@ func Viewcheckedsample_full(sample_code string, ck string, session *Session) (js
 //数据查看,任务大平台
 func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string, smple_code string, ck string, session *Session) (*Download_Data_r, error) {
 	cli := NewCli(session)
-	surl := "https://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
+	surl := "http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -953,7 +953,7 @@ func Test_platform_api_agriculture_save(fooddetail jsoniter.Any, updatas jsonite
 //获取food_getTestItems
 func Test_platform_api_food_getTestItems(fddetail jsoniter.Any, ck string, session *Session) (*Test_platform_api_food_getTestItems_r, error) {
 	cli := NewCli(session)
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/getTestItems")
+	surl := fmt.Sprintf("https://spcjinsp.gsxt.gov.cn/test_platform/api/food/getTestItems")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -988,7 +988,7 @@ func Test_platform_api_food_getTestItems(fddetail jsoniter.Any, ck string, sessi
 //获取testinfo
 func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) (*Test_platform_api_food_getTestInfo_r, error) {
 	cli := NewCli(session)
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/getTestInfo")
+	surl := fmt.Sprintf("https://spcjinsp.gsxt.gov.cn/test_platform/api/food/getTestInfo")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
