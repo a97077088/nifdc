@@ -40,6 +40,15 @@ func (u *NifdcUser)SEV(k string,v interface{}){
 	defer u.evmp_lk.Unlock()
 	u.evmp[k]=v
 }
+func NewNifdcUser()*NifdcUser{
+	return &NifdcUser{
+		AppUser: &app.AppUser{},
+		mp: map[string]interface{}{},
+		mp_lk:   sync.Mutex{},
+		evmp: map[string]interface{}{},
+		evmp_lk: sync.Mutex{},
+	}
+}
 func NifdcUserFromInterface(v interface{})*NifdcUser{
 	return v.(*NifdcUser)
 }
