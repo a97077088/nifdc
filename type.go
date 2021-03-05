@@ -1,6 +1,6 @@
 package nifdc
 
-import "test.com/a/appuser"
+import "test.com/a/app"
 
 type Channel struct {
 	Name string
@@ -19,7 +19,7 @@ type Data_o struct {
 	Sp_d_38           string
 	Sp_s_3            string
 	Sp_s_20           string
-	User              appuser.AppUser `json:"userx"`
+	User              app.AppUser `json:"userx"`
 }
 type Download_Data_r struct {
 	RecordsTotal int
@@ -51,7 +51,7 @@ type Test_platform_o struct {
 	Sp_s_44      string
 	Created_at   int64
 	Updated_at   int64
-	User         appuser.AppUser
+	User         app.AppUser
 }
 
 type Api_food_getFood_o struct {
@@ -73,7 +73,7 @@ type Api_food_getFood_o struct {
 	Sp_s_44      string
 	Created_at   int64
 	Updated_at   int64
-	User         appuser.AppUser
+	User         app.AppUser
 }
 type Api_food_getFood_r struct {
 	Total int
@@ -81,7 +81,7 @@ type Api_food_getFood_r struct {
 }
 
 type UploadData struct {
-	appuser.AppUser
+	*NifdcUser
 }
 
 func (this *UploadData) Subitem() []map[string]string {
