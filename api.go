@@ -103,7 +103,7 @@ func Login(username string, password string, lt string, execution string, ck str
 //首页
 func Index(ck string, session *Session) error {
 	cli := NewCli(session)
-	surl := "https://spcj.gsxt.gov.cn/ui/index"
+	surl := "http://spcj.gsxt.gov.cn/ui/index"
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie":           ck,
@@ -124,7 +124,7 @@ func Index(ck string, session *Session) error {
 //登录到任务大平台
 func Sample_login(ck string, session *Session) (string, []*Channel, string, error) {
 	cli := NewCli(session)
-	surl := "https://spcj.gsxt.gov.cn/login?service=http%3A%2F%2Fspcjsample.gsxt.gov.cn%2Findex.php%3Fm%3DAdmin%26c%3DSSO%26a%3Dindex"
+	surl := "http://spcj.gsxt.gov.cn/login?service=http%3A%2F%2Fspcjsample.gsxt.gov.cn%2Findex.php%3Fm%3DAdmin%26c%3DSSO%26a%3Dindex"
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
