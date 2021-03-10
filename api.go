@@ -745,7 +745,7 @@ func Test_platform_api_food_init(fooddetail map[string]string, testinfos []*Test
 		return err
 	}
 	cli := NewCli(session)
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/save")
+	surl := fmt.Sprintf("https://spcjinsp.gsxt.gov.cn/test_platform/api/food/save")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie":       ck,
@@ -837,7 +837,7 @@ func Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos 
 		return err
 	}
 	cli := NewCli(session)
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/save")
+	surl := fmt.Sprintf("https://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/save")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie":       ck,
@@ -895,7 +895,7 @@ func Test_platform_api_agriculture_init(fooddetail map[string]string, testinfos 
 //保存agriculture_testinfo
 func Test_platform_api_agriculture_save(fooddetail jsoniter.Any, updatas jsoniter.Any, ck string, session *Session) error {
 	cli := NewCli(session)
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/save")
+	surl := fmt.Sprintf("https://spcjinsp.gsxt.gov.cn/test_platform/api/agriculture/save")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie":       ck,
