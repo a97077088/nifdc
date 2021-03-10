@@ -1018,7 +1018,7 @@ func Test_platform_api_food_getTestInfo(sd string, ck string, session *Session) 
 //保存testinfo
 func Test_platform_api_food_save(fooddetail jsoniter.Any, updatas jsoniter.Any, ck string, session *Session) error {
 	cli := NewCli(session)
-	surl := fmt.Sprintf("http://spcjinsp.gsxt.gov.cn/test_platform/api/food/save")
+	surl := fmt.Sprintf("https://spcjinsp.gsxt.gov.cn/test_platform/api/food/save")
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie":       ck,
