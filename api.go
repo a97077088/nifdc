@@ -262,7 +262,7 @@ func Test_platform_login(ck string, session *Session) (string, error) {
 //任务大平台通道
 func Sample_switchchannel(uuid string, _type string, ck string, session *Session) (string, error) {
 	cli := NewCli(session)
-	surl := fmt.Sprintf("http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=SSO&a=logined&ca_uuid=%s&user_type=%s", uuid, _type)
+	surl := fmt.Sprintf("https://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=SSO&a=logined&ca_uuid=%s&user_type=%s", uuid, _type)
 	r, err := cli.Get(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -304,7 +304,7 @@ func Viewcheckedsample_full(sample_code string, ck string, session *Session) (js
 //数据查看,任务大平台
 func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd string, smple_code string, ck string, session *Session) (*Download_Data_r, error) {
 	cli := NewCli(session)
-	surl := "http://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
+	surl := "https://spcjsample.gsxt.gov.cn/index.php?m=Admin&c=TaskList&a=gettasklist"
 	r, err := cli.Post(surl, &RequestOptions{
 		Headers: map[string]string{
 			"Cookie": ck,
@@ -314,7 +314,7 @@ func DownData(resource_org_id string, sample_state int, cyTimeStart, cyTimeEnd s
 			"iColumns":        "14",
 			"sColumns":        ",,,,,,,,,,,,,",
 			"iDisplayStart":   "0",
-			"iDisplayLength":  "10000",
+			"iDisplayLength":  "9000",
 			"mDataProp_0":     "",
 			"mDataProp_1":     "update_time",
 			"mDataProp_2":     "sp_s_3",
