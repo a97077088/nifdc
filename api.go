@@ -181,7 +181,7 @@ func Test_platform_index(ck string,session *Session)error{
 		Headers: map[string]string{
 			"Cookie": ck,
 		},
-		RedirectLimit: -1,
+		//RedirectLimit: -1,
 		UserAgent:     useragent,
 	})
 	if err != nil {
